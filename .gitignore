@@ -1,0 +1,88 @@
+## Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+*.log
+
+## User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sdf
+*.cache
+*.dbmdl
+*.VC.db
+
+## Visual Studio Code
+.vscode/
+
+## Rider
+.idea/
+
+## IIS Express
+/.vs/
+.vs/
+*.vspscc
+*.vssscc
+
+## ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+## Web deploy
+.publish/
+*.Publish.xml
+*.pubxml
+*.pubxml.user
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Package restore
+*.nuget/
+*.nupkg
+*.snupkg
+*.lock.json
+
+## Entity Framework
+Migrations/
+
+## Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+## DotCover
+*.dotCover
+
+## Logs and database
+*.log
+*.sql
+*.sqlite
+*.mdf
+*.ldf
+
+## Other
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Temporary files
+~$*
+*.tmp
+*.bak
+*.old
+
+# Node (if using frontend assets)
+node_modules/
+
+# Yarn
+.yarn/
+.pnp.*

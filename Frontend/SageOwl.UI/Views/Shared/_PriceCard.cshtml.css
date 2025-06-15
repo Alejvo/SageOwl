@@ -1,0 +1,46 @@
+﻿*{
+    margin:0;
+    padding:0;
+}
+
+.priceCard{
+    box-shadow:2px 5px 10px rgba(0,0,0,0.25);
+    width:380px;
+    display:flex;
+    flex-direction:column;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.priceCard_title {
+    text-align:center;
+    color:white;
+    background-color: #E44E29;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.priceCard_list{
+    padding:20px 10px;
+}
+
+.priceCard_item{
+    font-size:18px;
+}
+.priceCard_button_list {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    gap: 10px;
+}
+
+.priceCard_button {
+    border-radius:10px;
+    font-size:18px;
+    background-color: #E44E29;
+    color:white;
+    width: 100%;
+    border: none;
+    padding: 10px;
+}

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SageOwl.UI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SageOwl.UI.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <p class="header_logo">SAGEOWL</p>
+        <ul class="header_menu">
+            <li>
+                <a href="" class="header_link">News</a>
+            </li>
+            <li>
+                <a href="" class="header_link">Prices</a>
+            </li>
+            <li>
+                <a href="" class="header_link">Contact Us</a>
+            </li>
+            <li>
+                <button class="header_login">
+                    Log In
+                </button>
+            </li>
+        </ul>
+    </header>
+            @RenderBody()
+
+    <footer class="footer">
+        <p class="footer_title">SageOwl Software</p>
+        <p class="footer_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mollis quam efficitur tincidunt consectetur. Cras diam neque, consequat at venenatis suscipit, cursus eget purus</p>
+        <div class="footer_socialMedia_container">
+            <div class="footer_socialMedia">
+                <i class="fab fa-facebook"></i>
+            </div>
+            <div class="footer_socialMedia">
+                <i class="fab fa-x-twitter"></i>
+            </div>
+            <div class="footer_socialMedia">
+                <i class="fab fa-instagram"></i>
+            </div>
+            <div class="footer_socialMedia">
+                <i class="fab fa-linkedin"></i>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

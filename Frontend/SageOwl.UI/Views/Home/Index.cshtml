@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="home">
+    <div class="info">
+    <div class="info_wrapper">
+        <p class="info_title">Education to the next level</p>
+        <p class="info_description">An interactive software platform designed to streamline academic assessment processes. This application is tailored for managing, creating, and delivering academic solutions efficiently and securely.</p>
+        <button class="info_button">See our products plans</button>
+    </div>
+    <img src="images/teaching.svg" width="480" height="480"/>
+</div>
+    <div class="plans_list">
+        @await Html.PartialAsync("_PriceCard")
+        @await Html.PartialAsync("_PriceCard")
+        @await Html.PartialAsync("_PriceCard")
+    </div>
+    <div class="contact_section">
+        <div class="contact_section_info">
+            <p class="contact_title">Let's work together!</p>
+            <p class="contact_description">
+                Have questions or need assistance? We're here to help!
+                Feel free to reach out to us at support@example.com and we'll get back to you as soon as possible.
+            </p>
+        </div>
+        <div class ="contact_form">
+            <form>
+                <input class="contact_input" placeholder="Email" />
+                <input class="contact_input" placeholder="Subject" />
+                <textarea id="contact_message" class="contact_input" placeholder="Message"></textarea>
+                <input id="contact_button" type="submit" value="Send" />
+            </form>
+        </div>
+
+
+    </div>
+</div>
