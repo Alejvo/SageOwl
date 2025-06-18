@@ -1,5 +1,13 @@
-﻿namespace Application.Users.GetAll;
+﻿using Application.Abstractions;
+using Application.Users.Common;
+using Shared;
 
-internal class GetUsersQuery
-{
-}
+namespace Application.Users.GetAll;
+
+public record GetUsersQuery(
+        string? SearchTerm,
+        string? SortColumn,
+        string? SortOrder,
+        int Page,
+        int PageSize
+    ):IQuery<PagedList<UserResponse>>;

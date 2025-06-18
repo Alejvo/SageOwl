@@ -4,7 +4,8 @@ public interface IUserRepository
 {
     Task<User> GetUsers();
     Task<User> GetUserById(Guid id);
-    Task Update();
+    Task<bool> CreateUser(User user);
+    Task<bool> Update(User user);
     Task Delete();
     Task SoftDelete();
 }

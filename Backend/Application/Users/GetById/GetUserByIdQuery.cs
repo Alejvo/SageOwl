@@ -1,5 +1,8 @@
-﻿namespace Application.Users.GetById;
+﻿using Application.Abstractions;
+using Application.Users.Common;
 
-internal class GetUserByIdQuery
-{
-}
+namespace Application.Users.GetById;
+
+public record GetUserByIdQuery(
+        Guid Id
+    ): IQuery<UserResponse>;

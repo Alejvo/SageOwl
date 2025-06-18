@@ -1,5 +1,13 @@
-﻿namespace Application.Users.Update;
+﻿using Application.Abstractions;
 
-internal class UpdateUserCommand
-{
-}
+namespace Application.Users.Update;
+
+public record UpdateUserCommand(
+    Guid Id,
+    string Name,
+    string Surname,
+    string Email,
+    string Password,
+    string Username,
+    DateTime Birthday
+    ) : ICommand;
