@@ -1,5 +1,10 @@
 ﻿namespace Application.Users.Common;
 
-internal class UserResponse
-{
-}
+public record UserResponse(
+    Guid Id,
+    string Name,
+    string Surname,
+    string Email,
+    string Username,
+    DateTime CreatedAt
+    );

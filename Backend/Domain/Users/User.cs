@@ -2,14 +2,14 @@
 
 public class User
 {
-    public Guid Id { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public string Surname { get; init; } = string.Empty;
-    public Email Email { get; init; }
-    public Password Password { get; init; }
-    public string Username {  get; init; } = string.Empty;
-    public DateTime Birthday { get; init; }
-    public DateTime CreatedAt { get; init; }
+    public Guid Id { get; private set; }
+    public string Name { get; set; } = string.Empty;
+    public string Surname { get; set; } = string.Empty;
+    public Email Email { get; set; }
+    public Password Password { get; set; }
+    public string Username {  get; set; } = string.Empty;
+    public DateTime Birthday { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public User()
     {

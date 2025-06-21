@@ -1,12 +1,22 @@
 ﻿using Domain.Users;
+using Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    public Task<bool> CreateUser(User user)
+    private readonly AppDbContext _dbContext;
+
+    public UserRepository(AppDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+    }
+
+    public async Task<bool> CreateUser(User user)
+    {
+        await _dbContext.Users.AddAsync(user);
+        return await _dbContext.SaveChangesAsync() > 0;
     }
 
     public Task Delete()
@@ -14,14 +24,14 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<User> GetUserById(Guid id)
+    public async Task<User?> GetUserById(Guid id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
     }
 
-    public Task<User> GetUsers()
+    public async Task<List<User>> GetUsers()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Users.ToListAsync();
     }
 
     public Task SoftDelete()
@@ -29,8 +39,18 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<bool> Update(User user)
+    public async Task<bool> Update(User userUpdated)
     {
-        throw new NotImplementedException();
+        var user = await GetUserById(userUpdated.Id);
+        if (userUpdated is not null)
+        {
+            user.Name = userUpdated.Name;
+            user.Surname = userUpdated.Surname;
+            user.Email = userUpdated.Email;
+            user.Password = userUpdated.Password;
+            user.Username = userUpdated.Username;
+        }
+
+        return await _dbContext.SaveChangesAsync() > 0;
     }
 }

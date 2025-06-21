@@ -6,10 +6,12 @@ namespace Infrastructure.Contexts;
 
 public class AppDbContext : DbContext
 {
-    public DbSet<User> Users { get; set; }
     public AppDbContext(DbContextOptions options) : base(options)
     {
     }
+
+    public DbSet<User> Users { get; set; }
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
