@@ -1,0 +1,183 @@
+﻿@model SageOwl.UI.ViewModel.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Create Account";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<div class="register">
+    <div class="register_img_container">
+    </div>
+    <div class="register_form_container">
+        <h2>Sign Up Form</h2>
+        <div class="register_form_progress">
+            <div class="register_form_progress_wrapper">
+                <p>Name</p>
+                <div class="step-circle">1</div>
+            </div>
+            <div class="line"></div>
+            <div class="register_form_progress_wrapper">
+                <p>Birth</p>
+                <div class="step-circle">2</div>
+            </div>
+            <div class="line"></div>
+            <div class="register_form_progress_wrapper">
+                <p>Account</p>
+                <div class="step-circle">3</div>
+            </div>
+            <div class="line"></div>
+            <div class="register_form_progress_wrapper">
+                <p>Submit</p>
+                <div class="step-circle">4</div>
+            </div>
+        </div>
+
+        <form asp-action="Submit" method="post" id="register_form" style="flex-grow:2;box-sizing:border-box;margin:auto">
+            <div class="register_form_body">
+                <div class="register_form_step" id="step1">
+                    <div class="register_form_wrapper">
+                        <label>Email Address</label>
+                        <div class="register_form_input large_input">
+                            <input asp-for="Email" style="border:none;width:100%;outline:none;" placeholder="example@mail.com" />
+                        </div>
+                    </div>
+                    <div class="register_form_wrapper">
+                        <label>Name</label>
+                        <div class="register_form_input large_input">
+                            <input asp-for="Name" style="border:none;width:100%;outline:none;" placeholder="Your name" />
+                        </div>
+                    </div>
+                    <div class="register_form_wrapper">
+                        <label>Surname</label>
+                        <div class="register_form_input large_input">
+                            <input asp-for="Surname" style="border:none;width:100%;outline:none;" placeholder="Your lastname" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="register_form_step" id="step2" style="display:none;flex-direction:row;">
+                    <div class="register_form_wrapper">
+                        <label>Day</label>
+                        <div class="register_form_input small_input">
+                            <input id="day" placeholder="Day" asp-for="Day" type="number" min="1" max="31" style="border:none;width:100%;outline:none;" maxlength="2" />
+                        </div>
+                    </div>
+                    <div class="register_form_wrapper">
+                        <label>Month</label>
+                        <div class="register_form_input small_input">
+                            <input asp-for="Month" type="number" min="1" max="12" style="border:none;width:100%;outline:none;" maxlength="2" />
+                        </div>
+                    </div>
+                    <div class="register_form_wrapper">
+                        <label>Year</label>
+                        <div class="register_form_input small_input">
+                            <input asp-for="Year" type="number" min="1900" max="2025" style="border:none;width:100%;outline:none;" maxlength="4" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="register_form_step" id="step3" style="display:none;">
+                    <div class="register_form_wrapper">
+                        <label>Username</label>
+                        <input asp-for="Username" class="form-control" placeholder="Username" />
+                    </div>
+                    <div class="register_form_wrapper">
+                        <label>Create Password</label>
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+                    </div>
+                    <div class="register_form_wrapper">
+                        <label>Confirm Password</label>
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Password" />
+                    </div>
+                </div>
+
+                <div class="register_form_step" id="step4" style="display:none;">
+                    <p class="terms_service">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a ipsum non arcu iaculis elementum. Sed sem mauris, posuere eu vulputate et, facilisis id tellus. Nullam aliquam nisl semper lacus vestibulum, eu malesuada diam tempus. Proin risus nisi, sodales nec diam in, dictum cursus est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent semper turpis ipsum, pretium elementum leo ultricies id. Morbi id libero tincidunt, elementum neque nec, vulputate metus. Ut suscipit eu risus in cursus. Aliquam eget odio quam. Sed at tortor nisi. Vivamus augue ante, faucibus id sollicitudin in, sagittis vitae dui. Ut vitae dui vitae neque ornare egestas. Nulla lacinia ante sed purus eleifend consequat. Quisque hendrerit dui nec massa blandit, nec ultrices ipsum venenatis. Vivamus rhoncus rhoncus orci, quis facilisis ligula scelerisque at.
+                        Phasellus vel imperdiet nisl. Donec vitae dolor nulla. Nullam id congue tellus. Ut vel pharetra sem. Cras tempus ac purus sed ultrices. Suspendisse dui ligula, commodo nec ullamcorper at, sollicitudin ac sapien. Etiam venenatis mauris ac felis luctus, non molestie justo suscipit. Maecenas luctus, augue in porta luctus, ante nisl laoreet sem, vitae lacinia risus orci rutrum quam. Sed dolor urna, lobortis a fringilla ut, condimentum ac ante. Nullam luctus ac urna in rhoncus.
+                        Donec pharetra, quam at laoreet hendrerit, elit lorem laoreet nibh, et aliquet nunc mauris ut mi. Pellentesque urna dolor, venenatis vel eleifend id, fermentum at libero. Vestibulum venenatis tempus fringilla. Quisque sagittis, mi quis accumsan faucibus, felis nulla scelerisque orci, pretium pellentesque elit lectus vitae lacus. Maecenas rhoncus sollicitudin leo id lacinia. Nullam purus eros, imperdiet in quam sit amet, rhoncus cursus ipsum. Sed neque nunc, scelerisque vitae ornare at, aliquam id ante. Mauris rutrum ipsum at diam blandit, sit amet commodo quam consequat. Aliquam sit amet blandit neque. Praesent cursus molestie ipsum, a semper nibh luctus ac. Pellentesque hendrerit nisl vitae diam auctor, a commodo leo fringilla. Aliquam vel risus sed dui faucibus rutrum eu nec nisi.
+                    </p>
+                    <div class="register_form_checkbox">
+                        <input type="checkbox" id="" />
+                        <label>I Accept the terms of service</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="register_form_buttons">
+                <button type="button" class="register_button prev">Previous</button>
+                <button type="button" class="register_button next">Next</button>
+                <button type="button" class="register_button finish" style="display:none;">Finish</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+        $(function () {
+            let current = 0;
+            const steps = $(".register_form_step");
+            const $prevBtn = $(".prev");
+            const $nextBtn = $(".next");
+            const $finishBtn = $(".finish");
+            const indicators = $(".step-circle");
+
+            function updateProgress(index) {
+                indicators.each(function (i) {
+                    $(this).removeClass("step-completed step-active");
+                    if (i < index) {
+                        $(this).addClass("step-completed").text("✓");
+                    } else if (i === index) {
+                        $(this).addClass("step-active").text(i + 1);
+                    } else {
+                        $(this).text(i + 1); // futuros pasos
+                    }
+                });
+            }
+
+            function showStep(index) {
+                steps.hide().eq(index).show();
+
+                // Mostrar/ocultar botón "Anterior"
+                $prevBtn.prop("disabled", index === 0);
+
+                // Si es el último paso, mostrar "Finalizar" y ocultar "Siguiente"
+                if (index === steps.length - 1) {
+                    $nextBtn.hide();
+                    $finishBtn.show();
+                } else {
+                    $nextBtn.show();
+                    $finishBtn.hide();
+                }
+                updateProgress(index);
+
+
+            }
+
+            $nextBtn.click(function () {
+                if (current < steps.length - 1) {
+                    current++;
+                    showStep(current);
+                }
+            });
+
+            $prevBtn.click(function () {
+                if (current > 0) {
+                    current--;
+                    showStep(current);
+                }
+            });
+
+            $finishBtn.click(function () {
+                // Aquí va la lógica para enviar el formulario o lo que necesites
+                alert("Formulario finalizado");
+            });
+
+            showStep(current);
+        });
+        </script>
+}

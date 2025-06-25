@@ -1,0 +1,163 @@
+﻿*{
+    margin:0;
+    padding:0;
+}
+
+.register {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.register_form_container{
+    flex-grow:2;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    align-items:center;
+    justify-content:center;
+    margin:auto 0;
+}
+
+.register_img_container {
+    background: linear-gradient(to right, rgba(247,183,51,0.45), rgba(252,74,26,0.45)), url("/images/person_smiling2.jpg");
+    background-size: cover;
+    background-position: center;
+    width: 600px;
+    height: 100vh;
+    overflow: hidden;
+    clip-path: ellipse(100% 100% at 0% 50%);
+}
+
+.register_form_step {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.register_form_step label{
+    text-align:left;
+    font-weight:bold;
+}
+
+.register_form_input {
+    display: flex;
+    height: 40px;
+    padding-left: 10px;
+    border: #555 1px solid;
+    border-radius: 8px;
+    align-items: center;
+    overflow: hidden;
+}
+
+.large_input{
+    width:400px;
+}
+.small_input{
+    width:100px;
+}
+
+
+.register_form_progress {
+    display: flex;
+    width:400px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.register_form_progress_wrapper{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.step-circle {
+    border:2px solid #555;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register_form_progress_wrapper p{
+    font-weight:bold;
+}
+
+.line{
+    margin-top:20px;
+    width:40px;
+    height:2px;
+    background-color:black;
+}
+
+.register_form_buttons{
+    display:flex;
+    flex-direction:row;
+    gap:20px;
+    justify-content:space-evenly;
+}
+
+.register_button {
+    width: 180px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #E44E29;
+    border:none;
+    outline:none;
+    color:#fff;
+    font-size:18px;
+}
+
+.register_button:disabled{
+    opacity:0.85;
+}
+
+.terms_service {
+    width:400px;
+    border: #555 1px solid;
+    height: 200px;
+    overflow: auto;
+    padding: 5px 10px;
+}
+
+.step-completed {
+    font-weight:bold;
+    background-color: #E44E29;
+    color: white;
+    border-color: #e74c3c;
+    border: none;
+}
+
+.step-active {
+    background-color: peru;
+    color: white;
+    border:none;
+}
+
+.register_form_checkbox {
+    width:400px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.register_form_body {
+    display: flex;
+    flex-direction: column;
+    width:400px;
+    height: 250px;
+}
+
+.register_form_wrapper{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}

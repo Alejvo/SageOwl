@@ -1,0 +1,168 @@
+﻿*{
+    margin:0;
+    padding:0;
+}
+
+.body {
+}
+.login{
+    display:flex;
+    width:100vw;
+    flex-direction:row;
+    justify-content:space-between;
+}
+
+.login_img_container {
+    background: linear-gradient(to right, rgba(247,183,51,0.45), rgba(252,74,26,0.45)), url("/images/person_smiling1.jpg");
+    background-size: cover;
+    background-position: center;
+    width: 600px;
+    height: 100vh;
+    overflow: hidden;
+    clip-path: ellipse(100% 100% at 100% 50%);
+}
+
+.login_form{
+    flex-grow:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.login_form_title {
+    font-weight: bold;
+    font-size: 36px;
+    margin-bottom:40px;
+}
+
+.login_form_input {
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    width:400px;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.login_form_wrapper{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+.login_form_input input {
+    flex-grow: 2;
+    border: #555555 1px solid;
+    border-start-end-radius: 10px;
+    border-end-end-radius: 10px;
+    outline: none;
+    padding-left: 10px;
+}
+.login_form_input_img {
+    background-color: #E44E29;
+    width:40px;
+    height:40px;
+}
+
+.login_btn {
+    font-weight:bold;
+    font-size:20px;
+    background-color: #E44E29;
+    width:400px;
+    height:40px;
+    color:white;
+    border-radius:10px;
+    border:none;
+    margin:20px 0;
+}
+
+.login_info{
+    font-weight:bold;
+    display:flex;
+    flex-direction:row;
+    gap:10px;
+}
+
+.hypertext {
+    color: #23749C;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.login_forgot {
+    text-align: left;
+    width: 400px;
+    margin-top: 10px;
+}
+
+@media only screen and (max-width:600px) {
+
+    .login{
+        flex-direction:column-reverse;
+        gap:30px;
+    }
+    .login_img_container {
+        background: linear-gradient(to right, rgba(247,183,51,0.45), rgba(252,74,26,0.45)), url("/images/person_smiling1.jpg");
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 360px;
+        overflow: hidden;
+        border-radius:0 0 80px 80px;
+        clip-path:none;
+    }
+
+    .login_form{
+        width:100%;
+        flex-grow:1;
+    }
+
+    .login_form_input{
+        width:300px;
+    }
+
+    .login_btn{
+        width:300px;
+    }
+
+    .login_forgot{
+        width:300px;
+    }
+}
+
+@media only screen and (min-width:601px) and (max-width:1024px) {
+    .login {
+        flex-direction: column-reverse;
+        gap: 30px;
+    }
+
+    .login_img_container {
+        background: linear-gradient(to right, rgba(247,183,51,0.45), rgba(252,74,26,0.45)), url("/images/person_smiling1.jpg");
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 500px;
+        overflow: hidden;
+        border-radius: 0 0 80px 80px;
+        clip-path: none;
+    }
+
+    .login_form {
+        width: 100%;
+        flex-grow: 2;
+        margin-top:100px;
+    }
+
+    .login_form_input {
+        width: 600px;
+    }
+
+    .login_btn {
+        width: 600px;
+        height:60px;
+    }
+
+    .login_forgot {
+        width: 600px;
+    }
+}
