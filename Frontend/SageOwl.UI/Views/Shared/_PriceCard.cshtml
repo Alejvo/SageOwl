@@ -1,11 +1,22 @@
-﻿<div class="priceCard">
-    <p class="priceCard_title">Duo Plan</p>
+﻿@model SageOwl.UI.ViewModel.PlanViewModel
+
+<div class="priceCard">
+    <p class="priceCard_title">@Model.Title</p>
     <ul class="priceCard_list">
-        <li class="priceCard_item">Create and fill out forms</li>
-        <li class="priceCard_item">Create max 50 Teams</li>
+        @foreach(var item in Model.Characteristics)
+        {
+            <li class="priceCard_item">@item</li>
+        }
     </ul>
+
     <div class="priceCard_button_list">
-        <button class="priceCard_button">19,99$ Monthly</button>
-        <button class="priceCard_button">39,99$ Yearly</button>
+        @if (Model.MonthlyCost.HasValue)
+        {
+            <button class="priceCard_button">@Model.MonthlyCost.Value$ Monthly</button>
+        }
+        @if (Model.YearlyCost.HasValue)
+        {
+            <button class="priceCard_button">@Model.YearlyCost.Value$ Yearly</button>
+        }
     </div>
 </div>

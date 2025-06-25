@@ -1,5 +1,27 @@
-﻿@{
+﻿@using SageOwl.UI.ViewModel
+@{
     ViewData["Title"] = "Home";
+    var plan1 = new PlanViewModel
+    {
+        Title = "Free Plan",
+        Characteristics = new List<string>{"Create and fill out forms","Create max 5 teams","Create max 20 forms","Access to advices from teams"}
+    };
+
+    var plan2 = new PlanViewModel
+    {
+        Title = "Duo Plan",
+                Characteristics = new List<string> { "Create and fill out forms", "Create max 50 teams", "Create max 200 forms", "Access to advices from teams","Access to dashboard","Up to 10 associated accounts" },
+        MonthlyCost = 39.9m,
+        YearlyCost = 69.9m
+    };
+
+    var plan3 = new PlanViewModel
+    {
+        Title = "Business Plan",
+                Characteristics = new List<string> { "Create and fill out forms", "Create unlimited teams", "Create unlimited forms", "Access to advices from teams","Access to dashboard","Unlimited associated accounts" },
+        MonthlyCost = 59.9m,
+        YearlyCost = 99.9m
+    };
 }
 
 <div class="home">
@@ -12,9 +34,9 @@
     <img src="images/teaching.svg" width="480" height="480"/>
 </div>
     <div class="plans_list">
-        @await Html.PartialAsync("_PriceCard")
-        @await Html.PartialAsync("_PriceCard")
-        @await Html.PartialAsync("_PriceCard")
+        @await Html.PartialAsync("_PriceCard",plan1)
+        @await Html.PartialAsync("_PriceCard",plan2)
+        @await Html.PartialAsync("_PriceCard",plan3)
     </div>
     <div class="contact_section">
         <div class="contact_section_info">
