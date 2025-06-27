@@ -44,7 +44,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> Create(CreateUserCommand command)
     {
         var res = await _sender.Send(command);
-        return res.IsSuccess ? Created() : BadRequest();
+        return res.IsSuccess ? Created() : BadRequest(ModelState);
     }
 
     [HttpPut]

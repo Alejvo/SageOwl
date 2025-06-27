@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <form asp-action="Submit" method="post" id="register_form" style="flex-grow:2;box-sizing:border-box;margin:auto">
+        <form asp-action="Register" method="post" id="register_form" style="flex-grow:2;box-sizing:border-box;margin:auto">
             <div class="register_form_body">
                 <div class="register_form_step" id="step1">
                     <div class="register_form_wrapper">
@@ -108,7 +108,7 @@
             <div class="register_form_buttons">
                 <button type="button" class="register_button prev">Previous</button>
                 <button type="button" class="register_button next">Next</button>
-                <button type="button" class="register_button finish" style="display:none;">Finish</button>
+                <button type="submit" class="register_button finish" style="display:none;">Finish</button>
             </div>
         </form>
     </div>
@@ -170,11 +170,6 @@
                     current--;
                     showStep(current);
                 }
-            });
-
-            $finishBtn.click(function () {
-                // Aquí va la lógica para enviar el formulario o lo que necesites
-                alert("Formulario finalizado");
             });
 
             showStep(current);

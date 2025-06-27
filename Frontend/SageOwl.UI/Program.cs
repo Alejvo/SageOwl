@@ -1,7 +1,12 @@
+using SageOwl.UI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddHttpClient("Backend", client => client.BaseAddress = new Uri("https://localhost:7027/api/"));
 
 var app = builder.Build();
 
