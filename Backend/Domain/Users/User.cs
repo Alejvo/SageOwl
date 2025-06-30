@@ -1,4 +1,6 @@
-﻿namespace Domain.Users;
+﻿using Domain.Tokens;
+
+namespace Domain.Users;
 
 public class User
 {
@@ -10,6 +12,7 @@ public class User
     public string Username {  get; set; } = string.Empty;
     public DateTime Birthday { get; set; }
     public DateTime CreatedAt { get; set; }
+    public Token? Token { get; set; }
 
     public User()
     {

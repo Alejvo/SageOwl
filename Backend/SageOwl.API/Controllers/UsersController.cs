@@ -4,6 +4,7 @@ using Application.Users.GetById;
 using Application.Users.Update;
 using Domain.Users;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace SageOwl.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly ISender _sender;
@@ -41,6 +43,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> Create(CreateUserCommand command)
     {
         var res = await _sender.Send(command);

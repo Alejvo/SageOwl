@@ -1,4 +1,5 @@
-﻿using Domain.Users;
+﻿using Domain.Tokens;
+using Domain.Users;
 using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
-   
+    public DbSet<Token> Tokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

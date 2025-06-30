@@ -19,7 +19,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Password).HasConversion(
             pass => pass.Value,
             value => Password.Create(value)
-        ).HasMaxLength(20);
+        );
 
         builder.Property(u => u.Name).HasMaxLength(50);
 
@@ -27,5 +27,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         
         builder.Property(u => u.Surname).HasMaxLength(50);
 
+        builder.HasIndex(u => u.Email).IsUnique();
+
+        builder.HasIndex(u => u.Username).IsUnique();
     }
 }

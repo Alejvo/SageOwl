@@ -22,17 +22,6 @@ public class Password
         return new Password(value);
     }
 
-    public static Password Create(string plainText, IPasswordHasher hasher)
-    {
-        var hashed = hasher.Hash(plainText);
-        return new Password(hashed);
-    }
-
-    public bool Verify(string input, IPasswordHasher hasher)
-    {
-        return hasher.Verify(input, Value);
-    }
-
     public override string ToString() => Value;
 }
 
