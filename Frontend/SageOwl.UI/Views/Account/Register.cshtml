@@ -134,7 +134,7 @@
                     } else if (i === index) {
                         $(this).addClass("step-active").text(i + 1);
                     } else {
-                        $(this).text(i + 1); // futuros pasos
+                        $(this).text(i + 1);
                     }
                 });
             }
@@ -142,10 +142,8 @@
             function showStep(index) {
                 steps.hide().eq(index).show();
 
-                // Mostrar/ocultar botón "Anterior"
                 $prevBtn.prop("disabled", index === 0);
 
-                // Si es el último paso, mostrar "Finalizar" y ocultar "Siguiente"
                 if (index === steps.length - 1) {
                     $nextBtn.hide();
                     $finishBtn.show();

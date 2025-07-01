@@ -6,7 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IAccountService,AccountService>();
 builder.Services.AddHttpClient("Backend", client => client.BaseAddress = new Uri("https://localhost:7027/api/"));
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

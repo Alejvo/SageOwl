@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SageOwl.API.Controllers;
@@ -15,10 +16,10 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Login(string email,string password)
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody]LoginRequest request)
     {
-        var (accessToken,refreshToken) = await _authService.LoginAsync(email, password);
+        var (accessToken,refreshToken) = await _authService.LoginAsync(request.Email, request.Password);
 
         return Ok(new
         {

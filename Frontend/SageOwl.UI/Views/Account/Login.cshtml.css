@@ -41,8 +41,17 @@
     flex-direction: row;
     height: 40px;
     width:400px;
-    border-radius:10px;
     overflow:hidden;
+}
+
+.login_form_input_container{
+    width:100%;
+    border:1px solid #555;
+    height:100%;
+    border-radius:0 10px 10px 0 ;
+    display:flex;
+    align-items:center;
+    padding-left:10px;
 }
 
 .login_form_wrapper{
@@ -50,18 +59,12 @@
     flex-direction:column;
     gap:20px;
 }
-.login_form_input input {
-    flex-grow: 2;
-    border: #555555 1px solid;
-    border-start-end-radius: 10px;
-    border-end-end-radius: 10px;
-    outline: none;
-    padding-left: 10px;
-}
+
 .login_form_input_img {
     background-color: #E44E29;
     width:40px;
     height:40px;
+    border-radius:10px 0 0 10px;
 }
 
 .login_btn {

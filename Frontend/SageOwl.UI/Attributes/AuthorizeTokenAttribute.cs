@@ -7,15 +7,15 @@ public class AuthorizeTokenAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        var token = context.HttpContext.Session.GetString("JWToken");
+        var token = context.HttpContext.Request.Cookies["AccessToken"];
 
         if (string.IsNullOrEmpty(token))
         {
             context.Result = new RedirectToRouteResult(
                 new RouteValueDictionary
                 {
-                    {"Controller","Account" },
-                    {"action","Login" }
+                    { "Controller", "Account" },
+                    { "Action", "Login" }
                 });
         }
     }
