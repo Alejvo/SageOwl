@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Account</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SageOwl.UI.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="menuToggle">
+        <i id="menuIcon" class="fa-solid fa-bars"></i>
+    </button>
+    <div class="sideBar barFlex" id="sidebar">
+        <p class="sideBar_logo">SageOwl</p>
+        <div class="sideBar_menu">
+            @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel {IconCode = "fa-solid fa-house",Text = "Home"})
+            @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-file-lines", Text = "Forms" })
+            @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-users", Text = "Teams" })
+            @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-chart-line", Text = "Dashboard" })
+            @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-money-bill-wave", Text = "Premium Plans" })
+        </div>
+        <div class="sideBar_menu_bottom">
+            @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-gear", Text = "Settings" })
+            @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-right-from-bracket", Text = "Log Out" })
+        </div>
+    </div>
+    @RenderBody()
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
+<script>
+    $('#menuToggle').on('click', function () {
+        let $icon = $('#menuIcon');
+        let $btn = $('#menuToggle');
+        let $menu = $('#sidebar')
+
+    if ($icon.hasClass('fa-bars')) {
+        $icon.removeClass('fa-bars').addClass('fa-xmark');
+        $btn.removeClass('menuShadow');
+        $menu.addClass('barFlex').css('display', 'flex');
+    } else {
+        $icon.removeClass('fa-xmark').addClass('fa-bars');
+        $btn.addClass('menuShadow');
+        $menu.removeClass('barFlex').css('display', 'none');
+    }
+    });
+</script>

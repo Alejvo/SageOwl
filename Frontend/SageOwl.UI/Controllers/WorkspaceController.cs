@@ -3,7 +3,7 @@ using SageOwl.UI.Attributes;
 
 namespace SageOwl.UI.Controllers;
 
-[AuthorizeToken]
+//[AuthorizeToken]
 public class WorkspaceController : Controller
 {
     public IActionResult Index()
