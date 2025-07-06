@@ -161,3 +161,144 @@
     flex-direction:column;
     gap:4px;
 }
+
+@media only screen and (max-width:600px) {
+    .register {
+        flex-direction: column;
+        gap: 30px;
+        width:100%;
+        align-items:center;
+    }
+
+    .register_form_container{
+        margin-bottom:40px;
+        align-items:center;
+        width:100%;
+    }
+    .register_img_container {
+        background: linear-gradient(to right, rgba(247,183,51,0.45), rgba(252,74,26,0.45)), url("/images/person_smiling2.jpg");
+        background-size: cover;
+        background-position: center;
+        width: 100vw;
+        height: 225px;
+        overflow: hidden;
+        border-radius: 0 0 80px 80px;
+        clip-path: none;
+    }
+
+
+    .register_form_progress {
+        padding:0;
+        width:90%;
+    }
+
+    .register_form_body{
+       width:90%;
+       display:flex;
+       align-items:center;
+    }
+
+    .register_form_wrapper{
+        width:90%;
+    }
+    .large_input {
+        width:350px;
+    }
+
+    .small_input {
+        width: 100px;
+    }
+
+    .register_form_buttons{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .register_button{
+        width:350px;
+    }
+
+    .terms_service{
+        width:320px;
+    }
+
+    .register_form_checkbox{
+        width:90%;
+    }
+}
+
+@media only screen and (min-width:601px) and (max-width:1024px) {
+    .register {
+        flex-direction: column;
+        gap: 30px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .register_form_container {
+        margin-bottom: 40px;
+        align-items: center;
+        width: 100%;
+        justify-content:space-around;
+    }
+
+    .register_img_container {
+        background: linear-gradient(to right, rgba(247,183,51,0.45), rgba(252,74,26,0.45)), url("/images/person_smiling2.jpg");
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 0 0 80px 80px;
+        clip-path: none;
+    }
+
+    .register_form_progress {
+        padding: 0;
+        width: 100%;
+        justify-content:center;
+        gap:20px;
+    }
+
+    .register_form_step{
+        gap:30px;
+    }
+
+    .register_form_body {
+        width: 90%;
+        display: flex;
+        align-items: center;
+        height: 300px;
+    }
+
+    .register_form_wrapper {
+        width: 90%;
+    }
+
+    .register_form_input{
+        height:50px;
+    }
+
+    .large_input {
+        width: 600px;
+    }
+
+    .small_input {
+        width: 100px;
+    }
+
+    .register_form_buttons {
+        margin-top:20px;
+        flex-direction: row;
+    }
+
+    .register_button {
+        width: 350px;
+        height:60px;
+    }
+
+    .terms_service {
+        width: 90%;
+    }
+
+}
