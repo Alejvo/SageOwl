@@ -1,0 +1,17 @@
+﻿<button id="menuToggle">
+    <i id="menuIcon" class="fa-solid fa-bars"></i>
+</button>
+<div class="sideBar barFlex" id="sidebar">
+    <p class="sideBar_logo">SageOwl</p>
+    <div class="sideBar_menu">
+        @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-house", Text = "Home" })
+        @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-file-lines", Text = "Forms" })
+        @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-users", Text = "Teams" })
+        @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-chart-line", Text = "Dashboard" })
+        @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-money-bill-wave", Text = "Premium Plans" })
+    </div>
+    <div class="sideBar_menu_bottom">
+        @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-gear", Text = "Settings" })
+        @await Html.PartialAsync("_SidebarItem", new SideBardItemViewModel { IconCode = "fa-solid fa-right-from-bracket", Text = "Log Out" })
+    </div>
+</div>

@@ -1,0 +1,37 @@
+﻿*{
+    margin:0;
+    padding:0;
+}
+
+.form_card {
+    gap:10px;
+    width:450px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ECECEC;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 4px 10px 0px;
+}
+
+.form_card_title{
+    font-weight:bold;
+    font-size:24px;
+}
+form_card_deadline{
+    font-size:24px;
+}
+
+.form_card_button {
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #A74E47;
+    border-radius:10px;
+    border:none;
+    height:50px;
+    font-size:22px;
+    width:160px;
+}

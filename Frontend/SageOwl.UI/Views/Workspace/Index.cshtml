@@ -1,4 +1,61 @@
-﻿@{
+﻿@using SageOwl.UI.ViewModels
+@{
     ViewData["Title"] = "Workspace";
     Layout = "~/Views/Shared/_WorkspaceLayout.cshtml";
+}
+
+<div class="workspace">
+    @await Html.PartialAsync("~/Views/Shared/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
+    {
+        Title = "Recent Activity",
+        Url = Url.Action("Index", "Home")
+    })
+<div class="workspace_body">
+    <main class="workspace_body_main">
+        <div class="workspace_body_info">
+            <p>Advisements</p>
+            <a>see all</a>
+        </div>
+        <div class="workspace_body_main_announcements">
+            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
+            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
+        </div>
+        <div class="workspace_body_info">
+                <p>Forms</p>
+                <a>see all</a>
+        </div>
+        <div class="workspace_body_main_announcements">
+                @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
+                @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
+        </div>
+    </main>
+    <div class="workspace_body_right">
+        @await Html.PartialAsync("~/Views/Shared/Components/_Calendar.cshtml")
+        <div class="profile_list">
+            <div class="profile_list_header">
+                <p>Online Users</p>
+                <a>see all</a>
+            </div>
+            @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+                { Name = "John Doe",Username = "johndoe"})
+            @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+                { Name = "John Doe",Username = "johndoe"})
+            @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+                { Name = "John Doe",Username = "johndoe"})
+        </div>
+    </div>
+
+</div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".nav-icon", function () {
+            const targetUrl = $(this).data("url");
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+    </script>
 }

@@ -1,0 +1,111 @@
+﻿<div class="calendar-container">
+    <div class="calendar-header">
+        <button id="prev-month">&lt;</button>
+        <h2 id="calendar-title"></h2>
+        <button id="next-month">&gt;</button>
+    </div>
+    <div class="calendar-weekdays">
+        <div>Dom</div>
+        <div>Lun</div>
+        <div>Mar</div>
+        <div>Mié</div>
+        <div>Jue</div>
+        <div>Vie</div>
+        <div>Sáb</div>
+    </div>
+    <div class="calendar-days" id="calendar-days">
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(function () {
+        const monthNames = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+
+        let current = new Date(); // hoy
+        // Clon para navegar sin perder "hoy"
+        let viewDate = new Date(current.getFullYear(), current.getMonth(), 1);
+
+        renderCalendar(viewDate);
+
+        $('#prev-month').on('click', function () {
+            viewDate.setMonth(viewDate.getMonth() - 1);
+            renderCalendar(viewDate);
+        });
+
+        $('#next-month').on('click', function () {
+            viewDate.setMonth(viewDate.getMonth() + 1);
+            renderCalendar(viewDate);
+        });
+
+        function renderCalendar(date) {
+
+                const baseStyle = `
+        padding: 10px 5px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30px;
+        width: 30px;
+        margin: 2px;
+        box-sizing: border-box;
+        color: #333;
+    `;
+
+    const todayStyle = `
+        background-color: #EB8C8C;
+        font-weight: bold;
+    `;
+    const mutedStyle = `color: #ccc;`;
+
+            const year = date.getFullYear();
+            const month = date.getMonth();
+
+            const firstOfMonth = new Date(year, month, 1);
+
+            const startDow = firstOfMonth.getDay();
+
+            const lastDay = new Date(year, month + 1, 0).getDate(); 
+            const prevMonthLastDay = new Date(year, month, 0).getDate();
+
+            const $days = $('#calendar-days');
+            $days.empty(); 
+
+            $('#calendar-title').text(`${monthNames[month]} ${year}`);
+
+            const daysHtml = [];
+
+            // Fill in days from the previous month (muted)
+            for (let i = 0; i < startDow; i++) {
+                const dayNum = prevMonthLastDay - startDow + i + 1;
+                   daysHtml.push(`<div style="${baseStyle + mutedStyle}" class="day muted">${dayNum}</div>`);
+            }
+
+            // Fill in days of the current month
+            const isCurrentMonth = (current.getFullYear() === year && current.getMonth() === month);
+            for (let d = 1; d <= lastDay; d++) {
+                const isToday = isCurrentMonth && d === current.getDate();
+                daysHtml.push(`<div style="${baseStyle + (isToday ? todayStyle : '')}" class="day ${isToday ? 'today' : ''}" data-date="${year}-${pad(month+1)}-${pad(d)}">${d}</div>`);
+            }
+
+            // Fill in days from the next month (muted)
+            const totalCellsUsed = startDow + lastDay;
+            const remaining = (7 - (totalCellsUsed % 7)) % 7;
+            for (let i = 1; i <= remaining; i++) {
+                   daysHtml.push(`<div style="${baseStyle + mutedStyle}" class="day muted">${i}</div>`);
+            }
+
+            $days.append(daysHtml.join(''));
+        }
+
+        // Helper function to pad numbers with leading zeros
+        function pad(n) {
+            return n.toString().padStart(2, '0');
+        }
+    });
+</script>

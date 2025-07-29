@@ -34,9 +34,9 @@
     <img src="images/teaching.svg" width="480" height="480"/>
 </div>
     <div class="plans_list">
-        @await Html.PartialAsync("_PriceCard",plan1)
-        @await Html.PartialAsync("_PriceCard",plan2)
-        @await Html.PartialAsync("_PriceCard",plan3)
+        @await Html.PartialAsync("~/Views/Shared/Components/_PriceCard.cshtml", plan1)
+        @await Html.PartialAsync("~/Views/Shared/Components/_PriceCard.cshtml", plan2)
+        @await Html.PartialAsync("~/Views/Shared/Components/_PriceCard.cshtml", plan3)
     </div>
     <div class="contact_section">
         <div class="contact_section_info">

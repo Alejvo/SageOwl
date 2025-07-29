@@ -1,0 +1,12 @@
+﻿@using SageOwl.UI.ViewModels
+@model WorkspaceHeaderViewModel
+
+<div class="workspace_header">
+    <div class="workspace_header_container">
+        <i class="nav-icon fas fa-chevron-left" data-url="@Model.Url" style="cursor:pointer;"></i>
+        <p class="workspace_header_title">@Model.Title</p>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+        {Name = "John Doe",Username = "johndoe"})
+
+</div>

@@ -1,0 +1,32 @@
+﻿*{
+    margin:0;
+    padding:0;
+}
+
+.announcement {
+    background-color: #FFC0C0;
+    width: 100%;
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 2px solid #A74E47;
+}
+
+.announcement hr {
+    background-color: #A74E47;
+    height:2px;
+}
+
+.announcement_title{
+    font-weight:bold;
+    font-size:20px;
+}
+.announcement_content{
+    font-size:18px;
+    margin-top:5px;
+}
+
+.announcement_info {
+    font-size: 18px;
+    margin-top:5px;
+}
