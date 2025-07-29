@@ -5,7 +5,7 @@
 }
 
 <div class="workspace">
-    @await Html.PartialAsync("~/Views/Shared/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
+    @await Html.PartialAsync("~/Views/Workspace/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
     {
         Title = "Recent Activity",
         Url = Url.Action("Index", "Home")
@@ -29,21 +29,7 @@
                 @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
         </div>
     </main>
-    <div class="workspace_body_right">
-        @await Html.PartialAsync("~/Views/Shared/Components/_Calendar.cshtml")
-        <div class="profile_list">
-            <div class="profile_list_header">
-                <p>Online Users</p>
-                <a>see all</a>
-            </div>
-            @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
-                { Name = "John Doe",Username = "johndoe"})
-            @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
-                { Name = "John Doe",Username = "johndoe"})
-            @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
-                { Name = "John Doe",Username = "johndoe"})
-        </div>
-    </div>
+    @await Html.PartialAsync("~/Views/Workspace/Components/_SidePanel.cshtml")
 
 </div>
 </div>

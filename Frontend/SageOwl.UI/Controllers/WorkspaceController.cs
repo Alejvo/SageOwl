@@ -10,4 +10,24 @@ public class WorkspaceController : Controller
     {
         return View();
     }
+
+    public IActionResult Forms()
+    {
+        return View();
+    }
+
+    public IActionResult Announcements() 
+    {
+        return View();
+    }
+
+    public IActionResult Teams()
+    {
+        return View();
+    }
+
+    public IActionResult Qualifications()
+    {
+        return View();
+    }
 }

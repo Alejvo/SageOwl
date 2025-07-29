@@ -1,0 +1,15 @@
+﻿@using SageOwl.UI.ViewModels
+@model TeamCardViewModel
+
+<div class="team_card">
+    <div class="team_card_header">
+        <div class="team_card_image">
+            @Model.Initials
+        </div>
+        <p class="team_card_name">@Model.Name</p>
+    </div>
+    <div class="team_card_icons">
+        <i class="fas fa-bullhorn"></i>
+        <i class="fas fa-file-alt"></i>
+    </div>
+</div>

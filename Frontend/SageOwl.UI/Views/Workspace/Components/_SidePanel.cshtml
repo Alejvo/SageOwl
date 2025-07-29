@@ -1,0 +1,16 @@
+﻿@using SageOwl.UI.ViewModels
+<div class="workspace_side_panel">
+    @await Html.PartialAsync("~/Views/Shared/Components/_Calendar.cshtml")
+    <div class="profile_list">
+        <div class="profile_list_header">
+            <p>Online Users</p>
+            <a>see all</a>
+        </div>
+        @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+        { Name = "John Doe",Username = "johndoe"})
+        @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+                { Name = "John Doe",Username = "johndoe"})
+        @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+                { Name = "John Doe",Username = "johndoe"})
+    </div>
+</div>

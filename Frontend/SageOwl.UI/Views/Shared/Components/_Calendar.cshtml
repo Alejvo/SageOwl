@@ -5,13 +5,13 @@
         <button id="next-month">&gt;</button>
     </div>
     <div class="calendar-weekdays">
-        <div>Dom</div>
-        <div>Lun</div>
-        <div>Mar</div>
-        <div>Mié</div>
-        <div>Jue</div>
-        <div>Vie</div>
-        <div>Sáb</div>
+        <div>Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
     </div>
     <div class="calendar-days" id="calendar-days">
     </div>
@@ -25,6 +25,24 @@
             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         ];
+        const baseStyle = `
+        padding: 10px 5px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30px;
+        width: 30px;
+        margin: 2px;
+        box-sizing: border-box;
+        color: #333;
+        `;
+
+        const todayStyle = `
+        background-color: #EB8C8C;
+        font-weight: bold;
+        `;
+        const mutedStyle = `color: #ccc;`;
 
         let current = new Date(); // hoy
         // Clon para navegar sin perder "hoy"
@@ -43,26 +61,6 @@
         });
 
         function renderCalendar(date) {
-
-                const baseStyle = `
-        padding: 10px 5px;
-        border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 30px;
-        width: 30px;
-        margin: 2px;
-        box-sizing: border-box;
-        color: #333;
-    `;
-
-    const todayStyle = `
-        background-color: #EB8C8C;
-        font-weight: bold;
-    `;
-    const mutedStyle = `color: #ccc;`;
-
             const year = date.getFullYear();
             const month = date.getMonth();
 

@@ -1,0 +1,36 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+}
+
+.workspace_teams {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #F4F4F6;
+    padding: 0 16px;
+}
+
+.workspace_teams_body {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+    .workspace_teams_body::-webkit-scrollbar {
+        display: none; /*Google,Safari*/
+    }
+
+.workspace_teams_main {
+    margin-top:20px;
+    width: 100%;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-content: flex-start;
+}

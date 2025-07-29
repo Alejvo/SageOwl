@@ -1,0 +1,45 @@
+﻿@using SageOwl.UI.ViewModels
+@{
+    ViewData["Title"] = "My Teams";
+    Layout = "~/Views/Shared/_WorkspaceLayout.cshtml";
+}
+
+<div class="workspace_teams">
+    @await Html.PartialAsync("~/Views/Workspace/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
+    {
+        Title = "My Teams",
+        Url = Url.Action("Index", "Workspace")
+        })
+    <div class="workspace_teams_body">
+        <main class="workspace_teams_main">
+            @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
+            {
+                Name = "Math 8th Grade",
+                Initials = "Ma"
+            })
+            @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
+            {
+                Name = "Ethics 8th Grade",
+                Initials = "Et"
+            })
+            @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
+            {
+                Name = "English 8th Grade",
+                Initials = "En"
+            })
+        </main>
+        @await Html.PartialAsync("~/Views/Workspace/Components/_SidePanel.cshtml")
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".nav-icon", function () {
+            const targetUrl = $(this).data("url");
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+    </script>
+}
