@@ -1,11 +1,10 @@
-﻿@using SageOwl.UI.ViewModels
-@{
+﻿@{
     ViewData["Title"] = "My Teams";
     Layout = "~/Views/Shared/_WorkspaceLayout.cshtml";
 }
 
 <div class="workspace_teams">
-    @await Html.PartialAsync("~/Views/Workspace/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
+    @await Html.PartialAsync("~/Views/Shared/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
     {
         Title = "My Teams",
         Url = Url.Action("Index", "Workspace")
@@ -28,7 +27,7 @@
                 Initials = "En"
             })
         </main>
-        @await Html.PartialAsync("~/Views/Workspace/Components/_SidePanel.cshtml")
+        @await Html.PartialAsync("~/Views/Shared/Components/_SidePanel.cshtml")
     </div>
 </div>
 

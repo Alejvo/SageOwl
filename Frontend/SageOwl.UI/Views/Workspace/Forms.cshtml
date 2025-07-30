@@ -1,19 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Announcements";
+    ViewData["Title"] = "My Teams";
     Layout = "~/Views/Shared/_WorkspaceLayout.cshtml";
 }
 
-<div class="workspace_announcements">
+<div class="workspace_forms">
     @await Html.PartialAsync("~/Views/Shared/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
-        {
-        Title = "Announcements",
+    {
+        Title = "Forms",
         Url = Url.Action("Index", "Workspace")
         })
-    <div class="workspace_announcements_body">
-        <main class="workspace_announcements_main">
-            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
-            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
-            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
+    <div class="workspace_forms_body">
+        <main class="workspace_forms_main">
+            @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
+            @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
         </main>
         @await Html.PartialAsync("~/Views/Shared/Components/_SidePanel.cshtml")
     </div>
