@@ -32,4 +32,11 @@ public class TeamController : Controller
         ViewBag.TeamId = teamId;
         return View();
     }
+
+    [HttpGet("announcements")]
+    public IActionResult Announcements(string teamId)
+    {
+        ViewBag.TeamId = teamId;
+        return View();
+    }
 }
