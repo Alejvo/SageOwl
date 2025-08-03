@@ -1,5 +1,30 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewBag.Title = "Team Forms";
+    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
+}
+
+<div class="team_forms">
+    @await Html.PartialAsync("~/Views/Shared/Components/_WorkspaceHeader.cshtml",
+    new WorkspaceHeaderViewModel { Title = "Team Description", Url = Url.Action("Teams", "Workspace") })
+    <div class="team_forms_body">
+        <main class="team_forms_main">
+            @await Html.PartialAsync("~/Views/Shared/Components/_TeamNavigation.cshtml")
+            <div class="team_forms_main_container">
+                @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
+            </div>
+        </main>
+        @await Html.PartialAsync("~/Views/Shared/Components/_SidePanel.cshtml")
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".nav-icon", function () {
+            const targetUrl = $(this).data("url");
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+    </script>
 }
