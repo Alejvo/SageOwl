@@ -1,0 +1,25 @@
+﻿*{
+    padding:0;
+    margin:0;
+}
+
+.team_navigation{
+    display:flex;
+    flex-direction:row;
+    gap:40px;
+}
+
+.team_navigation_item{
+    font-weight:bold;
+    font-size:20px;
+    text-decoration:none;
+    color:#000;
+}
+
+.team_navigation_item:hover {
+    cursor: pointer;
+    color: #6D7399;
+}
+.team_navigation_item:active {
+    color: #6D7399;
+}
