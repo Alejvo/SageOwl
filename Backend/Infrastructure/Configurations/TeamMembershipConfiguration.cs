@@ -19,7 +19,8 @@ public class TeamMembershipConfiguration : IEntityTypeConfiguration<TeamMembersh
 
         builder.HasOne(t => t.Team)
             .WithMany(t => t.Members)
-            .HasForeignKey(t => t.TeamId);
+            .HasForeignKey(t => t.TeamId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(t => t.Role)
             .HasConversion(

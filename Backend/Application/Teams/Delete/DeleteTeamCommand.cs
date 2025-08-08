@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Abstractions;
 
-namespace Application.Teams.Delete
-{
-    internal class DeleteTeamCommand
-    {
-    }
-}
+namespace Application.Teams.Delete;
+
+public record DeleteTeamCommand(Guid TeamId):ICommand;
+

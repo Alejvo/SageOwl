@@ -19,6 +19,12 @@ public class TeamRepository : ITeamRepository
         return await _dbContext.SaveChangesAsync() > 0;
     }
 
+    public async Task<bool> DeleteTeam(Team team)
+    {
+        _dbContext.Teams.Remove(team);
+        return await _dbContext.SaveChangesAsync() > 0;
+    }
+
     public async Task<Team?> GetTeamById(Guid id)
     {
         return await _dbContext.Teams
