@@ -1,4 +1,5 @@
-﻿using Domain.Tokens;
+﻿using Domain.Teams;
+using Domain.Tokens;
 using Domain.Users;
 using Infrastructure.Contexts;
 using Infrastructure.PasswordHasher;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository,UserRepository>();
         services.AddScoped<IPasswordHasher,BCryptPasswordHasher>();
         services.AddScoped<ITokenRepository,TokenRepository>();
+        services.AddScoped<ITeamRepository,TeamRepository>();
         return services;
     }
 }

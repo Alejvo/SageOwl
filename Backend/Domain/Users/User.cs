@@ -1,4 +1,5 @@
-﻿using Domain.Tokens;
+﻿using Domain.Teams;
+using Domain.Tokens;
 
 namespace Domain.Users;
 
@@ -13,6 +14,7 @@ public class User
     public DateTime Birthday { get; set; }
     public DateTime CreatedAt { get; set; }
     public Token? Token { get; set; }
+    public ICollection<TeamMembership> UserTeams { get; set; } = new List<TeamMembership>();
 
     public User()
     {
