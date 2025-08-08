@@ -27,9 +27,11 @@ public class Team
 
         Name = newName;
     }
-
     public void AddMember(Guid userId, TeamRole role)
     {
+        if (_members.Any(m => m.UserId == userId))
+            return;
+
         _members.Add(TeamMembership.Create(userId, Id, role));
     }
 

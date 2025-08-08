@@ -34,7 +34,10 @@ public class TeamRepository : ITeamRepository
 
     public async Task<bool> UpdateTeam(Team team)
     {
-        _dbContext.Teams.Update(team);
+        if (_dbContext.Entry(team).State == EntityState.Detached)
+        {
+            _dbContext.Teams.Update(team);
+        }
         return await _dbContext.SaveChangesAsync() > 0;
     }
 
