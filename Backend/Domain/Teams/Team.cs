@@ -1,4 +1,6 @@
-﻿namespace Domain.Teams;
+﻿using Domain.Forms;
+
+namespace Domain.Teams;
 
 public class Team
 {
@@ -8,6 +10,9 @@ public class Team
 
     private readonly List<TeamMembership> _members = new();
     public IReadOnlyCollection<TeamMembership> Members => _members.AsReadOnly();
+
+    private readonly List<Form> _forms = new();
+    public IReadOnlyCollection<Form> Forms => _forms.AsReadOnly();
 
     private Team(Guid id, string name,string description)
     {

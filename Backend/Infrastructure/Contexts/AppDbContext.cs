@@ -1,7 +1,10 @@
-﻿using Domain.Teams;
+﻿using Domain.Forms;
+using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
 using Infrastructure.Configurations;
+using Infrastructure.Configurations.Forms;
+using Infrastructure.Configurations.Teams;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Contexts;
@@ -16,13 +19,22 @@ public class AppDbContext : DbContext
     public DbSet<Token> Tokens { get; set; }
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMembership> TeamMembership { get; set; }
+    public DbSet<Form> Forms { get; set; }
+    public DbSet<Question> Questions { get; set; }
+    public DbSet<Option> Options { get; set; }
+    public DbSet<Answer> Answers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new TokenConfiguration());
+        modelBuilder.ApplyConfiguration(new AnswerConfiguration());
+        modelBuilder.ApplyConfiguration(new FormConfiguration());
+        modelBuilder.ApplyConfiguration(new OptionConfiguration());
+        modelBuilder.ApplyConfiguration(new QuestionConfiguration());
         modelBuilder.ApplyConfiguration(new TeamConfiguration());
         modelBuilder.ApplyConfiguration(new TeamMembershipConfiguration());
+        modelBuilder.ApplyConfiguration(new TokenConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        //modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }
