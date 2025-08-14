@@ -1,4 +1,5 @@
-﻿using Domain.Forms;
+﻿using Domain.Announcements;
+using Domain.Forms;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenRepository,TokenRepository>();
         services.AddScoped<ITeamRepository,TeamRepository>();
         services.AddScoped<IFormRepository,FormRepository>();
+        services.AddScoped<IAnnouncementRepository,AnnouncementRepository>();
         return services;
     }
 }
