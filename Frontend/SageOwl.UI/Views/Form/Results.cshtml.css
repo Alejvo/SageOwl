@@ -1,0 +1,46 @@
+﻿*{
+    padding:0;
+    margin:0;
+}
+
+.form_results{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.results_table {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.results_table tr{
+    height:40px;
+}
+
+    .results_table tr td {
+        padding: 0 8px;
+    }
+
+.results_table tr th{
+    padding:0 8px;
+}
+
+.results_table tbody tr:nth-child(even) {
+    background-color: #E3E3E3; /* filas pares */
+}
+.results_table tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* filas impares */
+}
+
+
+.results_table th {
+    background-color: #E3E3E3;
+}
+
+.unanswered{
+    width:500px;
+}
+
+.answered {
+    max-width: 700px;
+}

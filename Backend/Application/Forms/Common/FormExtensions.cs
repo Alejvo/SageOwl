@@ -16,6 +16,7 @@ public static class FormExtensions
             (
                 fq.Title,
                 fq.Description,
+                fq.QuestionType.ToString(),
                 fq.Options.Select(fo => new FormOptionResponse(
                     fo.Value,
                     fo.IsCorrect)).ToList()

@@ -4,8 +4,8 @@ namespace Domain.Forms;
 
 public class QuestionType
 {
-    public static readonly QuestionType OpenQuestion = new("Open");
-    public static readonly QuestionType MultipleChoice = new("Closed");
+    public static readonly QuestionType OpenedEnded = new("OPENED_ENDED");
+    public static readonly QuestionType MultipleChoice = new("MULTIPLE_CHOICE");
 
     public string Value { get; }
     private QuestionType() { }
@@ -18,8 +18,8 @@ public class QuestionType
     {
         return value switch
         {
-            "Open" => OpenQuestion,
-            "Closed" => MultipleChoice,
+            "OPENED_ENDED" => OpenedEnded,
+            "MULTIPLE_CHOICE" => MultipleChoice,
             _ => throw new ArgumentException("Invalid Role")
         };
     }

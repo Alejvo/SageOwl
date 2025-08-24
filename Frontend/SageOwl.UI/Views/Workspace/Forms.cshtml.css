@@ -3,28 +3,10 @@
     margin: 0;
 }
 
-.workspace_forms {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background-color: #F4F4F6;
-    padding: 0 16px;
-}
-
-.workspace_forms_body {
-    display: flex;
-    flex-direction: row;
-    gap: 40px;
-    overflow: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-}
-
-    .workspace_forms_body::-webkit-scrollbar {
-        display: none; /*Google,Safari*/
-    }
 
 .workspace_forms_main {
-    width: 100%;
-    height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
 }

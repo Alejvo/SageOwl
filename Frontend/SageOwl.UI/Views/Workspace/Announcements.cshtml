@@ -3,21 +3,14 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-<div class="workspace_announcements">
-    @await Html.PartialAsync("~/Views/Shared/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
-        {
-        Title = "Announcements",
-        Url = Url.Action("Index", "Workspace")
-        })
-    <div class="workspace_announcements_body">
-        <main class="workspace_announcements_main">
-            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
-            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
-            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
-        </main>
-        @await Html.PartialAsync("~/Views/Shared/Components/_SidePanel.cshtml")
-    </div>
-</div>
+
+<main class="workspace_announcements_main">
+    @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
+</main>
+
+
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

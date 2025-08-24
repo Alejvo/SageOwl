@@ -1,4 +1,37 @@
-﻿.workspace_container{
-    display:flex;
-    flex-direction:row;
+﻿* {
+    padding: 0;
+    margin: 0;
 }
+
+.workspace {
+    display: flex;
+    flex-direction: row;
+    background-color: #F4F4F6;
+}
+
+.workspace_body {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "header header header"
+        "main main sidebar";
+    width: 100%;
+    min-height: 100vh;
+    padding: 0 16px;
+    gap: 12px;
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    height:100vh;
+    padding-bottom:40px;
+}
+
+.workspace_body::-webkit-scrollbar {
+    display: none; /*Google,Safari*/
+}
+
+.workspace_main{
+    grid-area:main;
+}
+

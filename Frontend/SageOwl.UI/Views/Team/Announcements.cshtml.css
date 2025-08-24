@@ -3,34 +3,11 @@
     margin: 0;
 }
 
-.team_announcements {
+.team_announcements_main {
     display: flex;
     flex-direction: column;
     width: 100%;
     background-color: #F4F4F6;
-    padding: 0 16px;
-}
-
-.team_announcements_body {
-    display: flex;
-    flex-direction: row;
-    gap: 40px;
-    overflow: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-}
-
-    .team_announcements_body::-webkit-scrollbar {
-        display: none; /*Google,Safari*/
-    }
-
-.team_announcements_main {
-    width: 100%;
-    height: calc(100vh - 60px);
-    padding: 0 20px;
-    gap: 20px;
-    display: flex;
-    flex-direction: column;
 }
 
 .team_announcements_main_container{

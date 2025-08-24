@@ -3,19 +3,14 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-<div class="team_forms">
-    @await Html.PartialAsync("~/Views/Shared/Components/_WorkspaceHeader.cshtml",
-    new WorkspaceHeaderViewModel { Title = "Team Description", Url = Url.Action("Teams", "Workspace") })
-    <div class="team_forms_body">
+
         <main class="team_forms_main">
             @await Html.PartialAsync("~/Views/Shared/Components/_TeamNavigation.cshtml")
             <div class="team_forms_main_container">
                 @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
             </div>
         </main>
-        @await Html.PartialAsync("~/Views/Shared/Components/_SidePanel.cshtml")
-    </div>
-</div>
+
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

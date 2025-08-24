@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Update Form";
+    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
+
+}
+<main class="form_update_main">
+    <div class="form_update_main_container">
+        <div class="form_update_team">
+            <label>Team</label>
+            <select>
+                <option>Math 8th Grade</option>
+                <option>Math 7th Grade</option>
+                <option>Math 6th Grade</option>
+            </select>
+        </div>
+        <div class="form_update_card_container" id="form_container">
+            <div class="form_update_card">
+                <div class="form_update_choice">
+                    <div class="form_update_choice_Body">
+                        <input type="radio" />
+                        <label>Multiple Choice</label>
+                    </div>
+                    <div class="form_update_choice_Body">
+                        <input type="radio" />
+                        <label>Opened Ended</label>
+                    </div>
+                </div>
+
+                <input placeholder="Question Title" />
+                <input placeholder="Question Description" />
+
+                <div class="form_update_option_list optionsContainer"></div>
+                <a href="#" class="add_option">Add Option</a>
+            </div>
+
+        </div>
+
+        <button class="add_button" id="add_question">Add Question</button>
+    </div>
+</main>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".nav-icon", function () {
+            const targetUrl = $(this).data("url");
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+
+        let optionIndex = 0;
+        let questionIndex = 0;
+
+                $(document).on("click", ".add_option", function (e) {
+            e.preventDefault();
+
+            const $card = $(this).closest(".form_update_card");
+            const $optionsContainer = $card.find(".optionsContainer");
+
+            const optionIndex = $optionsContainer.children().length;
+            const optionLabel = String.fromCharCode(65 + optionIndex);
+
+            const newOption = `
+                    <div class="form_option" style="display:flex;flex-direction:row;align-items:center;gap:10px;">
+                    <label style="font-weight:bold;font-size:16px;">${optionLabel}.</label>
+                    <input type="text"
+                           style="width:80%;border:none;height:40px;padding-left:10px;outline:none;"
+                           name="Questions[${questionIndex}].Options[${optionIndex}].Description"
+                           placeholder="Option Description"
+                           />
+                </div>`;
+
+            $optionsContainer.append(newOption);
+        });
+
+        $("#add_question").on("click", function (e) {
+            e.preventDefault();
+
+            questionIndex++;
+            const $formCard = $(".form_update_card").first();
+            const $newCard = $formCard.clone(true);
+
+            $newCard.find("input[type=text]").val("");
+            $newCard.find(".optionsContainer").empty();
+
+            $newCard.find("input, select, textarea").each(function () {
+                let nameAttr = $(this).attr("name");
+                if (nameAttr) {
+                    let newName = nameAttr.replace(/\[\d+\]/, `[${questionIndex}]`);
+                    $(this).attr("name", newName);
+                }
+            });
+
+            $("#form_container").append($newCard);
+        });
+    </script>
+}

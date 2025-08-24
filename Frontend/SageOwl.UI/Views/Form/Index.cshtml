@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = $"Form - {ViewBag.FormId}";
+    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
+
+    var openedForm = new FormViewModel
+    {
+        Title = "Equations II Form",
+        Questions = new List<QuestionViewModel>
+        {
+            new QuestionViewModel
+            {
+                Title = "Which is the capital of France",
+                Description = "Select the right option",
+                Options = new List<OptionViewModel>
+                {
+                    new OptionViewModel
+                    {
+                        Value = "Paris",
+                        IsCorrect = true
+                    },
+                    new OptionViewModel
+                    {
+                        Value = "Barcelona",
+                        IsCorrect = false
+                    },
+                },
+                Type = QuestionType.MULTIPLE_CHOICE
+            },
+            new QuestionViewModel
+            {
+                Title = "Which is the capital of France",
+                Description = "Select the right option",
+                Type = QuestionType.OPENED_ENDED
+            }
+        }
+    };
+}
+
+        <main class="form_main">
+            <div class="form_main_container">
+                <div class="form_questions">
+                    @foreach (var question in openedForm.Questions)
+                    {
+                        @await Html.PartialAsync("~/Views/Shared/Components/_Question.cshtml", question)
+                    }
+                    <button type="submit" class="form_submit">Submit</button>
+
+                </div>
+            </div>
+        </main>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".nav-icon", function () {
+            const targetUrl = $(this).data("url");
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+    </script>
+}

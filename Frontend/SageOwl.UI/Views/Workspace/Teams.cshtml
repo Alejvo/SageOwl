@@ -3,33 +3,24 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-<div class="workspace_teams">
-    @await Html.PartialAsync("~/Views/Shared/Components/_WorkspaceHeader.cshtml", new WorkspaceHeaderViewModel
+<main class="workspace_teams_main">
+    @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
     {
-        Title = "My Teams",
-        Url = Url.Action("Index", "Workspace")
-        })
-    <div class="workspace_teams_body">
-        <main class="workspace_teams_main">
-            @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
-            {
-                Name = "Math 8th Grade",
-                Initials = "Ma"
-            })
-            @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
-            {
-                Name = "Ethics 8th Grade",
-                Initials = "Et"
-            })
-            @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
-            {
-                Name = "English 8th Grade",
-                Initials = "En"
-            })
-        </main>
-        @await Html.PartialAsync("~/Views/Shared/Components/_SidePanel.cshtml")
-    </div>
-</div>
+        Name = "Math 8th Grade",
+        Initials = "Ma"
+    })
+    @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
+    {
+        Name = "Ethics 8th Grade",
+        Initials = "Et"
+    })
+    @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
+    {
+        Name = "English 8th Grade",
+        Initials = "En"
+    })
+</main>
+
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -1,0 +1,30 @@
+﻿@model QuestionViewModel
+@{
+    var index = 0;
+}
+
+<div class="question">
+    <p class="question_title">@Model.Title</p>
+    <p class="question_description">@Model.Description</p>
+    <div class="option_list">
+        @if(Model.Type == QuestionType.MULTIPLE_CHOICE)
+        {
+            @foreach (var option in Model.Options)
+            {
+                var letter = (char)('A' + index);
+
+                <div class="option_body">
+                    <label class="option_letter">@letter.</label>
+                    <input type="radio" value="@option.Value" name="question_option"/>
+                </div>
+
+                index++;
+            }
+        }
+        @if (Model.Type == QuestionType.OPENED_ENDED)
+        {
+            <textarea class="question_response" placeholder="Write your answer..." rows="4"></textarea>
+        }
+
+    </div>
+</div>
