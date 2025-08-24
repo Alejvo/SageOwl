@@ -9,6 +9,8 @@ public class TeamController : Controller
     public IActionResult MainPage(string teamId)
     {
         ViewBag.TeamId = teamId;
+        ViewData["HeaderTitle"] = "Teams";
+        ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
         return View();
     }
 
@@ -16,6 +18,8 @@ public class TeamController : Controller
     public IActionResult Qualifications(string teamId)
     {
         ViewBag.TeamId = teamId;
+        ViewData["HeaderTitle"] = "Team Qualifications";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team");
         return View();
     }
 
@@ -23,6 +27,8 @@ public class TeamController : Controller
     public IActionResult Description(string teamId)
     {
         ViewBag.TeamId = teamId;
+        ViewData["HeaderTitle"] = "Team Description";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team");
         return View();
     }
 
@@ -30,6 +36,8 @@ public class TeamController : Controller
     public IActionResult Forms(string teamId)
     {
         ViewBag.TeamId = teamId;
+        ViewData["HeaderTitle"] = "Team Forms";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team");
         return View();
     }
 
@@ -37,6 +45,8 @@ public class TeamController : Controller
     public IActionResult Announcements(string teamId)
     {
         ViewBag.TeamId = teamId;
+        ViewData["HeaderTitle"] = "Team Announcements";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team");
         return View();
     }
 }

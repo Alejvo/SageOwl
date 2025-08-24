@@ -26,6 +26,7 @@ public class AccountController : Controller
         if (ModelState.IsValid)
         {
             await _accountService.Login(login);
+
             return RedirectToAction("Index", "Workspace");
         }
         return View(login);

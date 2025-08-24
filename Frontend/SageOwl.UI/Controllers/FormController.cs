@@ -8,12 +8,16 @@ public class FormController : Controller
     public IActionResult Index(string formId)
     {
         ViewBag.FormId = formId;
+        ViewData["HeaderTitle"] = "Form";
+        ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
         return View();
     }
 
     [Route("form/create")]
     public IActionResult Create()
     {
+        ViewData["HeaderTitle"] = "Create Form";
+        ViewData["HeaderUrl"] = Url.Action("Index", "Workspace"); 
         return View();
     }
 
@@ -21,6 +25,8 @@ public class FormController : Controller
     public IActionResult Update(string formId)
     {
         ViewBag.FormId = formId;
+        ViewData["HeaderTitle"] = "Update Form";
+        ViewData["HeaderUrl"] = Url.Action("Index", "Workspace"); 
         return View();
     }
 
@@ -28,6 +34,8 @@ public class FormController : Controller
     public IActionResult Results(string formId)
     {
         ViewBag.FormId = formId;
+        ViewData["HeaderTitle"] = "Results";
+        ViewData["HeaderUrl"] = Url.Action("Index", "Workspace"); 
         return View();
     }
 }

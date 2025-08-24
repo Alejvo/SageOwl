@@ -6,6 +6,5 @@
         <p class="workspace_header_title">@Model.Title</p>
     </div>
     @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
-        {Name = "John Doe",Username = "johndoe"})
-
+    { Name = $"{@Model.ProfileInfo.Name}", Username = $"{@Model.ProfileInfo.Username}"})
 </div>
