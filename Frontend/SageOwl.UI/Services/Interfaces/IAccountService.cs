@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using SageOwl.UI.Models;
+﻿using SageOwl.UI.Models;
 using SageOwl.UI.ViewModel;
 
-namespace SageOwl.UI.Services;
+namespace SageOwl.UI.Services.Interfaces;
 
 public interface IAccountService
 {

@@ -33,9 +33,11 @@ public class TeamRepository : ITeamRepository
             .FirstOrDefaultAsync(team => team.Id == id);
     }
 
-    public async Task<List<Team>> GetTeams()
+    public async Task<List<Team>> GetTeamsByUserId(Guid userId)
     {
-        return await _dbContext.Teams.ToListAsync();
+        return await _dbContext.Teams
+            .Where(t =>t.Members.Any(m => m.UserId == userId))
+            .ToListAsync();
     }
 
     public async Task<bool> UpdateTeam(Team team)

@@ -3,8 +3,9 @@ using SageOwl.UI.Models;
 using SageOwl.UI.ViewModel;
 using System.Text.Json;
 using System.Text;
+using SageOwl.UI.Services.Interfaces;
 
-namespace SageOwl.UI.Services;
+namespace SageOwl.UI.Services.Implementations;
 
 public class AccountService : IAccountService
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
-using SageOwl.UI.Services;
+using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModel;
 
 namespace SageOwl.UI.Controllers;

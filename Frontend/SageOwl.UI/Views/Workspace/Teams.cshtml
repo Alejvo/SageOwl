@@ -2,23 +2,18 @@
     ViewData["Title"] = "My Teams";
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
+@model List<TeamCardViewModel>
 
 <main class="workspace_teams_main">
-    @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
+
+    @foreach(var team in Model)
     {
-        Name = "Math 8th Grade",
-        Initials = "Ma"
-    })
-    @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
-    {
-        Name = "Ethics 8th Grade",
-        Initials = "Et"
-    })
-    @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
-    {
-        Name = "English 8th Grade",
-        Initials = "En"
-    })
+        @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
+        {
+            Name = team.Name,
+            Initials = team.Initials
+        })
+    }
 </main>
 
 

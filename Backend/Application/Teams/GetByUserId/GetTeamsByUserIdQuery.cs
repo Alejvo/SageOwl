@@ -1,8 +1,8 @@
 ﻿using Application.Abstractions;
 using Application.Teams.Common;
 
-namespace Application.Teams.GetAll;
+namespace Application.Teams.GetByUserId;
 
-public record GetTeamsQuery(
-    
+public record GetTeamsByUserIdQuery(
+    Guid UserId
 ):IQuery<List<TeamResponse>>;

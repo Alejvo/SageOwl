@@ -1,10 +1,11 @@
 ﻿using SageOwl.UI.Models;
+using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
 
-namespace SageOwl.UI.Services;
+namespace SageOwl.UI.Services.Implementations;
 
 public class UserService : IUserService
 {

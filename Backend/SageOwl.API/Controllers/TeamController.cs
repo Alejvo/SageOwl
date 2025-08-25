@@ -1,5 +1,6 @@
 ﻿using Application.Teams.Create;
 using Application.Teams.GetById;
+using Application.Teams.GetByUserId;
 using Application.Teams.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,10 +20,11 @@ public class TeamController : ControllerBase
         _sender = sender;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("userId/{userId:guid}")]
+    public async Task<IActionResult> GetByUserId([FromRoute] Guid userId)
     {
-        return Ok();
+        var res = await _sender.Send(new GetTeamsByUserIdQuery(userId));
+        return res.IsSuccess ? Ok(res.Value) : BadRequest();
     }
 
     [HttpGet("id/{id:guid}")]

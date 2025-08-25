@@ -1,7 +1,7 @@
 ﻿using SageOwl.UI.Models;
 using SageOwl.UI.ViewModel;
 
-namespace SageOwl.UI.Services;
+namespace SageOwl.UI.Services.Interfaces;
 
 public interface IUserService
 {
