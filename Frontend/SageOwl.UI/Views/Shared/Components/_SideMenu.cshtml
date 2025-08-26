@@ -2,17 +2,17 @@
 <button id="menuToggle">
     <i id="menuIcon" class="fa-solid fa-bars"></i>
 </button>
-<div class="sideBar barFlex" id="sidebar">
+<div class="sideBar" id="sidebar">
     <p class="sideBar_logo">SageOwl</p>
     <div class="sideBar_menu">
-        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-house", Text = "Home" })
-        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-file-lines", Text = "Forms" })
-        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-users", Text = "Teams" })
-        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-chart-line", Text = "Dashboard" })
-        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-money-bill-wave", Text = "Premium Plans" })
+        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-house", Text = "Home", Url = Url.Action("Index", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-file-lines", Text = "Forms", Url = Url.Action("Forms", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-users", Text = "Teams", Url = Url.Action("Teams", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-chart-line", Text = "Dashboard", Url = Url.Action("Index", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-money-bill-wave", Text = "Premium Plans", Url = Url.Action("Index", "Workspace") })
     </div>
     <div class="sideBar_menu_bottom">
-        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-gear", Text = "Settings" })
-        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-right-from-bracket", Text = "Log Out" })
+        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-gear", Text = "Settings", Url = Url.Action("Index", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/Components/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-right-from-bracket", Text = "Log Out", Url = Url.Action("Index", "Workspace") })
     </div>
 </div>

@@ -4,9 +4,9 @@
 }
 
 .workspace {
-    display: flex;
-    flex-direction: row;
     background-color: #F4F4F6;
+    display:flex;
+    flex-direction:row;
 }
 
 .workspace_body {
@@ -35,3 +35,10 @@
     grid-area:main;
 }
 
+@media only screen and (max-width:1024px) {
+    .workspace {
+        background-color: #F4F4F6;
+        position: relative;
+        display:block;
+    }
+}

@@ -5,6 +5,11 @@
         <i class="nav-icon fas fa-chevron-left" data-url="@Model.Url" style="cursor:pointer;"></i>
         <p class="workspace_header_title">@Model.Title</p>
     </div>
-    @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
-    { Name = $"{@Model.ProfileInfo.Name}", Username = $"{@Model.ProfileInfo.Username}"})
+    <div class="profile_container">
+        
+        @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+        { Name = $"{@Model.ProfileInfo.Name}", Username = $"{@Model.ProfileInfo.Username}"})
+        
+    </div>
+
 </div>

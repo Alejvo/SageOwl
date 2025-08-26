@@ -51,6 +51,8 @@
 }
 
 .header_login{
+    text-align:center;
+    text-decoration:none;
     width:120px;
     color:white;
     background-color:transparent;

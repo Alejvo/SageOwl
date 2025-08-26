@@ -1,6 +1,6 @@
-﻿@model SageOwl.UI.ViewModel.SideBardItemViewModel
+﻿@model SideBardItemViewModel
 
-<div class="sideBar_item">
+<a class="sideBar_item" href="@Model.Url">
     <i class="@Model.IconCode"></i>
     <p class="sideBar_item_text">@Model.Text</p>
-</div>
+</a>
