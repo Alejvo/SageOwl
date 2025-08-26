@@ -37,8 +37,16 @@
 
 @media only screen and (max-width:1024px) {
     .workspace {
-        background-color: #F4F4F6;
         position: relative;
         display:block;
+    }
+
+    .workspace_body{
+        display:flex;
+        flex-direction:column;
+    }
+
+    .workspace_main {
+        width:100%;
     }
 }

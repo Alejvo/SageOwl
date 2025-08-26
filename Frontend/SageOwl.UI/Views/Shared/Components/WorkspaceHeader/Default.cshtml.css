@@ -34,4 +34,7 @@
     .profile_container {
         display: none;
     }
+    .workspace_header{
+        margin-top:10px;
+    }
 } 

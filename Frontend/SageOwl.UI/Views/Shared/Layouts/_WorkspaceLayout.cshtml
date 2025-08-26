@@ -15,11 +15,14 @@
         @await Html.PartialAsync("~/Views/Shared/Components/_SideMenu.cshtml")
         <div class="workspace_body">
             @await Html.PartialAsync("~/Views/Shared/Components/_SidePanel.cshtml")
+
+            @await Component.InvokeAsync("WorkspaceHeader",
+            new { title = ViewData["HeaderTitle"] ?? "Workspace", url = ViewData["HeaderUrl"] ?? Url.Action("Index", "Workspace") })
+            
             <div class="workspace_main">
                 @RenderBody()
             </div>
-            @await Component.InvokeAsync("WorkspaceHeader", 
-            new { title = ViewData["HeaderTitle"] ?? "Workspace", url = ViewData["HeaderUrl"] ?? Url.Action("Index", "Workspace") })
+            
 
         </div>
 
