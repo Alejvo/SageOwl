@@ -4,6 +4,8 @@ using SageOwl.UI.Models;
 using SageOwl.UI.Services.Implementations;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels;
+using SageOwl.UI.ViewModels.Announcements;
+using System.Threading.Tasks;
 
 namespace SageOwl.UI.Controllers;
 
@@ -11,10 +13,12 @@ namespace SageOwl.UI.Controllers;
 public class WorkspaceController : Controller
 {
     private readonly ITeamService _teamService;
+    private readonly IAnnouncementService _announcementService;
 
-    public WorkspaceController(ITeamService teamService)
+    public WorkspaceController(ITeamService teamService, IAnnouncementService announcementService)
     {
         _teamService = teamService;
+        _announcementService = announcementService;
     }
 
     public IActionResult Index()
@@ -32,11 +36,21 @@ public class WorkspaceController : Controller
         return View();
     }
 
-    public IActionResult Announcements() 
+    public async Task<IActionResult> Announcements() 
     {
         ViewData["HeaderTitle"] = "Announcements";
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
-        return View();
+
+        var announcements = await _announcementService.GetAnnouncements();
+
+        var announcementsViewModel = announcements.Select(a => new AnnouncementViewModel
+        {
+            Content = a.Content,
+            Title = a.Title,
+            SentAt = a.CreatedAt,
+            PublisherName = a.Author
+        }).ToList();
+        return View(announcementsViewModel);
     }
 
     public async Task<IActionResult> Teams()

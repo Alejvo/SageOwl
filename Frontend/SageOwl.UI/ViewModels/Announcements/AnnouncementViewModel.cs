@@ -1,4 +1,4 @@
-﻿namespace SageOwl.UI.ViewModel;
+﻿namespace SageOwl.UI.ViewModels.Announcements;
 
 public class AnnouncementViewModel
 {

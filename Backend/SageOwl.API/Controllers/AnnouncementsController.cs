@@ -2,9 +2,7 @@
 using Application.Announcements.GetAll;
 using Application.Announcements.GetByTeamId;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SageOwl.API.Controllers;
 

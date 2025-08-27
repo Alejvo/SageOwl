@@ -1,13 +1,17 @@
-﻿@{
+﻿@using SageOwl.UI.ViewModels.Announcements
+@{
     ViewData["Title"] = "Announcements";
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
+@model List<AnnouncementViewModel>
 
 <main class="workspace_announcements_main">
-    @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
-    @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
-    @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
+    @foreach (var announcement in Model)
+    {
+        @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml", announcement)
+    }
+
 </main>
 
 
