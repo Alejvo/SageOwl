@@ -33,6 +33,13 @@ public class FormRepository : IFormRepository
         throw new NotImplementedException();
     }
 
+    public async Task<List<Form>> GetPendingFormsByUserId(Guid userId)
+    {
+        return await _dbContext.Forms
+            .Where(f => f.Results.Any(r => r.UserId == userId) && f.Results.Any(r => r.Status == ResultStatus.Pending))
+            .ToListAsync();
+    }
+
     public async Task<bool> UpdateForm(Form form)
     {
         if (_dbContext.Entry(form).State == EntityState.Detached)

@@ -7,5 +7,5 @@ public record FormResponse(
     string Title,
     Guid TeamId,
     DateTime Deadline,
-    List<FormQuestionResponse> Questions
+    List<FormQuestionResponse>? Questions
     );

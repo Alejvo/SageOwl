@@ -4,5 +4,5 @@ public record FormQuestionRequest(
     string Title,
     string? Description,
     string QuestionType,
-    List<FormOptionRequest> Options
+    List<FormOptionRequest>? Options
     );

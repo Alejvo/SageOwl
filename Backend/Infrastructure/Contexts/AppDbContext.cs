@@ -16,14 +16,19 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions options) : base(options)
     {
     }
+    //Users
     public DbSet<User> Users { get; set; }
     public DbSet<Token> Tokens { get; set; }
+    //Teams
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMembership> TeamMembership { get; set; }
+    //Forms
     public DbSet<Form> Forms { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<Option> Options { get; set; }
     public DbSet<Answer> Answers { get; set; }
+    public DbSet<FormResult> FormResults { get; set; }
+    //Announcements
     public DbSet<Announcement> Announcements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

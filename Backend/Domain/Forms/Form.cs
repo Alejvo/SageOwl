@@ -12,14 +12,17 @@ public class Form
     public Team Team { get; set; }
     public DateTime Deadline { get; set; }
 
+    private readonly List<FormResult> _results = new();
+    public IReadOnlyCollection<FormResult> Results => _results;
+
     private readonly List<Question> _questions = new();
     public IReadOnlyCollection<Question> Questions => _questions.AsReadOnly();
 
     public Form() { }
 
-    private Form(Guid teamId, string title, DateTime deadline)
+    private Form(Guid id,Guid teamId, string title, DateTime deadline)
     {
-        Id = Guid.NewGuid();
+        Id = id;
         TeamId = teamId;
         Title = title;
         Deadline = deadline;
@@ -27,7 +30,15 @@ public class Form
 
     public static Form Create(Guid teamId, string title,DateTime deadline)
     {
-        return new Form(teamId,title,deadline);
+        return new Form(Guid.NewGuid(),teamId, title, deadline);
+    }
+
+    public void AddResults(List<Guid> members)
+    {
+        foreach (var member in members)
+        {
+            _results.Add(FormResult.Create(Id,member));
+        }
     }
 
     public Question AddQuestion(string questionTitle, string questionDescription, Guid formId, QuestionType questionType)

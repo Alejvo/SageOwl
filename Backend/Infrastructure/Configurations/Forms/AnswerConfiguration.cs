@@ -11,11 +11,6 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
     {
         builder.HasKey(a => a.Id);
 
-        builder.HasOne<User>()
-            .WithMany()
-            .HasForeignKey(a => a.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         builder.HasOne<Question>()
             .WithMany()
             .HasForeignKey(a => a.QuestionId)
