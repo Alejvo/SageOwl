@@ -5,6 +5,7 @@ using SageOwl.UI.Services.Implementations;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels;
 using SageOwl.UI.ViewModels.Announcements;
+using SageOwl.UI.ViewModels.Forms;
 using System.Threading.Tasks;
 
 namespace SageOwl.UI.Controllers;
@@ -14,11 +15,13 @@ public class WorkspaceController : Controller
 {
     private readonly ITeamService _teamService;
     private readonly IAnnouncementService _announcementService;
+    private readonly IFormService _formService;
 
-    public WorkspaceController(ITeamService teamService, IAnnouncementService announcementService)
+    public WorkspaceController(ITeamService teamService, IAnnouncementService announcementService,IFormService formService)
     {
         _teamService = teamService;
         _announcementService = announcementService;
+        _formService = formService;
     }
 
     public IActionResult Index()
@@ -28,12 +31,22 @@ public class WorkspaceController : Controller
         return View();
     }
 
-    public IActionResult Forms()
+    public async Task<IActionResult> Forms()
     {
         ViewData["HeaderTitle"] = "Forms";
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
 
-        return View();
+        var forms = await _formService.GetFormsByUserId();
+
+        var formsViewModel = forms.Select(f => new FormViewModel
+        {
+            Id = f.Id,
+            Title = f.Title,
+            TeamId = f.TeamId,
+            Deadline = f.Deadline
+        }).ToList();
+
+        return View(formsViewModel);
     }
 
     public async Task<IActionResult> Announcements() 

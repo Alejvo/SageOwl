@@ -3,11 +3,14 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-<main class="workspace_forms_main">
-    @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
-    @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
-</main>
+@model List<SageOwl.UI.ViewModels.Forms.FormViewModel>
 
+<main class="workspace_forms_main">
+    @foreach (var form in Model)
+    {
+        @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml",form)
+    }
+</main>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

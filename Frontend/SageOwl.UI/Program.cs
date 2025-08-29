@@ -10,6 +10,7 @@ builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IAccountService,AccountService>();
 builder.Services.AddScoped<ITeamService,TeamService>();
 builder.Services.AddScoped<IAnnouncementService,AnnouncementService>();
+builder.Services.AddScoped<IFormService,FormService>();
 
 builder.Services.AddHttpClient("Backend", client => client.BaseAddress = new Uri("https://localhost:7027/api/"));
 
