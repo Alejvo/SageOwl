@@ -1,0 +1,163 @@
+﻿@model SageOwl.UI.ViewModels.Teams.CreateTeamViewModel
+
+@{
+    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
+}
+<style>
+    .create_team{
+        padding:20px;
+        display:flex;
+        flex-direction:column;
+        width:100%;
+    }
+    .create_team_submit{
+        border-radius: 10px;
+        background-color: #A74E47;
+        height: 40px;
+        width: 120px;
+        color: white;
+        border: none;
+        font-size: 18px;
+    }
+
+    .team_create_input {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap:2px;
+    }
+    .team_create_input label{
+        font-weight:bold;
+    }
+
+    .search_bar_body {
+        border: #555555 solid 1px;
+        border-radius:10px 0 0 10px;
+        height:40px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        gap:8px;
+        padding:0 8px;
+        width:100%;
+    }
+
+    .search_bar_body input{
+        width:100%;
+        border:none;
+        outline:none;
+        font-size:18px;
+    }
+
+    .search_bar_button {
+        border: none;
+    }
+</style>
+
+<main class="team_create_main">
+    <form asp-action="Create" asp-controller="Team" method="post" id="teamForm" class="create_team">
+        <div class="team_create_input">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" placeholder="Name" />
+        </div>
+
+        <div class="team_create_input">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" placeholder="Description"></textarea>
+        </div>
+
+        <div class="team_create_members">
+            <h6>Add Members</h6>
+            <div class="search_bar">
+                <div class="search_bar_body">
+                    <i class="fa-solid fa-magnifying-glass" style="color:#555555"></i>
+                    <input name="searchTerm" form="memberSearch" placeholder="Type a name..." />
+                </div>
+                <button type="submit" class="search_bar_button" form="memberSearch">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <div id="memberResults"></div>
+            </div>
+            <div id="member-container" class="member_container"></div>
+        </div>
+
+        <div class="team_create_members">
+            <h6>Add Team Admins</h6>
+            <div class="search_bar">
+                <div class="search_bar_body">
+                    <i class="fa-solid fa-magnifying-glass" style="color:#555555"></i>
+                    <input name="searchTerm" form="adminSearch" placeholder="Type a name..." />
+                </div>
+                <button type="submit" class="search_bar_button" form="adminSearch">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <div id="adminResults"></div>
+            </div>
+            <div id="admin-container" class="member_container"></div>
+        </div>
+
+        <button type="submit" class="create_team_submit">Submit</button>
+    </form>
+    <form asp-action="Search" asp-controller="User" method="get" id="memberSearch"></form>
+    <form asp-action="Search" asp-controller="User" method="get" id="adminSearch"></form>
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let memberIndex = 0;
+
+    function setupSearch(formSelector, resultsSelector, visualContainerSelector, roleValue) {
+        $(formSelector).submit(function (e) {
+            e.preventDefault();
+
+            $.get($(this).attr("action"), $(this).serialize(), function (data) {
+                $(resultsSelector).html(data);
+
+                $(resultsSelector).off('click', '.search-result');
+
+                $(resultsSelector).on('click', '.search-result', function () {
+                    let userId = $(this).data("id");
+                    let userName = $(this).data("name");
+
+                    if ($(`#member-container input[type='hidden'][value='${userId}'], #admin-container input[type='hidden'][value='${userId}']`).length > 0) {
+                        alert("Este usuario ya fue agregado.");
+                        return;
+                    }
+
+                    const idx = memberIndex++;
+
+                    const $item = $(`
+                        <div class="member-item">
+                            <span class="member-name">${userName} <small>(${roleValue})</small></span>
+                            <button type="button" class="remove-item">❌</button>
+                            <input type="hidden" name="Members[${idx}].UserId" value="${userId}" />
+                            <input type="hidden" name="Members[${idx}].Role" value="${roleValue}" />
+                        </div>
+                    `);
+
+                    $(visualContainerSelector).append($item);
+
+                    $(resultsSelector).empty();
+                });
+            });
+        });
+    }
+
+    setupSearch("#memberSearch", "#memberResults", "#member-container", "Member");
+    setupSearch("#adminSearch",  "#adminResults",  "#admin-container",  "Admin");
+
+    $(document).on('click', '.remove-item', function () {
+        $(this).closest('.member-item').remove();
+        reindexMembers();
+    });
+
+    function reindexMembers() {
+        $('#member-container .member-item, #admin-container .member-item').each(function (i, el) {
+            $(el).find("input[name$='.Id']").attr("name", `Members[${i}].Id`);
+            $(el).find("input[name$='.Role']").attr("name", `Members[${i}].Role`);
+        });
+
+        memberIndex = $('#member-container .member-item, #admin-container .member-item').length;
+    }
+</script>

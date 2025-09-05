@@ -2,10 +2,8 @@
 using Application.Users.GetAll;
 using Application.Users.GetById;
 using Application.Users.Update;
-using Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SageOwl.API.Controllers;
@@ -31,8 +29,8 @@ public class UsersController : ControllerBase
             int pageSize
         )
     {
-        var res = await _sender.Send(new GetUsersQuery(searchTerm,sortColumn,sortOrder,page,pageSize));
-        return res.IsSuccess ? Ok(res.Value) : BadRequest();
+        var res = await _sender.Send(new GetUsersQuery(page,pageSize,searchTerm, sortColumn,sortOrder));
+        return res.IsSuccess ? Ok(res.Value.Items) : BadRequest();
     }
 
     [HttpGet("id/{id:guid}")]

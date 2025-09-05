@@ -1,0 +1,12 @@
+﻿@model List<User>
+
+<ul>
+    @foreach (var user in Model)
+    {
+        <li class="search-result" data-id="@user.Id"
+            data-name="@user.Name"
+            data-username="@user.Username">
+            @user.Name (@user.Username)
+        </li>
+    }
+</ul>
