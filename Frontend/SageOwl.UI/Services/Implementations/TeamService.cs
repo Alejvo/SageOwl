@@ -1,6 +1,8 @@
 ﻿using SageOwl.UI.Models;
 using SageOwl.UI.Services.Interfaces;
+using SageOwl.UI.ViewModels.Teams;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Text.Json;
 
 namespace SageOwl.UI.Services.Implementations;
@@ -8,9 +10,29 @@ namespace SageOwl.UI.Services.Implementations;
 public class TeamService : ITeamService
 {
     private readonly HttpClient _httpClient;
-    public TeamService(IHttpClientFactory httpClientFactory)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public TeamService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public async Task<bool> CreateTeam(CreateTeamViewModel newTeam)
+    {
+        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        if (string.IsNullOrEmpty(token))
+            return false; 
+
+        var json = JsonSerializer.Serialize(newTeam);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.PostAsync("team", content);
+
+        return response.IsSuccessStatusCode;
     }
 
     public async Task<List<Team>> GetTeamsByUserToken(string token)

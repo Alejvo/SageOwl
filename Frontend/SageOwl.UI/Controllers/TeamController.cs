@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Attributes;
+using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Teams;
 
 namespace SageOwl.UI.Controllers;
@@ -8,6 +9,13 @@ namespace SageOwl.UI.Controllers;
 [AuthorizeToken]
 public class TeamController : Controller
 {
+    private readonly ITeamService _teamService;
+
+    public TeamController(ITeamService teamService)
+    {
+        _teamService = teamService;
+    }
+
     [HttpGet("{teamId}/mainpage")]
     public IActionResult MainPage(string teamId)
     {
@@ -62,20 +70,13 @@ public class TeamController : Controller
     }
 
     [HttpPost("create")]
-    public IActionResult Create(CreateTeamViewModel createTeam)
+    public async Task<IActionResult> Create(CreateTeamViewModel createTeam)
     {
         ViewData["HeaderTitle"] = "Create Team";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team");
 
-        /*
-        Console.WriteLine("Results");
-        Console.WriteLine(createTeam.Name);
-        Console.WriteLine(createTeam.Description);
-        Console.WriteLine(createTeam.Members.Count);
-        foreach (var item in createTeam.Members)
-        {
-            Console.WriteLine($"Member: {item.UserId},{item.Role}");
-        }*/
+        await _teamService.CreateTeam(createTeam);
+
         if (ModelState.IsValid)
         {
             return RedirectToAction("Index", "Home");
