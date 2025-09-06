@@ -30,6 +30,7 @@
 .team_create_members {
     display: flex;
     flex-direction: column;
+    gap:10px;
 }
 .search_bar {
     display: flex;
@@ -47,23 +48,33 @@
 }
 
 .member_container {
-    background-color: #EDEDED;
-    height:300px;
-    border-radius:10px;
-    padding:10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+    align-items: flex-start;
+    align-content: flex-start;
+    width: 100%;
+    background-color: #F8F8F8;
+    height: 300px;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
 }
-
+.member_container:has(> :only-child) {
+    justify-content: flex-start;
+}
 #memberResults,
 #adminResults {
+    display:none;
     position: absolute;
-    top: 100%; /* justo debajo del input */
+    top: 100%;
     left: 0;
-    width: 100%; /* que ocupe el mismo ancho que la barra */
-    max-height: 200px; /* scroll si hay muchos resultados */
+    width: 100%; 
+    max-height: 200px;
     overflow-y: auto;
-    background: #fff;
     border: 1px solid #ccc;
     border-radius: 6px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    z-index: 1000; /* que se sobreponga a los containers */
+    z-index: 1000; 
 }

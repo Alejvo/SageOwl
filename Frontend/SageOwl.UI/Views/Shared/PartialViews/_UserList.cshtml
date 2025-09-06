@@ -1,12 +1,64 @@
 ﻿@model List<User>
+<style>
+    *{
+        padding:0;
+        margin:0;
+    }
+    ul{
+        display:flex;
+        flex-direction:column;
+        padding:0;
+        margin:0;
+        list-style-type:none;
+        gap:10px;
+        padding:10px;
+        background-color: #F8F8F8;
+    }
+    .search-result{
+        background-color: #EDEDED;
+        height:50px;
+        display:flex;
+        flex-direction:row;
+        padding:0 10px;
+        align-items:center;
+        gap:8px;
+    }
 
+    .search_profile{
+        border-radius:50%;
+        background-color: #00838F;
+        color:white;
+        font-weight:bold;
+        width:40px;
+        height:40px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .search_result_body{
+        display:flex;
+        flex-direction:column;
+    }
+    .search_result_body p{
+        margin: 0;
+    }
+</style>
 <ul>
     @foreach (var user in Model)
     {
         <li class="search-result" data-id="@user.Id"
             data-name="@user.Name"
+            data-surname="@user.Surname"
             data-username="@user.Username">
-            @user.Name (@user.Username)
+            <div class="search_profile">
+                @(user.Name.Substring(0, 1) + user.Surname.Substring(0, 1))
+            </div>
+            <div class="search_result_body">
+                <span>@user.Name @user.Surname</span>
+                <span> @("@" + user.Username)</span>
+            </div>
+
         </li>
     }
 </ul>
