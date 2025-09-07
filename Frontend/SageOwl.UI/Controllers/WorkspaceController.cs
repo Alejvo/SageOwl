@@ -76,9 +76,11 @@ public class WorkspaceController : Controller
 
         var teamsViewModel = teams.Select(t => new TeamCardViewModel
         {
+            TeamId = t.TeamId,
             Initials = t.Name.Substring(0,2),
             Name=t.Name
         }).ToList();
+
         return View(teamsViewModel);
     }
 

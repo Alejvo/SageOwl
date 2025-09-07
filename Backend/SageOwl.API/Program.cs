@@ -3,7 +3,6 @@ using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using SageOwl.API.Authorization;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,12 +29,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("TeamAdminOnly", policy =>
-        policy.Requirements.Add(new TeamRoleRequirement("Admin")));
-
-builder.Services.AddScoped<IAuthorizationHandler, TeamRoleHandler>();
 
 var key = builder.Configuration.GetValue<string>("JwtSettings:Key");
 var keyBytes = Encoding.ASCII.GetBytes(key!);

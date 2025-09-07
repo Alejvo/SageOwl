@@ -12,6 +12,7 @@
     padding: 20px;
     gap: 20px;
     background-color:#fff;
+    cursor:pointer;
 }
 
 .team_card_header{
@@ -46,4 +47,5 @@
     .team_card_icons i {
         font-size: 20px;
         color: #5D5D5D;
+        cursor:pointer;
     }

@@ -1,0 +1,22 @@
+﻿@model SageOwl.UI.ViewModels.Teams.CreateTeamViewModel
+
+@{
+    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
+}
+
+<main class="team_create_ann_main">
+    <form asp-action="CreateAnnouncement" asp-controller="Team" method="post" class="create_team_ann">
+        <div class="team_create_ann_input">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" placeholder="Name" />
+        </div>
+
+        <div class="team_create_ann_input">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" placeholder="Description"></textarea>
+        </div>
+
+        <button type="submit" class="create_team_ann_submit">Submit</button>
+    </form>
+
+</main>

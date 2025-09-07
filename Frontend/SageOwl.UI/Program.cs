@@ -1,3 +1,4 @@
+using SageOwl.UI.Models;
 using SageOwl.UI.Services.Implementations;
 using SageOwl.UI.Services.Interfaces;
 
@@ -11,6 +12,7 @@ builder.Services.AddScoped<IAccountService,AccountService>();
 builder.Services.AddScoped<ITeamService,TeamService>();
 builder.Services.AddScoped<IAnnouncementService,AnnouncementService>();
 builder.Services.AddScoped<IFormService,FormService>();
+builder.Services.AddSingleton<CurrentTeam>();
 
 builder.Services.AddHttpClient("Backend", client => client.BaseAddress = new Uri("https://localhost:7027/api/"));
 

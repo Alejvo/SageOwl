@@ -1,7 +1,7 @@
 ﻿@using SageOwl.UI.ViewModels
 @model TeamCardViewModel
 
-<div class="team_card">
+<div class="team_card" onclick='location.href="@Url.Action("MainPage", "Team", new { teamId = Model.TeamId })"'>
     <div class="team_card_header">
         <div class="team_card_image">
             @Model.Initials
@@ -9,7 +9,7 @@
         <p class="team_card_name">@Model.Name</p>
     </div>
     <div class="team_card_icons">
-        <i class="fas fa-bullhorn"></i>
-        <i class="fas fa-file-alt"></i>
+        <i class="fas fa-bullhorn" onclick="event.stopPropagation(); location.href='@Url.Action("Announcements", "Team", new { teamId = Model.TeamId })'"></i>
+        <i class="fas fa-file-alt" onclick="event.stopPropagation(); location.href='@Url.Action("Forms", "Team", new { teamId = Model.TeamId })'"></i>
     </div>
 </div>

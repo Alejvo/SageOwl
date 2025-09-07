@@ -10,6 +10,7 @@
     {
         @await Html.PartialAsync("~/Views/Shared/Components/_TeamCard.cshtml", new TeamCardViewModel
         {
+            TeamId = team.TeamId,
             Name = team.Name,
             Initials = team.Initials
         })

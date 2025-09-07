@@ -35,6 +35,38 @@ public class TeamService : ITeamService
         return response.IsSuccessStatusCode;
     }
 
+    public async Task<Team> GetTeamById(Guid teamId)
+    {
+        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+
+        if (string.IsNullOrEmpty(token))
+            throw new Exception("Token was not found");
+
+        var handler = new JwtSecurityTokenHandler();
+        var jwt = handler.ReadJwtToken(token);
+
+        var request = new HttpRequestMessage(HttpMethod.Get, $"team/id/{teamId}");
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        var team = JsonSerializer.Deserialize<Team>(content, options);
+
+        Console.WriteLine(team.Name);
+        return team;
+
+    }
+
     public async Task<List<Team>> GetTeamsByUserToken(string token)
     {
         var handler = new JwtSecurityTokenHandler();
@@ -62,6 +94,7 @@ public class TeamService : ITeamService
         };
 
         var teams = JsonSerializer.Deserialize<List<Team>>(content, options);
+
         return teams;
     }
 }

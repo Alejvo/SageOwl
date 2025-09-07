@@ -6,5 +6,5 @@ public record CreateAnnouncementCommand(
     string Title,
     string Content,
     Guid AuthorId,
-    Guid Teamid
+    Guid TeamId
     ) : ICommand;
