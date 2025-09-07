@@ -40,6 +40,16 @@ public class TeamRepository : ITeamRepository
             .ToListAsync();
     }
 
+    public async Task<string?> GetUserRoleInTeam(Guid userId, Guid teamId)
+    {
+        var role = await _dbContext.TeamMembership
+            .Where(tm => tm.UserId == userId && tm.TeamId == teamId)
+            .Select(tm => tm.Role)
+            .FirstOrDefaultAsync();
+
+        return role?.ToString();
+    }
+
     public async Task<bool> UpdateTeam(Team team)
     {
         if (_dbContext.Entry(team).State == EntityState.Detached)

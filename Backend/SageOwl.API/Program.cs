@@ -1,8 +1,10 @@
 using Application;
 using Infrastructure;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using SageOwl.API.Authorization;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddApplication()
@@ -26,6 +30,12 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("TeamAdminOnly", policy =>
+        policy.Requirements.Add(new TeamRoleRequirement("Admin")));
+
+builder.Services.AddScoped<IAuthorizationHandler, TeamRoleHandler>();
 
 var key = builder.Configuration.GetValue<string>("JwtSettings:Key");
 var keyBytes = Encoding.ASCII.GetBytes(key!);

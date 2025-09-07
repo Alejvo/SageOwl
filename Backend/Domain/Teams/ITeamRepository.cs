@@ -1,4 +1,6 @@
-﻿namespace Domain.Teams;
+﻿using Domain.Users;
+
+namespace Domain.Teams;
 
 public interface ITeamRepository
 {
@@ -7,4 +9,6 @@ public interface ITeamRepository
     Task<bool> CreateTeam(Team team);
     Task<bool> UpdateTeam(Team team);
     Task<bool> DeleteTeam(Team team);
+    Task<string?> GetUserRoleInTeam(Guid userId, Guid teamId);
+
 }

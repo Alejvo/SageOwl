@@ -2,13 +2,14 @@
 using Application.Announcements.GetAll;
 using Application.Announcements.GetByTeamId;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SageOwl.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class AnnouncementsController : ControllerBase
 {
     private readonly ISender _sender;
