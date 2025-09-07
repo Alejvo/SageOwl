@@ -31,12 +31,12 @@ internal sealed class CreateAnnouncementCommandHandler : ICommandHandler<CreateA
                    .FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (!Guid.TryParse(userIdClaim, out var userId))
-            return Result.Failure(Error.NullValue);
+            return Result.Failure(Error.Unauthorized);
 
         var role = await _teamRepository.GetUserRoleInTeam(userId, request.Teamid);
 
-        if (role != "Admin") 
-            return Result.Failure(Error.NullValue);
+        if (role != "Admin")
+            return Result.Failure(Error.Forbidden);
 
         var newAnnouncement = Announcement.Create(
             request.Title,
