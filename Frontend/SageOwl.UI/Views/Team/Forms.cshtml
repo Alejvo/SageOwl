@@ -5,7 +5,7 @@
 
 
         <main class="team_forms_main">
-            @await Html.PartialAsync("~/Views/Shared/Components/_TeamNavigation.cshtml")
+            @await Component.InvokeAsync("TeamNavigation")
             <div class="team_forms_main_container">
                 @*
                 @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml")
