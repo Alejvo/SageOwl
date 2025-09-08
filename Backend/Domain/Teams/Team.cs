@@ -1,4 +1,5 @@
-﻿using Domain.Forms;
+﻿using Domain.Announcements;
+using Domain.Forms;
 
 namespace Domain.Teams;
 
@@ -13,6 +14,9 @@ public class Team
 
     private readonly List<Form> _forms = new();
     public IReadOnlyCollection<Form> Forms => _forms.AsReadOnly();
+
+    private readonly List<Announcement> _announcements = new();
+    public IReadOnlyCollection<Announcement> Announcements => _announcements.AsReadOnly();
 
     private Team(Guid id, string name,string description)
     {

@@ -20,7 +20,7 @@ public class AnnouncementConfiguration : IEntityTypeConfiguration<Announcement>
             .HasForeignKey(a => a.AuthorId);
 
         builder.HasOne<Team>()
-            .WithMany()
+            .WithMany( t => t.Announcements)
             .HasForeignKey(a => a.TeamId);
     }
 }

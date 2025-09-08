@@ -30,6 +30,8 @@ public class TeamRepository : ITeamRepository
         return await _dbContext.Teams
             .Include(t => t.Members)
             .ThenInclude(m => m.User)
+            .Include(t => t.Forms)
+            .Include(t => t.Announcements)
             .FirstOrDefaultAsync(team => team.Id == id);
     }
 

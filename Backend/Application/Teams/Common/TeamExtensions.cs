@@ -1,4 +1,5 @@
-﻿using Domain.Teams;
+﻿using Domain.Announcements;
+using Domain.Teams;
 
 namespace Application.Teams.Common;
 
@@ -20,7 +21,18 @@ public static class TeamExtensions
                 m.User.Username,
                 m.User.CreatedAt,
                 m.Role.Value
-            )).ToList()
+            )).ToList(),
+            team.Forms.Select(f => new FormDto(
+                f.Id,
+                f.Title,
+                f.Deadline
+            )).ToList(),
+            team.Announcements.Select(a => new AnnouncementDto(
+                a.Title,
+                a.Content,
+                a.CreatedAt,
+                a.Author.Name
+             )).ToList()
         );
     }
 }
