@@ -12,5 +12,5 @@
 
 .team_announcements_main_container{
     display:flex;
-    flex-direction:column
+    flex-direction:column;
 }

@@ -62,7 +62,6 @@ public class TeamService : ITeamService
 
         var team = JsonSerializer.Deserialize<Team>(content, options);
 
-        Console.WriteLine(team.Name);
         return team;
 
     }

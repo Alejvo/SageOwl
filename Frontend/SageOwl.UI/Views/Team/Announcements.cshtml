@@ -3,16 +3,18 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
+@model List<SageOwl.UI.ViewModels.Announcements.AnnouncementViewModel>
 
-        <main class="team_announcements_main">
-            @await Component.InvokeAsync("TeamNavigation")
-            <div class="team_announcements_main_container">
-                @*
-                 @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml")
-                *@
-            </div>
-        </main>
+<main class="team_announcements_main">
+    @await Component.InvokeAsync("TeamNavigation")
+    <div class="team_announcements_main_container">
 
+        @foreach (var announcement in Model)
+        {
+            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml",announcement);
+        }
+    </div>
+</main>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
