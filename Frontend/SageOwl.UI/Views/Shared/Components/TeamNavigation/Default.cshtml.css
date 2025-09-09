@@ -3,7 +3,13 @@
     margin: 0;
 }
 
-.team_navigation {
+.team_navigation{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.team_navigation_header {
     display: flex;
     flex-direction: row;
     gap: 40px;
@@ -24,3 +30,26 @@
     .team_navigation_item:active {
         color: #6D7399;
     }
+
+.team_navigation_buttons{
+    display:flex;
+    flex-direction:row;
+    gap:20px;
+}
+
+.team_navigation_button {
+    font-family: 'Roboto', sans-serif;
+    background-color: #A74E47;
+    min-width:180px;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 10px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding:0 20px;
+    gap: 10px;
+}

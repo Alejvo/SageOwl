@@ -1,9 +1,25 @@
 ﻿@model SageOwl.UI.Models.CurrentTeam
 
 <div class="team_navigation">
-    <a class="team_navigation_item" href="/team/@Model.TeamId/mainpage">MainPage</a>
-    <a class="team_navigation_item" href="/team/@Model.TeamId/announcements">Announcements</a>
-    <a class="team_navigation_item" href="/team/@Model.TeamId/forms">Forms</a>
-    <a class="team_navigation_item" href="/team/@Model.TeamId/qualifications">Qualifications</a>
-    <a class="team_navigation_item" href="/team/@Model.TeamId/description">Description</a>
+    <div class="team_navigation_header">
+        <a class="team_navigation_item" href="/team/@Model.TeamId/mainpage">MainPage</a>
+        <a class="team_navigation_item" href="/team/@Model.TeamId/announcements">Announcements</a>
+        <a class="team_navigation_item" href="/team/@Model.TeamId/forms">Forms</a>
+        <a class="team_navigation_item" href="/team/@Model.TeamId/qualifications">Qualifications</a>
+        <a class="team_navigation_item" href="/team/@Model.TeamId/description">Description</a>
+    </div>
+    @if (Model.IsUserAdmin)
+    {
+        <div class="team_navigation_buttons">
+            <a class="team_navigation_button" href="/team/@Model.TeamId/mainpage">
+                <i class="fas fa-plus"></i>
+                Edit Team
+            </a>
+            <a class="team_navigation_button" href="/team/@Model.TeamId/announcements/create">
+                <i class="fas fa-plus"></i>
+                Create Announcement
+            </a>
+        </div>
+    }
+
 </div>

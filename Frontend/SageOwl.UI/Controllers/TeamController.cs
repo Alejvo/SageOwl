@@ -24,15 +24,7 @@ public class TeamController : Controller
     [HttpGet("{teamId}/mainpage")]
     public async Task<IActionResult> MainPage(Guid teamId)
     {
-        if (_currentTeam.TeamId != teamId)
-        {
-            var team = await _teamService.GetTeamById(teamId);
-            _currentTeam.Name = team.Name;
-            _currentTeam.TeamId = team.TeamId;
-            _currentTeam.Description = team.Description;
-            _currentTeam.Announcements = team.Announcements;
-            _currentTeam.Forms = team.Forms;
-        }
+        await GetTeam(teamId);
 
         ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
@@ -61,15 +53,8 @@ public class TeamController : Controller
     [HttpGet("{teamId}/forms")]
     public async Task<IActionResult> Forms(Guid teamId)
     {
-        if (_currentTeam.TeamId != teamId)
-        {
-            var team = await _teamService.GetTeamById(teamId);
-            _currentTeam.Name = team.Name;
-            _currentTeam.TeamId = team.TeamId;
-            _currentTeam.Description = team.Description;
-            _currentTeam.Announcements = team.Announcements;
-            _currentTeam.Forms = team.Forms;
-        }
+        await GetTeam(teamId);
+
         ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
@@ -93,16 +78,8 @@ public class TeamController : Controller
     [HttpGet("{teamId}/announcements")]
     public async Task<IActionResult> Announcements(Guid teamId)
     {
-        if (_currentTeam.TeamId != teamId)
-        {
-            var team = await _teamService.GetTeamById(teamId);
-            _currentTeam.Name = team.Name;
-            _currentTeam.TeamId = team.TeamId;
-            _currentTeam.Description = team.Description;
-            _currentTeam.Announcements = team.Announcements;
-            _currentTeam.Forms = team.Forms;
+        await GetTeam(teamId);
 
-        }
         ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
@@ -165,5 +142,19 @@ public class TeamController : Controller
         }
 
         return View(createAnnouncement);
+    }
+
+    private async Task GetTeam(Guid teamId)
+    {
+        if (_currentTeam.TeamId != teamId)
+        {
+            var team = await _teamService.GetTeamById(teamId);
+            _currentTeam.Name = team.Name;
+            _currentTeam.TeamId = team.TeamId;
+            _currentTeam.Description = team.Description;
+            _currentTeam.Announcements = team.Announcements;
+            _currentTeam.Forms = team.Forms;
+            _currentTeam.Members = team.Members;
+        }
     }
 }
