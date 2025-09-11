@@ -8,10 +8,22 @@
 <main class="team_forms_main">
     @await Component.InvokeAsync("TeamNavigation")
     <div class="team_forms_main_container">
-        @foreach(var form in Model)
+
+        @if (Model.Count == 0)
         {
-            @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml",form)
+            <div class="team_forms_img">
+                <img src="~/images/team_work.svg" alt="Team_Work" width="400" height="400" />
+                <h5>There are no <b>Forms</b> yet</h5>
+            </div>
         }
+        else
+        {
+            @foreach (var form in Model)
+            {
+                @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml", form)
+            }
+        }
+
     </div>
 </main>
 

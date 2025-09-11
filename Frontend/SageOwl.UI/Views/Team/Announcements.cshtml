@@ -8,11 +8,21 @@
 <main class="team_announcements_main">
     @await Component.InvokeAsync("TeamNavigation")
     <div class="team_announcements_main_container">
-
-        @foreach (var announcement in Model)
+        @if (Model.Count == 0)
         {
-            @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml",announcement);
+            <div class="team_announcements_img">
+                <img src="~/images/team_work.svg" alt="Team_Work" width="400" height="400"/>
+                <h5>There are no <b>Announcements</b> yet</h5>
+            </div>
         }
+        else
+        {
+            @foreach (var announcement in Model)
+            {
+                @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml", announcement)
+            }
+        }
+
     </div>
 </main>
 
