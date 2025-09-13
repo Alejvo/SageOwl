@@ -1,9 +1,43 @@
-﻿@{
+﻿@using SageOwl.UI.ViewModels.Announcements
+@{
     ViewBag.Title = "Team MainPage";
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
+@model SageOwl.UI.ViewModels.Teams.TeamMainViewModel
 
-@await Component.InvokeAsync("TeamNavigation")
+
+<main class="team_main">
+    @await Component.InvokeAsync("TeamNavigation")
+        <h4>Announcements</h4>
+        @if (Model.Announcements.Count == 0)
+        {
+            <div class="team_main_img">
+                <img src="~/images/team_work.svg" alt="Team_Work" width="250" height="250" />
+                <h5>There are no <b>Announcements</b> yet</h5>
+            </div>
+        }
+        else
+        {
+            <div class="team_main_announcements">
+            @foreach (var announcement in Model.Announcements)
+            {
+                @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml", new AnnouncementViewModel
+                {
+                    Content = announcement.Content,
+                Title = announcement.Title,
+                PublisherName = announcement.PublisherName,
+                SentAt = announcement.SentAt
+                })
+            }
+            </div>
+        }
+        <h4>Forms</h4>
+        <div class="team_main_img">
+            <img src="~/images/team_work.svg" alt="Team_Work" width="250" height="250" />
+            <h5>There are no <b>Announcements</b> yet</h5>
+        </div>
+
+</main>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

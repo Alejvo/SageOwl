@@ -1,0 +1,19 @@
+﻿.team_main{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.team_main_announcements{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.team_main_img {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

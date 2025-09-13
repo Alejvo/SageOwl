@@ -72,7 +72,7 @@ public class WorkspaceController : Controller
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
         var token = HttpContext.Request.Cookies["AccessToken"];
 
-        var teams = await _teamService.GetTeamsByUserToken(token);
+        var teams = await _teamService.GetTeamsByUser();
 
         var teamsViewModel = teams.Select(t => new TeamCardViewModel
         {

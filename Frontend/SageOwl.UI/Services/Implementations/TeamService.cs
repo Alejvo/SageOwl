@@ -66,8 +66,10 @@ public class TeamService : ITeamService
 
     }
 
-    public async Task<List<Team>> GetTeamsByUserToken(string token)
+    public async Task<List<Team>> GetTeamsByUser()
     {
+        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+
         var handler = new JwtSecurityTokenHandler();
         var jwtToken = handler.ReadJwtToken(token);
 
@@ -96,4 +98,5 @@ public class TeamService : ITeamService
 
         return teams;
     }
+
 }

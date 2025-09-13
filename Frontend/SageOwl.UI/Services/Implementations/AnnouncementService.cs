@@ -37,4 +37,27 @@ public class AnnouncementService : IAnnouncementService
         var announcements = JsonSerializer.Deserialize<List<Announcement>>(content, options);
         return announcements;
     }
+
+    public async Task<List<Announcement>> GetAnnouncementsByTeamId(Guid teamId)
+    {
+        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+
+        var request = new HttpRequestMessage(HttpMethod.Get, $"announcements/teamId/{teamId}");
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        var announcements = JsonSerializer.Deserialize<List<Announcement>>(content, options);
+        return announcements;
+    }
 }

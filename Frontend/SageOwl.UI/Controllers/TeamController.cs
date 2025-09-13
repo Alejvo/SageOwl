@@ -2,6 +2,7 @@
 using SageOwl.UI.Attributes;
 using SageOwl.UI.Models;
 using SageOwl.UI.Services.Interfaces;
+using SageOwl.UI.ViewModels;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
 using SageOwl.UI.ViewModels.Teams;
@@ -14,11 +15,12 @@ public class TeamController : Controller
 {
     private readonly ITeamService _teamService;
     private readonly CurrentTeam _currentTeam;
-    public TeamController(ITeamService teamService,CurrentTeam currentTeam)
+    private readonly IAnnouncementService _announcementService;
+    public TeamController(ITeamService teamService,CurrentTeam currentTeam, IAnnouncementService announcementService)
     {
         _teamService = teamService;
         _currentTeam = currentTeam;
-
+        _announcementService = announcementService;
     }
 
     [HttpGet("{teamId}/mainpage")]
@@ -26,10 +28,23 @@ public class TeamController : Controller
     {
         await GetTeam(teamId);
 
+        var teams = await _announcementService.GetAnnouncementsByTeamId(teamId);
+
+        var teamsViewModel = teams.Select(a => new AnnouncementViewModel
+        {
+            Title = a.Title,
+            Content = a.Content,
+            PublisherName = a.Author,
+            SentAt = a.CreatedAt
+        }).ToList();
+        var teamMainVM = new TeamMainViewModel
+        {
+            Announcements = teamsViewModel
+        };
         ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
         ViewData["HeaderUrl"] = Url.Action("Teams", "Workspace");
-        return View();
+        return View(teamMainVM);
     }
 
     [HttpGet("{teamId}/qualifications")]

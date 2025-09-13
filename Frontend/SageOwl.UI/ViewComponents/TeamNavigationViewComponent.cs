@@ -20,7 +20,6 @@ public class TeamNavigationViewComponent : ViewComponent
         {
             if (member.Id == _currentUser.Id)
             {
-                Console.WriteLine($"Member: {member.Name}, Role:{member.Role}");
                 if (member.Role == "Admin") _currentTeam.IsUserAdmin = true;
                 else _currentTeam.IsUserAdmin = false;
                     break;

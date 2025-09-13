@@ -5,7 +5,7 @@ namespace SageOwl.UI.Services.Interfaces;
 
 public interface ITeamService
 {
-    Task<List<Team>> GetTeamsByUserToken(string token);
+    Task<List<Team>> GetTeamsByUser();
     Task<Team> GetTeamById(Guid teamId);
     Task<bool> CreateTeam(CreateTeamViewModel newTeam);
 }
