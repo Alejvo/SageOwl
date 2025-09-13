@@ -1,5 +1,7 @@
 ﻿using SageOwl.UI.Models;
 using SageOwl.UI.Services.Interfaces;
+using SageOwl.UI.ViewModels.Announcements;
+using System.Text;
 using System.Text.Json;
 
 namespace SageOwl.UI.Services.Implementations;
@@ -13,6 +15,23 @@ public class AnnouncementService : IAnnouncementService
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
+    }
+
+    public async Task<bool> CreateAnnouncement(CreateAnnouncementViewModel createAnnouncement)
+    {
+        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        if (string.IsNullOrEmpty(token))
+            return false;
+
+        var json = JsonSerializer.Serialize(createAnnouncement);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.PostAsync("announcements", content);
+
+        return response.IsSuccessStatusCode;
     }
 
     public async Task<List<Announcement>> GetAnnouncements()

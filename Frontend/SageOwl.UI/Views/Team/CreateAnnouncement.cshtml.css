@@ -1,2 +1,23 @@
-﻿body {
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+.team_create_ann_main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    align-items: center;
+}
+
+.create_team_ann_submit {
+    border-radius: 10px;
+    background-color: #A74E47;
+    height: 40px;
+    width: 120px;
+    color: white;
+    border: none;
+    font-size: 18px;
 }

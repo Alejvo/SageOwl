@@ -1,22 +1,73 @@
-﻿@model SageOwl.UI.ViewModels.Teams.CreateTeamViewModel
+﻿@model SageOwl.UI.ViewModels.Announcements.CreateAnnouncementViewModel
 
 @{
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
+<style>
+    .create_team_ann{
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+    }
+
+    .team_create_ann_input {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 2px;
+    }
+
+    .team_create_ann_input label {
+        font-weight: bold;
+    }
+
+    .team_create_ann_input input {
+        height: 40px;
+        padding-left: 8px;
+        background-color: #F8F8F8;
+        border: 1px #d4d4d4 solid;
+        border-radius: 10px;
+    }
+
+    .team_create_ann_input textarea {
+        resize: none;
+        height: 120px;
+        padding-left: 8px;
+        background-color: #F8F8F8;
+        border: 1px #d4d4d4 solid;
+        border-radius: 10px;
+        padding-top: 5px;
+    }
+</style>
 
 <main class="team_create_ann_main">
     <form asp-action="CreateAnnouncement" asp-controller="Team" method="post" class="create_team_ann">
         <div class="team_create_ann_input">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" placeholder="Name" />
+            <label asp-for="Title"></label>
+            <input asp-for="Title" placeholder="Title" />
         </div>
 
         <div class="team_create_ann_input">
-            <label asp-for="Description"></label>
-            <textarea asp-for="Description" placeholder="Description"></textarea>
+            <label asp-for="Content"></label>
+            <textarea asp-for="Content" placeholder="Content"></textarea>
         </div>
 
+        <input asp-for="AuthorId" type="hidden"/>
+        <input asp-for="TeamId " type="hidden"/>
         <button type="submit" class="create_team_ann_submit">Submit</button>
     </form>
 
 </main>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".nav-icon", function () {
+            const targetUrl = $(this).data("url");
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+    </script>
+}

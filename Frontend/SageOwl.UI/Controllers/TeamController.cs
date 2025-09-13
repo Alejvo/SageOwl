@@ -6,6 +6,7 @@ using SageOwl.UI.ViewModels;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
 using SageOwl.UI.ViewModels.Teams;
+using System.Threading.Tasks;
 
 namespace SageOwl.UI.Controllers;
 
@@ -15,12 +16,14 @@ public class TeamController : Controller
 {
     private readonly ITeamService _teamService;
     private readonly CurrentTeam _currentTeam;
+    private readonly CurrentUser _currentUser;
     private readonly IAnnouncementService _announcementService;
-    public TeamController(ITeamService teamService,CurrentTeam currentTeam, IAnnouncementService announcementService)
+    public TeamController(ITeamService teamService,CurrentTeam currentTeam, IAnnouncementService announcementService, CurrentUser currentUser)
     {
         _teamService = teamService;
         _currentTeam = currentTeam;
         _announcementService = announcementService;
+        _currentUser = currentUser;
     }
 
     [HttpGet("{teamId}/mainpage")]
@@ -143,17 +146,24 @@ public class TeamController : Controller
     public IActionResult CreateAnnouncement(Guid teamId)
     {
         ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = "Create Team";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team");
-        return View();
+        ViewData["HeaderTitle"] = "Create Announcement";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
+
+        var newAnnouncement = new CreateAnnouncementViewModel
+        {
+            TeamId = teamId,
+            AuthorId = _currentUser.Id
+        };
+        return View(newAnnouncement);
     }
 
     [HttpPost("announcements/create")]
-    public IActionResult CreateAnnouncement(CreateAnnouncementViewModel createAnnouncement)
+    public async Task<IActionResult> CreateAnnouncement(CreateAnnouncementViewModel createAnnouncement)
     {
         if (ModelState.IsValid)
         {
-            return RedirectToAction("Index", "Home");
+            await _announcementService.CreateAnnouncement(createAnnouncement);
+            return RedirectToAction("MainPage", "Team", new { teamId = createAnnouncement.TeamId });
         }
 
         return View(createAnnouncement);
