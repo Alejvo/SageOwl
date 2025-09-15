@@ -38,8 +38,18 @@ public class Team
     }
     public void AddMember(Guid userId, TeamRole role)
     {
-        if (_members.Any(m => m.UserId == userId))
+        var existingMember = _members.FirstOrDefault(m => m.UserId == userId);
+
+        if (existingMember != null) 
+        {
+            if (existingMember.Role == role)
+                return;
+
+            _members.Remove(existingMember);
+            _members.Add(TeamMembership.Create(userId, Id, role));
             return;
+
+        }
 
         _members.Add(TeamMembership.Create(userId, Id, role));
     }
