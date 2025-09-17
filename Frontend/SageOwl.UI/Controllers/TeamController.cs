@@ -2,7 +2,6 @@
 using SageOwl.UI.Attributes;
 using SageOwl.UI.Models;
 using SageOwl.UI.Services.Interfaces;
-using SageOwl.UI.ViewModels;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
 using SageOwl.UI.ViewModels.Teams;
@@ -147,7 +146,7 @@ public class TeamController : Controller
     {
         ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = "Create Announcement";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
+        ViewData["HeaderUrl"] = Url.Action("Teams", "Workspace");
 
         var newAnnouncement = new CreateAnnouncementViewModel
         {
@@ -167,6 +166,49 @@ public class TeamController : Controller
         }
 
         return View(createAnnouncement);
+    }
+
+    [HttpGet("{teamId}/update")]
+    public async Task<IActionResult> UpdateTeam(Guid teamId)
+    {
+        ViewData["HeaderTitle"] = $"Update: {_currentTeam.Name}";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
+        var team = await _teamService.GetTeamById(teamId);
+
+            var updateTeam = new UpdateTeamViewModel
+            {
+                TeamId = team.TeamId,
+                Name = team.Name,
+                Description = team.Description,
+                Members = team.Members
+            };
+
+        return View(updateTeam);
+    }
+
+    [HttpPost("update")]
+    public async Task<IActionResult> UpdateTeam(UpdateTeamViewModel updateTeam)
+    {
+        if (ModelState.IsValid)
+        {
+            var updatedTeam = new UpdateTeamDto
+            {
+                TeamId = updateTeam.TeamId,
+                Description = updateTeam.Description,
+                Name = updateTeam.Name,
+                Members = updateTeam.Members
+                    .Select(m => new MemberViewModel { Role = m.Role, UserId = m.Id}).ToList()
+            };
+
+            await _teamService.UpdateTeam(updatedTeam);
+
+            _currentTeam.Name = updatedTeam.Name;
+            _currentTeam.Description = updatedTeam.Description;
+
+            return RedirectToAction("MainPage", "Team", new { teamId = updatedTeam.TeamId });
+
+        }
+        return View(updateTeam);
     }
 
     private async Task GetTeam(Guid teamId)

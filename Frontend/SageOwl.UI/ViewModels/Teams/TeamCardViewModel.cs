@@ -1,4 +1,4 @@
-﻿namespace SageOwl.UI.ViewModels;
+﻿namespace SageOwl.UI.ViewModels.Teams;
 
 public class TeamCardViewModel
 {

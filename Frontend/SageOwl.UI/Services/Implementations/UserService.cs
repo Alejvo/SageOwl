@@ -1,6 +1,6 @@
 ﻿using SageOwl.UI.Models;
 using SageOwl.UI.Services.Interfaces;
-using SageOwl.UI.ViewModel;
+using SageOwl.UI.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;

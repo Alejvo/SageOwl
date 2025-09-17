@@ -8,4 +8,5 @@ public interface ITeamService
     Task<List<Team>> GetTeamsByUser();
     Task<Team> GetTeamById(Guid teamId);
     Task<bool> CreateTeam(CreateTeamViewModel newTeam);
+    Task<bool> UpdateTeam(UpdateTeamDto updateTeam);
 }

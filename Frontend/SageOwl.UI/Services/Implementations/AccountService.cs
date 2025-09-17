@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 using SageOwl.UI.Models;
-using SageOwl.UI.ViewModel;
+using SageOwl.UI.ViewModels;
 using System.Text.Json;
 using System.Text;
 using SageOwl.UI.Services.Interfaces;

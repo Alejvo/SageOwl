@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 
-namespace SageOwl.UI.ViewModel;
+namespace SageOwl.UI.ViewModels;
 
 public class RegisterViewModel
 {

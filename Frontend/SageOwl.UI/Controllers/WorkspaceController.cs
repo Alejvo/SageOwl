@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Attributes;
-using SageOwl.UI.Models;
-using SageOwl.UI.Services.Implementations;
 using SageOwl.UI.Services.Interfaces;
-using SageOwl.UI.ViewModels;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
-using System.Threading.Tasks;
+using SageOwl.UI.ViewModels.Teams;
 
 namespace SageOwl.UI.Controllers;
 

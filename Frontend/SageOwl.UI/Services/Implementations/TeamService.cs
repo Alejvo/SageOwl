@@ -99,4 +99,20 @@ public class TeamService : ITeamService
         return teams;
     }
 
+    public async Task<bool> UpdateTeam(UpdateTeamDto updateTeam)
+    {
+        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        if (string.IsNullOrEmpty(token))
+            return false;
+
+        var json = JsonSerializer.Serialize(updateTeam);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.PutAsync("team", content);
+
+        return response.IsSuccessStatusCode;
+    }
 }

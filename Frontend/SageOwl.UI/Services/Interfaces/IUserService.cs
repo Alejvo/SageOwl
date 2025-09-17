@@ -1,5 +1,5 @@
 ﻿using SageOwl.UI.Models;
-using SageOwl.UI.ViewModel;
+using SageOwl.UI.ViewModels;
 
 namespace SageOwl.UI.Services.Interfaces;
 
