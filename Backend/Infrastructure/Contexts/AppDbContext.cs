@@ -1,12 +1,10 @@
 ﻿using Domain.Announcements;
 using Domain.Forms;
+using Domain.Qualifications;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
-using Infrastructure.Configurations;
 using Infrastructure.Configurations.Announcements;
-using Infrastructure.Configurations.Forms;
-using Infrastructure.Configurations.Teams;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Contexts;
@@ -30,6 +28,9 @@ public class AppDbContext : DbContext
     public DbSet<FormResult> FormResults { get; set; }
     //Announcements
     public DbSet<Announcement> Announcements { get; set; }
+    //Qualifications
+    public DbSet<Qualification> Qualifications { get; set; }
+    public DbSet<UserQualification> UserQualifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
