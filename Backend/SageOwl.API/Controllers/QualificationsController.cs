@@ -40,6 +40,6 @@ public class QualificationsController : ControllerBase
     {
         var res = await _sender.Send(command);
 
-        return res.IsSuccess ? Created() : BadRequest();
+        return res.IsSuccess ? Created() : BadRequest(res.Errors);
     }
 }

@@ -10,17 +10,6 @@ public class QualificationContext : IEntityTypeConfiguration<Qualification>
     {
         builder.HasKey(q => q.Id);
 
-        builder.HasMany(q => q.UsersQualifications)
-               .WithOne()
-               .HasForeignKey(uq => uq.QualificationId);
-
-        builder.Navigation(q => q.UsersQualifications)
-               .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-        builder.Metadata
-            .FindNavigation(nameof(Qualification.UsersQualifications))!
-            .SetField("_usersQualifications");
-
         builder.HasOne(q => q.Team)
             .WithMany()
             .HasForeignKey(q => q.TeamId);
@@ -29,5 +18,6 @@ public class QualificationContext : IEntityTypeConfiguration<Qualification>
         builder.Property(q => q.MinimumGrade).IsRequired();
         builder.Property(q => q.PassingGrade).IsRequired();
         builder.Property(q => q.Period).IsRequired();
+        builder.Property(q => q.TotalGrades).IsRequired();
     }
 }

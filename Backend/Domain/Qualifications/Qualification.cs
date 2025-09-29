@@ -8,13 +8,15 @@ public class Qualification
     {
     }
 
-    private Qualification(Guid teamId, double minimumGrade, double maximumGrade, double passingGrade, int period)
+    private Qualification(Guid id,Guid teamId, double minimumGrade, double maximumGrade, double passingGrade, string period, int totalGrades)
     {
+        Id = id;
         TeamId = teamId;
         MinimumGrade = minimumGrade;
         MaximumGrade = maximumGrade;
         PassingGrade = passingGrade;
         Period = period;
+        TotalGrades = totalGrades;
     }
 
     public Guid Id {  get; set; }
@@ -22,25 +24,26 @@ public class Qualification
     public double MinimumGrade { get; set; }
     public double MaximumGrade { get; set; }
     public double PassingGrade { get; set; }
-    public int Period { get; set; }
+    public string Period { get; set; }
+    public int TotalGrades { get; set; }
 
-    private readonly List<UserQualification> _usersQualifications = new();
-    public IReadOnlyCollection<UserQualification> UsersQualifications => _usersQualifications.AsReadOnly();
+    private List<UserQualification> _userQualifications = new();
+    public IReadOnlyCollection<UserQualification> UserQualifications => _userQualifications.AsReadOnly();
     public Team Team { get; set; }
 
-    public static Qualification Create(Guid teamId, double minimumGrade, double maximumGrade, double passingGrade,int period)
-        => new(teamId,minimumGrade,maximumGrade,passingGrade,period);
+    public static Qualification Create(Guid teamId, double minimumGrade, double maximumGrade, double passingGrade,string period,int totalGrades)
+        => new(Guid.NewGuid(),teamId,minimumGrade,maximumGrade,passingGrade,period,totalGrades);
 
     public void AddUserQualification(Guid userId,double grade,int position,bool hasValue, string? description = null)
     {
-        var existingUQ = _usersQualifications.FirstOrDefault(q => q.UserId == userId && q.Position == position);
+        var existingUQ = _userQualifications.FirstOrDefault(q => q.UserId == userId && q.Position == position);
 
         if(existingUQ is null)
         {
             if (description != null)
-                _usersQualifications.Add(UserQualification.Create(userId,Id,grade, position, hasValue,description));
+                _userQualifications.Add(UserQualification.Create(userId,grade, position, hasValue,description));
             else
-                _usersQualifications.Add(UserQualification.Create(userId,Id,grade, position, hasValue));
+                _userQualifications.Add(UserQualification.Create(userId,grade, position, hasValue));
         }
         else
         {

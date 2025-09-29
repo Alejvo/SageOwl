@@ -10,6 +10,10 @@ public class UserQualificationContext : IEntityTypeConfiguration<UserQualificati
     {
         builder.HasKey(uq => uq.Id);
 
+        builder.HasOne(uq => uq.Qualification)
+            .WithMany(q => q.UserQualifications)
+            .HasForeignKey(uq => uq.QualificationId);
+
         builder.HasOne(uq => uq.User)
             .WithMany()
             .HasForeignKey(uq => uq.UserId);

@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Save Qualifications";
+    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
+
+    var maxNotas = Model.Max(q => q.UserQualifications.Count);
+
+    var index = 1;
+}
+
+@model List<Qualification>
+
+<table class="qualification_table">
+    <thead>
+        <tr>
+            <th>UserId</th>
+            @for (int i = 1; i <= maxNotas; i++)
+            {
+                <th>Nota @i</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var qualification in Model)
+        {
+            var notasOrdenadas = qualification.UserQualifications
+                                              .OrderBy(uq => uq.Position)
+                                              .ToList();
+
+            <tr>
+                @for (int i = 0; i < maxNotas; i++)
+                {
+                    <td>@qualification.PassingGrade</td>
+                    if (i < notasOrdenadas.Count)
+                    {
+                        <td>@notasOrdenadas[i].Grade</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".nav-icon", function () {
+            const targetUrl = $(this).data("url");
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+    </script>
+}

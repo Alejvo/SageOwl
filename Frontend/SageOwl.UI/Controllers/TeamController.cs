@@ -17,12 +17,20 @@ public class TeamController : Controller
     private readonly CurrentTeam _currentTeam;
     private readonly CurrentUser _currentUser;
     private readonly IAnnouncementService _announcementService;
-    public TeamController(ITeamService teamService,CurrentTeam currentTeam, IAnnouncementService announcementService, CurrentUser currentUser)
+    private readonly IQualificationService _qualificationService;
+
+    public TeamController(
+        ITeamService teamService,
+        CurrentTeam currentTeam,
+        IAnnouncementService announcementService,
+        CurrentUser currentUser,
+        IQualificationService qualificationService)
     {
         _teamService = teamService;
         _currentTeam = currentTeam;
         _announcementService = announcementService;
         _currentUser = currentUser;
+        _qualificationService = qualificationService;
     }
 
     [HttpGet("{teamId}/mainpage")]
@@ -50,11 +58,45 @@ public class TeamController : Controller
     }
 
     [HttpGet("{teamId}/qualifications")]
-    public IActionResult Qualifications(Guid teamId)
+    public async Task<IActionResult> Qualifications(Guid teamId)
     {
         ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = "Team Qualifications";
+        ViewData["HeaderTitle"] = $"{_currentTeam.Name} Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
+
+        var qualifications = await _qualificationService.GetQualificationsByTeamId(teamId);
+        return View(qualifications);
+    }
+
+    [HttpGet("{teamId}/qualifications/save")]
+    public async Task<IActionResult> SaveQualifications(Guid teamId)
+    {
+
+        await GetTeam(teamId);
+        ViewData["HeaderTitle"] = $"Save Qualifications";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
+
+        var qualifications = await _qualificationService.GetQualificationsByTeamId(teamId);
+
+        foreach (var qualification in qualifications)
+        {
+            foreach (var member in _currentTeam.Members)
+            {
+                if (!qualification.UserQualifications.Any(uq => uq.UserId == member.Id))
+                {
+                    qualification.UserQualifications.Add(new UserQualification 
+                    { 
+                        UserId = member.Id,
+                        HasValue = false
+                    });
+                }
+            }
+        }
+        return View(qualifications);
+    }
+    [HttpPost("qualifications/save")]
+    public async Task<IActionResult> SaveQualifications()
+    {
         return View();
     }
 

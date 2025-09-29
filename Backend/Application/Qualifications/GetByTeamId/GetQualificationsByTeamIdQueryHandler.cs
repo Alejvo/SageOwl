@@ -5,7 +5,7 @@ using Shared;
 
 namespace Application.Qualifications.GetByTeamId;
 
-internal sealed class GetQualificationsByTeamIdQueryHandler : IQueryHandler<GetQualificationsByTeamIdQuery, List<QualificationResponse>>
+internal sealed class GetQualificationsByTeamIdQueryHandler : IQueryHandler<GetQualificationsByTeamIdQuery, QualificationResponse>
 {
     private readonly IQualificationRepository _qualificationRepository;
 
@@ -14,10 +14,13 @@ internal sealed class GetQualificationsByTeamIdQueryHandler : IQueryHandler<GetQ
         _qualificationRepository = qualificationRepository;
     }
 
-    public async Task<Result<List<QualificationResponse>>> Handle(GetQualificationsByTeamIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<QualificationResponse>> Handle(GetQualificationsByTeamIdQuery request, CancellationToken cancellationToken)
     {
-        var qualifications = await _qualificationRepository.GetQualificationsByTeamId(request.TeamId);
+        var qualification = await _qualificationRepository.GetQualificationByTeamId(request.TeamId);
 
-        return qualifications.Select(q => q.ToResponse()).ToList();
+        if (qualification == null)
+            return Result.Failure<QualificationResponse>(Error.DBFailure);
+
+        return qualification.ToResponse();
     }
 }

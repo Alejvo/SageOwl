@@ -6,6 +6,7 @@ public record QualificationResponse(
     double MinimumGrade, 
     double MaximumGrade,
     double PassingGrade,
-    int Period,
-    IEnumerable<UserQualificationResponse> UserQualification
+    string Period,
+    int TotalGrades,
+    IEnumerable<UserQualificationResponse> UserQualifications
     );

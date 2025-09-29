@@ -5,4 +5,4 @@ namespace Application.Qualifications.GetByTeamId;
 
 public record  GetQualificationsByTeamIdQuery(
     Guid TeamId
-    ) : IQuery<List<QualificationResponse>>;
+    ) : IQuery<QualificationResponse>;

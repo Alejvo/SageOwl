@@ -3,4 +3,33 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-<p>@ViewBag.TeamId</p>
+@model List<Qualification>
+
+<table>
+    <thead>
+        <tr>
+            <th>1st</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var qualification in Model)
+        {
+            <tr>
+                <td>@qualification.UserQualifications[0].Grade</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).on("click", ".nav-icon", function () {
+        const targetUrl = $(this).data("url");
+        if (targetUrl) {
+            window.location.href = targetUrl;
+        }
+    });
+    </script>
+}

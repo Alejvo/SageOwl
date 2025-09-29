@@ -14,10 +14,12 @@ public static class QualificationExtensions
             qualification.MaximumGrade,
             qualification.PassingGrade,
             qualification.Period,
-            qualification.UsersQualifications.Select(q => new UserQualificationResponse
+            qualification.TotalGrades,
+            qualification.UserQualifications.Select(q => new UserQualificationResponse
             (
                 q.Id,
                 q.UserId,
+                q.QualificationId,
                 q.Grade,
                 q.Description,
                 q.Position,

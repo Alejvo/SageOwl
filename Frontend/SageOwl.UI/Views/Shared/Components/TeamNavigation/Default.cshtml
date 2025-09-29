@@ -5,7 +5,10 @@
         <a class="team_navigation_item" href="/team/@Model.TeamId/mainpage">MainPage</a>
         <a class="team_navigation_item" href="/team/@Model.TeamId/announcements">Announcements</a>
         <a class="team_navigation_item" href="/team/@Model.TeamId/forms">Forms</a>
-        <a class="team_navigation_item" href="/team/@Model.TeamId/qualifications">Qualifications</a>
+        @if (Model.IsUserAdmin)
+        {
+            <a class="team_navigation_item" href="/team/@Model.TeamId/qualifications">Qualifications</a>
+        }
         <a class="team_navigation_item" href="/team/@Model.TeamId/description">Description</a>
     </div>
     @if (Model.IsUserAdmin)
@@ -18,6 +21,10 @@
             <a class="team_navigation_button" href="/team/@Model.TeamId/announcements/create">
                 <i class="fas fa-plus"></i>
                 Create Announcement
+            </a>
+            <a class="team_navigation_button" href="/team/@Model.TeamId/qualifications">
+                <i class="fas fa-plus"></i>
+                Update Qualifications
             </a>
         </div>
     }

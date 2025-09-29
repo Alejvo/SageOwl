@@ -4,10 +4,12 @@ using Application.Qualifications.Common;
 namespace Application.Qualifications.Save;
 
 public record SaveQualificationCommand(
+    Guid Id,
     Guid TeamId, 
     double MinimumGrade, 
     double MaximumGrade, 
     double PassingGrade, 
-    int Period,
+    string Period,
+    int TotalGrades,
     List<UserQualificationDto> UserQualifications
     ) :ICommand;

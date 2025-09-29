@@ -13,61 +13,43 @@ public class QualificationRepository : IQualificationRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Qualification>> GetQualificationsByTeamId(Guid teamId)
+    public async Task<bool> CreateQualifications(Qualification qualification)
+    {
+        await _dbContext.Qualifications.AddAsync(qualification);
+        return await _dbContext.SaveChangesAsync() > 0;
+    }
+
+    public async Task<Qualification?> GetQualificationById(Guid id)
     {
         return await _dbContext.Qualifications
-            .Include(q => q.UsersQualifications)
+            .Include(q => q.UserQualifications)
+            .Where(q => q.Id == id)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Qualification?> GetQualificationByTeamId(Guid teamId)
+    {
+        return await _dbContext.Qualifications
+            .Include(q => q.UserQualifications)
+                .ThenInclude(q => q.User)
             .Where(q =>  q.TeamId == teamId)
-            .ToListAsync();
+            .FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Qualification>> GetQualificationsByUserId(Guid userId)
     {
         return await _dbContext.Qualifications
-            .Include(q => q.UsersQualifications)
-            .Where(q => q.UsersQualifications.Any(uq => uq.UserId == userId))
+            .Include(q => q.UserQualifications)
+            .Where(q => q.UserQualifications.Any(uq => uq.UserId == userId))
             .ToListAsync();
     }
 
-    public async Task<bool> SaveQualifications(Qualification qualification)
+    public async Task<bool> UpdateQualifications(Qualification qualification)
     {
-        var existingQualification = await _dbContext.Qualifications
-        .Include(q => q.UsersQualifications)
-        .FirstOrDefaultAsync(q => q.Id == qualification.Id);
-
-        if (existingQualification is null)
+        if (_dbContext.Entry(qualification).State == EntityState.Detached)
         {
-            await _dbContext.Qualifications.AddAsync(qualification);
+            _dbContext.Qualifications.Update(qualification);
         }
-        else
-        {
-            existingQualification.MaximumGrade = qualification.MaximumGrade;
-            existingQualification.MinimumGrade = qualification.MinimumGrade;
-            existingQualification.PassingGrade = qualification.PassingGrade;
-            existingQualification.Period = qualification.Period;
-
-            var toRemove = existingQualification.UsersQualifications
-                .Where(eq => !qualification.UsersQualifications.Any(nq => nq.UserId == eq.UserId))
-                .ToList();
-
-            _dbContext.UserQualifications.RemoveRange(toRemove);
-
-            foreach (var nq in qualification.UsersQualifications)
-            {
-                var existing = existingQualification.UsersQualifications
-                    .FirstOrDefault(eq => eq.UserId == nq.UserId);
-
-                if (existing is null)
-                {
-                    existingQualification.AddUserQualification(nq.UserId,nq.Position,nq.Position,nq.HasValue,nq.Description);
-                }
-                else
-                {
-                    existing.Update(nq.Grade, nq.Position, nq.HasValue,nq.Description);
-                }
-            }
-        }
-
         return await _dbContext.SaveChangesAsync() > 0;
     }
 }

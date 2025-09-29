@@ -8,11 +8,10 @@ public class UserQualification
     {
     }
 
-    private UserQualification(Guid id, Guid userId, Guid qualificationId,  double grade, int position , bool hasValue, string? description = null)
+    private UserQualification(Guid id, Guid userId, double grade, int position , bool hasValue, string? description = null)
     {
         Id = id;
         UserId = userId;
-        QualificationId = qualificationId;
         Grade = grade;
         Description = description;
         Position = position;
@@ -26,13 +25,14 @@ public class UserQualification
     public int Position { get; set; }
     public bool HasValue { get; set; } = false;
     public Guid QualificationId { get; set; }
+    public Qualification Qualification { get; set; }
     public User User { get; set; }
 
-    public static UserQualification Create(Guid userId, Guid qualificationId,double grade, int position,bool hasValue,string? description = null)
-        => new(Guid.NewGuid(),userId,qualificationId,grade,position,hasValue,description);
+    public static UserQualification Create(Guid userId, double grade, int position,bool hasValue,string? description = null)
+        => new(Guid.NewGuid(),userId,grade,position,hasValue,description);
 
-    public static UserQualification Create(Guid userId, Guid qualificationId,double grade,int position,bool hasValue)
-    => new(Guid.NewGuid(),userId,qualificationId,grade,position,hasValue);
+    public static UserQualification Create(Guid userId,double grade,int position,bool hasValue)
+    => new(Guid.NewGuid(),userId,grade,position,hasValue);
 
     public void Update(double grade, int position, bool hasValue, string? description = null)
     {
