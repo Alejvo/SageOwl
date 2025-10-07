@@ -1,4 +1,4 @@
-﻿namespace SageOwl.UI.Models;
+﻿namespace SageOwl.UI.Models.Qualifications;
 
 public class Qualification
 {
@@ -7,6 +7,7 @@ public class Qualification
     public double MinimumGrade { get; set; }
     public double MaximumGrade { get; set; }
     public double PassingGrade { get; set; }
-    public int Period { get; set; }
+    public string Period { get; set; }
+    public int TotalGrades { get; set; }
     public List<UserQualification> UserQualifications {  get; set; } = new List<UserQualification>();
 }

@@ -1,9 +1,39 @@
-﻿.qualification_table {
-    border-collapse: collapse;
-    width: 300px;
+﻿* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-th, td {
+
+.save_qualification_main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    align-items: stretch;
+    padding:20px;
+}
+
+.save_qualification_table_wrapper {
+    overflow-x: auto; 
+    width: 100%;
+}
+
+.save_qualification_table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 200px; 
+}
+
+.fixed-col {
+    width: 200px; 
+    min-width: 200px;
+    max-width: 200px;
+}
+
+.save_qualification_table th,
+.save_qualification_table td {
     border: 1px solid #ccc;
     padding: 8px;
 }
@@ -15,3 +45,10 @@ tbody tr:nth-child(odd) {
 tbody tr:nth-child(even) {
     background-color: #e6e6e6;
 }
+
+.save_qualification_options_list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+

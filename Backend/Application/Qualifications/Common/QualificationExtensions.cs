@@ -19,6 +19,7 @@ public static class QualificationExtensions
             (
                 q.Id,
                 q.UserId,
+                q.User.Name,
                 q.QualificationId,
                 q.Grade,
                 q.Description,

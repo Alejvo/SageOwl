@@ -1,6 +1,7 @@
 ﻿using Application.Users.Common;
 using Domain.Announcements;
 using Domain.Forms;
+using Domain.Qualifications;
 using System.Text.Json.Serialization;
 
 namespace Application.Teams.Common;

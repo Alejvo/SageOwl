@@ -1,4 +1,4 @@
-﻿using SageOwl.UI.Models;
+﻿using SageOwl.UI.Models.Qualifications;
 using SageOwl.UI.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -17,7 +17,7 @@ public class QualificationService : IQualificationService
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
     }
-    public async Task<List<Qualification>> GetGetQualificationsByUserId(Guid userId)
+    public async Task<Qualification> GetGetQualificationByUserId(Guid userId)
     {
         var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
 
@@ -42,12 +42,12 @@ public class QualificationService : IQualificationService
             PropertyNameCaseInsensitive = true
         };
 
-        var qualifications = JsonSerializer.Deserialize<List<Qualification>>(content, options);
+        var qualification = JsonSerializer.Deserialize<Qualification>(content, options);
 
-        return qualifications;
+        return qualification;
     }
 
-    public async Task<List<Qualification>> GetQualificationsByTeamId(Guid teamId)
+    public async Task<Qualification> GetQualificationByTeamId(Guid teamId)
     {
         var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
 
@@ -72,12 +72,12 @@ public class QualificationService : IQualificationService
             PropertyNameCaseInsensitive = true
         };
 
-        var qualifications = JsonSerializer.Deserialize<List<Qualification>>(content, options);
+        var qualification = JsonSerializer.Deserialize<Qualification>(content, options);
 
-        return qualifications;
+        return qualification;
     }
 
-    public async Task<HttpStatusCode> SaveQualifications(Qualification qualification)
+    public async Task<HttpStatusCode> SaveQualifications(SaveQualification qualification)
     {
         var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
 
@@ -87,7 +87,7 @@ public class QualificationService : IQualificationService
         _httpClient.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.PostAsync("team", content);
+        var response = await _httpClient.PostAsync("qualifications", content);
 
         return response.StatusCode;
     }

@@ -1,11 +1,11 @@
-﻿using SageOwl.UI.Models;
+﻿using SageOwl.UI.Models.Qualifications;
 using System.Net;
 
 namespace SageOwl.UI.Services.Interfaces;
 
 public interface IQualificationService
 {
-    Task<List<Qualification>> GetGetQualificationsByUserId(Guid userId);
-    Task<List<Qualification>> GetQualificationsByTeamId(Guid teamId);
-    Task<HttpStatusCode> SaveQualifications(Qualification qualification);
+    Task<Qualification> GetGetQualificationByUserId(Guid userId);
+    Task<Qualification> GetQualificationByTeamId(Guid teamId);
+    Task<HttpStatusCode> SaveQualifications(SaveQualification qualification);
 }

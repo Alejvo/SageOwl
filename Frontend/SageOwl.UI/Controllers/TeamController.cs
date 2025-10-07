@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Attributes;
 using SageOwl.UI.Models;
+using SageOwl.UI.Models.Qualifications;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
+using SageOwl.UI.ViewModels.Qualifications;
 using SageOwl.UI.ViewModels.Teams;
-using System.Threading.Tasks;
 
 namespace SageOwl.UI.Controllers;
 
@@ -64,8 +65,8 @@ public class TeamController : Controller
         ViewData["HeaderTitle"] = $"{_currentTeam.Name} Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
-        var qualifications = await _qualificationService.GetQualificationsByTeamId(teamId);
-        return View(qualifications);
+        /*var qualifications = await _qualificationService.GetQualificationByTeamId(teamId);*/
+        return View(_currentTeam);
     }
 
     [HttpGet("{teamId}/qualifications/save")]
@@ -76,28 +77,59 @@ public class TeamController : Controller
         ViewData["HeaderTitle"] = $"Save Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
-        var qualifications = await _qualificationService.GetQualificationsByTeamId(teamId);
+        var qualification = new SaveQualificationsViewModel();
+        qualification.TeamId = _currentTeam.TeamId;
+        qualification.Descriptions.Add("Grade 1");
 
-        foreach (var qualification in qualifications)
+        foreach (var item in _currentTeam.Members.Where(m => m.Role != "Admin"))
         {
-            foreach (var member in _currentTeam.Members)
+            qualification.UserQualifications.Add(new UserQualificationViewModel
             {
-                if (!qualification.UserQualifications.Any(uq => uq.UserId == member.Id))
+                UserId = item.Id,
+                Name = item.Name + " " + item.Surname
+            });
+        }
+
+        return View(qualification);
+    }
+
+    [HttpPost("qualifications/save")]
+    public async Task<IActionResult> SaveQualifications(SaveQualificationsViewModel qualification)
+    {
+        if (ModelState.IsValid)
+        {
+            var newQualification = new SaveQualification
+            {
+                MaximumGrade = qualification.MaximumGrade,
+                MinimumGrade = qualification.MinimumGrade,
+                PassingGrade = qualification.PassingGrade,
+                TotalGrades = qualification.TotalGrades,
+                Period = qualification.Period,
+                TeamId = qualification.TeamId,
+                UserQualifications = qualification.UserQualifications
+                .SelectMany(uq => uq.Grades.Select((grade, gIndex) => new SaveUserQualification
                 {
-                    qualification.UserQualifications.Add(new UserQualification 
-                    { 
-                        UserId = member.Id,
-                        HasValue = false
-                    });
+                    UserId = uq.UserId,
+                    Grade = grade,
+                    Position = uq.Positions.Count > gIndex ? uq.Positions[gIndex] : 0,
+                    Description = qualification.Descriptions.Count > gIndex ? qualification.Descriptions[gIndex] : string.Empty,
+                    HasValue = true
+                })).ToList()
+            };
+
+            foreach(var q in qualification.UserQualifications)
+            {
+                Console.WriteLine(q.UserId);
+                foreach (var item in q.Positions)
+                {
+                    Console.WriteLine(item);
                 }
             }
+
+            await _qualificationService.SaveQualifications(newQualification);
+            return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
         }
-        return View(qualifications);
-    }
-    [HttpPost("qualifications/save")]
-    public async Task<IActionResult> SaveQualifications()
-    {
-        return View();
+        return View(qualification);
     }
 
     [HttpGet("{teamId}/description")]

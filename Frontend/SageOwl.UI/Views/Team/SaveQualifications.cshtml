@@ -2,47 +2,170 @@
     ViewBag.Title = "Save Qualifications";
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 
-    var maxNotas = Model.Max(q => q.UserQualifications.Count);
-
-    var index = 1;
 }
 
-@model List<Qualification>
+@model SaveQualificationsViewModel
 
-<table class="qualification_table">
-    <thead>
-        <tr>
-            <th>UserId</th>
-            @for (int i = 1; i <= maxNotas; i++)
-            {
-                <th>Nota @i</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-       @foreach (var qualification in Model)
-        {
-            var notasOrdenadas = qualification.UserQualifications
-                                              .OrderBy(uq => uq.Position)
-                                              .ToList();
+<style>
+    *{
+        margin:0;
+        padding:0;
+    }
 
-            <tr>
-                @for (int i = 0; i < maxNotas; i++)
-                {
-                    <td>@qualification.PassingGrade</td>
-                    if (i < notasOrdenadas.Count)
-                    {
-                        <td>@notasOrdenadas[i].Grade</td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-                }
-            </tr>
+    .save_qualification_td {
+        width:70px;
+        min-width:70px;
+        max-width:70px;
+        border: 1px solid #ccc;
+        padding:5px;
+    }
+
+    .save_qualification_td input{
+        outline:none;
+        border:none;
+        border-bottom:2px solid black;
+        background-color:transparent;
+    }
+
+    input.touched:invalid {
+        border-color: red;
+        background-color: #fff0f0;
+    }
+    .save_qualification_input {
+        width:100%;
+        height:100%;
+    }
+
+    .save_qualification_input input{
+            width: 100%;
+            height: 100%;
+    }
+
+    .save_qualification_button{
+        border:none;
+        width:120px;
+        height:40px;
+        border-radius:10px;
+        padding:10px;
+        background-color: #A74E47;
+        color:#fff;
+        font-size:18px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .save_qualification_form{
+        display:flex;
+        flex-direction:column;
+        gap:20px;
+    }
+
+    .save_qualification_options input{
+        border-radius:10px;
+        padding:5px 8px;
+        background-color: #F8F8F8;
+        border: 1px #d4d4d4 solid;
+        -moz-appearance: textfield;
+    }
+
+    .save_qualification_options input::-webkit-outer-spin-button,
+    .save_qualification_options input::-webkit-inner-spin-button    {
+            -webkit-appearance: none;
+            margin: 0;
+    }
+
+    .save_qualification_input_header{
+        width:100%;
+        height:100%;
+    }
+    .save_qualification_input_header input{
+        width:100%;
+            outline: none;
+            border: none;
+            border-bottom: 2px solid #8C8C8C;
+            background-color: transparent;
+    }
+
+        .save_qualification_input_header input:focus {
+            border-bottom: 2px solid black;
         }
-    </tbody>
-</table>
+</style>
+
+<main class="save_qualification_main">
+    <form asp-action="SaveQualifications" method="post" class="save_qualification_form">
+        <div class="save_qualification_options_list">
+            <div class="save_qualification_options">
+                <label for="TotalGrades">Total Grades</label>
+                <input asp-for="TotalGrades" type="number" 
+                oninput="adjustColumns(this.value)" min="1" value="1"
+                       id="totalGrades" required placeholder="0"/>
+            </div>
+            <div class="save_qualification_options">
+                <label for="MaximumGrade">Maximum Grade:</label>
+                <input type="number" asp-for="MaximumGrade" min="0" id="maxGrade"  step="any" required placeholder="0"/>
+            </div>
+            <div class="save_qualification_options">
+                <label for="passingGrade">Passing Grade:</label>
+                    <input type="number" step="any" min="0" asp-for="PassingGrade" id="passingGrade" name="passingGrade" required placeholder="0"/>
+            </div>
+            <div class="save_qualification_options">
+                <label for="minGrade">Minimum Grade:</label>
+                <input type="number" step="any" min="0" asp-for="MinimumGrade" id="minGrade" required placeholder="0" />
+            </div>
+            <div class="save_qualification_options">
+                <label for="period">Period:</label>
+                <input asp-for="Period" id="period" name="period" required placeholder="2025 - 2"/>
+            </div>
+            <input asp-for="TeamId"  type="hidden"/>
+        </div>
+
+        <div class="save_qualification_table_wrapper">
+            <table id="qualificationTable" class="save_qualification_table">
+                <thead>
+                    <tr>
+                        <th class="fixed-col">Name</th>
+                        @for (int g = 0; g < (Model.TotalGrades > 0 ? Model.TotalGrades : 1); g++)
+                        {
+                            <th class="save_qualification_td">
+                                <div class="save_qualification_input_header">
+                                    <input asp-for="Descriptions[g]"
+                                           value="@(Model.Descriptions.Count > g ? Model.Descriptions[g] : "")" />
+                                </div>
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int r = 0; r < Model.UserQualifications.Count; r++)
+                    {
+                        <tr>
+                            <td class="fixed-col">
+                                <input asp-for="UserQualifications[r].Name" type="hidden" />
+                                <input asp-for="UserQualifications[r].UserId" type="hidden" />
+                                @Model.UserQualifications[r].Name
+                            </td>
+
+                            @for (int g = 0; g < (Model.TotalGrades > 0 ? Model.TotalGrades : 1); g++)
+                            {
+                                <td class="save_qualification_td">
+                                    <div class="save_qualification_input">
+                                        <input min="0" step="any" type="number" asp-for="UserQualifications[r].Grades[g]" />
+                                        <input min="0" step="any" value="0" type="hidden" asp-for="UserQualifications[r].Positions[g]" />
+                                    </div>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <button type="submit" class="save_qualification_button">Guardar</button>
+    </form>
+
+</main>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -53,5 +176,72 @@
                 window.location.href = targetUrl;
             }
         });
+    </script>
+    <script>
+        function adjustColumns(count) {
+            count = parseInt(count);
+
+            let table = document.getElementById("qualificationTable");
+            let theadRow = table.tHead.rows[0];
+            let currentCols = theadRow.cells.length - 1;
+
+            if (count > currentCols) {
+                for (let g = currentCols; g < count; g++) {
+                    let th = document.createElement("th");
+                    th.classList.add("save_qualification_td");
+
+                    let divHeader = document.createElement("div");
+                    divHeader.classList.add("save_qualification_input_header");
+
+                    let inputHeader = document.createElement("input");
+                    inputHeader.type = "text";
+                    inputHeader.name = `Descriptions[${g}]`;
+                    inputHeader.value = `Grade ${g + 1}`;
+
+                    divHeader.appendChild(inputHeader);
+                    th.appendChild(divHeader);
+                    theadRow.appendChild(th);
+
+                    let rows = table.tBodies[0].rows;
+                    for (let r = 0; r < rows.length; r++) {
+                        let cell = rows[r].insertCell();
+                        cell.classList.add("save_qualification_td");
+
+                        let divBody = document.createElement("div");
+                        divBody.classList.add("save_qualification_input");
+
+                        let inputBody = document.createElement("input");
+                        inputBody.type = "number";
+                        inputBody.name = `UserQualifications[${r}].Grades[${g}]`;
+
+                        let inputDesc = document.createElement("input");
+                        inputDesc.type = "hidden";
+                        inputDesc.step="any";
+                        inputDesc.min="0";
+                        inputDesc.name = `UserQualifications[${r}].Positions[${g}]`;
+                        inputDesc.value = `${g}`;
+
+                        divBody.appendChild(inputBody);
+                        divBody.appendChild(inputDesc);
+                        cell.appendChild(divBody);
+                    }
+                }
+            } else if (count < currentCols) {
+                for (let g = currentCols; g > count; g--) {
+                    theadRow.deleteCell(g);
+
+                    let rows = table.tBodies[0].rows;
+                    for (let r = 0; r < rows.length; r++) {
+                        rows[r].deleteCell(g);
+                    }
+                }
+            }
+        }     </script>
+    <script> 
+        document.querySelectorAll("input").forEach(input => { 
+            input.addEventListener("blur", () => { 
+                input.classList.add("touched"); 
+            }); 
+        }); 
     </script>
 }

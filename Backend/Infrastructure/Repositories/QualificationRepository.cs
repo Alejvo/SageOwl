@@ -30,10 +30,11 @@ public class QualificationRepository : IQualificationRepository
     public async Task<Qualification?> GetQualificationByTeamId(Guid teamId)
     {
         return await _dbContext.Qualifications
+            .Include(q => q.Team)
+                .ThenInclude(t => t.Members)
+                    .ThenInclude(tm => tm.User)
             .Include(q => q.UserQualifications)
-                .ThenInclude(q => q.User)
-            .Where(q =>  q.TeamId == teamId)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(q => q.TeamId == teamId);
     }
 
     public async Task<IEnumerable<Qualification>> GetQualificationsByUserId(Guid userId)

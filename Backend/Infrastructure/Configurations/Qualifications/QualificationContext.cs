@@ -11,7 +11,7 @@ public class QualificationContext : IEntityTypeConfiguration<Qualification>
         builder.HasKey(q => q.Id);
 
         builder.HasOne(q => q.Team)
-            .WithMany()
+            .WithMany( t=> t.Qualifications)
             .HasForeignKey(q => q.TeamId);
 
         builder.Property(q => q.MaximumGrade).IsRequired();

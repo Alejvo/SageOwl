@@ -3,19 +3,24 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-@model List<Qualification>
+@model CurrentTeam
 
 <table>
     <thead>
         <tr>
-            <th>1st</th>
+            @foreach (var m in Model.Members)
+            {
+            <tr>
+                <td>@m.Id</td>
+            </tr>
+        }
         </tr>
     </thead>
     <tbody>
-        @foreach (var qualification in Model)
+        @foreach (var m in Model.Members)
         {
             <tr>
-                <td>@qualification.UserQualifications[0].Grade</td>
+                <td>@m.Username</td>
             </tr>
         }
     </tbody>
