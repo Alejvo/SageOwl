@@ -10,5 +10,5 @@ public class SaveQualificationsViewModel
     public int TotalGrades { get; set; }
     public List<string> Descriptions { get; set; } = new List<string>();
 
-    public List<UserQualificationViewModel> UserQualifications { get; set; } = new List<UserQualificationViewModel>();
+    public List<SaveUserQualificationViewModel> UserQualifications { get; set; } = new List<SaveUserQualificationViewModel>();
 }

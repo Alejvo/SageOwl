@@ -2,7 +2,7 @@
 
 public interface IQualificationRepository
 {
-    Task<Qualification?> GetQualificationByTeamId(Guid teamId);
+    Task<IEnumerable<Qualification>> GetQualificationByTeamId(Guid teamId);
     Task<IEnumerable<Qualification>> GetQualificationsByUserId(Guid userId);
     Task<bool> CreateQualifications(Qualification qualification);
     Task<bool> UpdateQualifications(Qualification qualification);

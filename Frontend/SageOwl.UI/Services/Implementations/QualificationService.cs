@@ -17,7 +17,7 @@ public class QualificationService : IQualificationService
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
     }
-    public async Task<Qualification> GetGetQualificationByUserId(Guid userId)
+    public async Task<List<Qualification>> GetQualificationByUserId(Guid userId)
     {
         var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
 
@@ -42,12 +42,12 @@ public class QualificationService : IQualificationService
             PropertyNameCaseInsensitive = true
         };
 
-        var qualification = JsonSerializer.Deserialize<Qualification>(content, options);
+        var qualification = JsonSerializer.Deserialize<List<Qualification>>(content, options);
 
         return qualification;
     }
 
-    public async Task<Qualification> GetQualificationByTeamId(Guid teamId)
+    public async Task<List<Qualification>> GetQualificationByTeamId(Guid teamId)
     {
         var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
 
@@ -72,7 +72,7 @@ public class QualificationService : IQualificationService
             PropertyNameCaseInsensitive = true
         };
 
-        var qualification = JsonSerializer.Deserialize<Qualification>(content, options);
+        var qualification = JsonSerializer.Deserialize<List<Qualification>>(content, options);
 
         return qualification;
     }

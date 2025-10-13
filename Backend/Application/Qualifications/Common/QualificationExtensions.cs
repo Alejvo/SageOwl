@@ -10,6 +10,7 @@ public static class QualificationExtensions
         (
             qualification.Id,
             qualification.TeamId,
+            qualification.Team.Name,
             qualification.MinimumGrade,
             qualification.MaximumGrade,
             qualification.PassingGrade,

@@ -3,6 +3,7 @@
 public record QualificationResponse(
     Guid Id, 
     Guid TeamId, 
+    string TeamName,
     double MinimumGrade, 
     double MaximumGrade,
     double PassingGrade,

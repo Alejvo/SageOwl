@@ -27,21 +27,27 @@ public class QualificationRepository : IQualificationRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<Qualification?> GetQualificationByTeamId(Guid teamId)
+    public async Task<IEnumerable<Qualification>> GetQualificationByTeamId(Guid teamId)
     {
         return await _dbContext.Qualifications
             .Include(q => q.Team)
                 .ThenInclude(t => t.Members)
                     .ThenInclude(tm => tm.User)
-            .Include(q => q.UserQualifications)
-            .FirstOrDefaultAsync(q => q.TeamId == teamId);
+            .Include(q => q.UserQualifications
+                .OrderBy(uq => uq.Position))
+            .Where(q => q.TeamId == teamId)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Qualification>> GetQualificationsByUserId(Guid userId)
     {
         return await _dbContext.Qualifications
-            .Include(q => q.UserQualifications)
-            .Where(q => q.UserQualifications.Any(uq => uq.UserId == userId))
+            .Include(q => q.Team)
+                .ThenInclude(t => t.Members)
+                    .ThenInclude(tm => tm.User)
+            .Include(q => q.UserQualifications
+                .Where(uq => uq.UserId == userId)
+                .OrderBy(uq => uq.Position))
             .ToListAsync();
     }
 

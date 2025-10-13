@@ -1,1 +1,43 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
+}
+
+@model QualificationViewModel
+
+<form asp-action="GetQualification" asp-controller="Qualification" method="get">
+    <select name="period">
+        @foreach (var period in Model.PeriodList)
+        {
+            <option value="@period">@period</option>
+        }
+    </select>
+    <button type="submit">Change</button>
+</form>
+
+<div id="qualificationContainer">
+    @await Html.PartialAsync("~/Views/Shared/PartialViews/_QualificationTable.cshtml", Model)
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".nav-icon", function () {
+            const targetUrl = $(this).data("url");
+            if (targetUrl) {
+                window.location.href = targetUrl;
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("periodSelect").addEventListener("change", async function () {
+            const period = this.value;
+            const response = await fetch(`/Workspace/GetQualification?period=${encodeURIComponent(period)}`);
+            if (!response.ok) {
+                document.getElementById("qualificationContainer").innerHTML = "<p>Error loading qualifications.</p>";
+                return;
+            }
+            const html = await response.text();
+            document.getElementById("qualificationContainer").innerHTML = html;
+        });
+    </script>
+}

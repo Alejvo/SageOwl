@@ -61,12 +61,35 @@ public class TeamController : Controller
     [HttpGet("{teamId}/qualifications")]
     public async Task<IActionResult> Qualifications(Guid teamId)
     {
-        ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = $"{_currentTeam.Name} Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
+        
+         var qualifications = await _qualificationService.GetQualificationByTeamId(_currentTeam.TeamId);
 
-        /*var qualifications = await _qualificationService.GetQualificationByTeamId(teamId);*/
-        return View(_currentTeam);
+        var qualification = qualifications.FirstOrDefault();
+
+        QualificationViewModel qualificationVM = new QualificationViewModel
+        {
+            Descriptions = qualification.UserQualifications
+                            .OrderBy(x => x.Position)   
+                            .Select(x => x.Description)     
+                            .Distinct()                     
+                            .ToList(),
+            Period = qualification.Period,
+            TotalGrades = qualification.TotalGrades,
+            PeriodList = qualifications.Select(x => x.Period).ToList(),
+            UserQualifications = qualification.UserQualifications
+                .GroupBy(uq => new { uq.UserId, uq.Name })
+                .Select(g => new UserQualificationViewModel
+                {
+                    UserId = g.Key.UserId,
+                    Name = g.Key.Name,
+                    Grades = g.OrderBy(x => x.Position).Select(x => x.Grade).ToList(),
+                    Positions = g.OrderBy(x => x.Position).Select(x => x.Position).ToList()
+                }).ToList()
+        };
+
+        return View(qualificationVM);
     }
 
     [HttpGet("{teamId}/qualifications/save")]
@@ -83,7 +106,7 @@ public class TeamController : Controller
 
         foreach (var item in _currentTeam.Members.Where(m => m.Role != "Admin"))
         {
-            qualification.UserQualifications.Add(new UserQualificationViewModel
+            qualification.UserQualifications.Add(new SaveUserQualificationViewModel
             {
                 UserId = item.Id,
                 Name = item.Name + " " + item.Surname
