@@ -7,7 +7,6 @@ using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
 using SageOwl.UI.ViewModels.Qualifications;
 using SageOwl.UI.ViewModels.Teams;
-using System.Threading.Tasks;
 
 namespace SageOwl.UI.Controllers;
 

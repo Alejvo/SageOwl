@@ -8,7 +8,7 @@
 <main class="workspace_forms_main">
     @foreach (var form in Model)
     {
-        @await Html.PartialAsync("~/Views/Shared/Components/_FormCard.cshtml",form)
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_FormCard.cshtml", form)
     }
 </main>
 

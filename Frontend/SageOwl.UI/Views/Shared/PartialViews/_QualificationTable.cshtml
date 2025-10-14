@@ -1,25 +1,34 @@
 ﻿@model QualificationViewModel
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            @for (int i = 0; i < Model.Descriptions.Count; i++)
-            {
-                <th>@Model.Descriptions[i]</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 0; i < Model.UserQualifications.Count; i++)
-        {
+
+@if (Model?.UserQualifications == null || !Model.UserQualifications.Any())
+{
+    <p>No qualifications available</p>
+}
+else
+{
+    <table class="qualification_table">
+        <thead>
             <tr>
-                <td>@Model.UserQualifications[i].Name</td>
-                @for (int j = 0; j < Model.UserQualifications[i].Grades.Count; j++)
+                <th>Name</th>
+                @for (int i = 0; i < Model.Descriptions.Count; i++)
                 {
-                    <td>@Model.UserQualifications[i].Grades[j]</td>
+                    <th>@Model.Descriptions[i]</th>
                 }
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.UserQualifications.Count; i++)
+            {
+                <tr>
+                    <td>@Model.UserQualifications[i].Name</td>
+                    @for (int j = 0; j < Model.UserQualifications[i].Grades.Count; j++)
+                    {
+                        <td>@Model.UserQualifications[i].Grades[j]</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

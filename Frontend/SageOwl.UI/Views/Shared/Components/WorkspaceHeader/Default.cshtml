@@ -7,7 +7,7 @@
     </div>
     <div class="profile_container">
         
-        @await Html.PartialAsync("~/Views/Shared/Components/_ProfileInfo.cshtml", new ProfileInfoViewModel
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_ProfileInfo.cshtml", new ProfileInfoViewModel
         { Name = $"{@Model.ProfileInfo.Name}", Username = $"{@Model.ProfileInfo.Username}"})
         
     </div>

@@ -4,19 +4,24 @@
 
 @model QualificationViewModel
 
-<form asp-action="GetQualification" asp-controller="Qualification" method="get">
-    <select name="period">
-        @foreach (var period in Model.PeriodList)
-        {
-            <option value="@period">@period</option>
-        }
-    </select>
-    <button type="submit">Change</button>
-</form>
+<main class="team_qualifications_main">
+    @await Component.InvokeAsync("TeamNavigation")
 
-<div id="qualificationContainer">
-    @await Html.PartialAsync("~/Views/Shared/PartialViews/_QualificationTable.cshtml", Model)
-</div>
+    <form asp-action="GetQualification" asp-controller="Qualification" method="get">
+        <select name="period">
+            @foreach (var period in Model.PeriodList)
+            {
+                <option value="@period">@period</option>
+            }
+        </select>
+        <button type="submit">Change</button>
+    </form>
+
+    <div id="qualificationContainer">
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_QualificationTable.cshtml", Model)
+    </div>
+</main>
+
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

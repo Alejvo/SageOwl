@@ -19,7 +19,7 @@
         {
             @foreach (var announcement in Model)
             {
-                @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml", announcement)
+                @await Html.PartialAsync("~/Views/Shared/PartialViews/_Announcement.cshtml", announcement)
             }
         }
 

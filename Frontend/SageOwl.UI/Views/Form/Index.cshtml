@@ -41,7 +41,7 @@
                 <div class="form_questions">
                     @foreach (var question in openedForm.Questions)
                     {
-                        @await Html.PartialAsync("~/Views/Shared/Components/_Question.cshtml", question)
+                @await Html.PartialAsync("~/Views/Shared/PartialViews/_Question.cshtml", question)
                     }
                     <button type="submit" class="form_submit">Submit</button>
 

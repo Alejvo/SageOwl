@@ -1,2 +1,7 @@
-﻿body {
+﻿.team_qualifications_main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 20px;
+    align-items: stretch;
 }

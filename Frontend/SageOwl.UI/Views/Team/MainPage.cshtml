@@ -20,7 +20,7 @@
             <div class="team_main_announcements">
             @foreach (var announcement in Model.Announcements)
             {
-                @await Html.PartialAsync("~/Views/Shared/Components/_Announcement.cshtml", new AnnouncementViewModel
+                @await Html.PartialAsync("~/Views/Shared/PartialViews/_Announcement.cshtml", new AnnouncementViewModel
                 {
                     Content = announcement.Content,
                 Title = announcement.Title,
