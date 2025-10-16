@@ -9,20 +9,22 @@ public class WorkspaceHeaderViewComponent : ViewComponent
 {
     private readonly IUserService _userService;
     private readonly CurrentUser _currentUser;
-    public WorkspaceHeaderViewComponent(IUserService userService, CurrentUser currentUser)
+    private readonly IAccountService _accountService;
+    public WorkspaceHeaderViewComponent(IUserService userService, CurrentUser currentUser, IAccountService accountService)
     {
         _userService = userService;
         _currentUser = currentUser;
+        _accountService = accountService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync(string title,string url)
     {
-        var token = HttpContext.Request.Cookies["AccessToken"];
+        var accessToken = await _accountService.GetValidAccessTokenAsync();
 
         User? user = null;
-        if (!string.IsNullOrEmpty(token))
+        if (!string.IsNullOrEmpty(accessToken))
         {
-            user = await _userService.GetUserFromToken(token);
+            user = await _userService.GetUserFromToken(accessToken);
             _currentUser.Id = user.Id;
             _currentUser.Name = user.Name;
             _currentUser.Email = user.Email;
@@ -30,8 +32,6 @@ public class WorkspaceHeaderViewComponent : ViewComponent
             _currentUser.CreatedAt = user.CreatedAt;
             _currentUser.Username = user.Username;
         }
-
-
 
         var model = new WorkspaceHeaderViewModel
         {

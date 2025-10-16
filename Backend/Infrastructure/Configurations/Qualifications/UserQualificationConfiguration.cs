@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations.Qualifications;
 
-public class UserQualificationContext : IEntityTypeConfiguration<UserQualification>
+public class UserQualificationConfiguration : IEntityTypeConfiguration<UserQualification>
 {
     public void Configure(EntityTypeBuilder<UserQualification> builder)
     {

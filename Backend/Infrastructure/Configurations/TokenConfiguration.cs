@@ -1,6 +1,7 @@
 ﻿using Domain.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace Infrastructure.Configurations;
 
@@ -16,6 +17,9 @@ public class TokenConfiguration : IEntityTypeConfiguration<Token>
             .HasForeignKey<Token>(t => t.UserId)
             .IsRequired();
 
-        builder.Property(t => t.JwtToken).IsRequired();
+        builder.Property(t => t.RefreshToken)
+            .HasColumnName("RefreshToken");
+
+        builder.Property(t => t.RefreshToken).IsRequired();
     }
 }

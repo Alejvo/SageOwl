@@ -11,11 +11,13 @@ public class TeamService : ITeamService
 {
     private readonly HttpClient _httpClient;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IAccountService _accountService;
 
-    public TeamService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+    public TeamService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IAccountService accountService)
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
+        _accountService = accountService;
     }
 
     public async Task<bool> CreateTeam(CreateTeamViewModel newTeam)
@@ -68,7 +70,8 @@ public class TeamService : ITeamService
 
     public async Task<List<Team>> GetTeamsByUser()
     {
-        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+
+        var token = await _accountService.GetValidAccessTokenAsync();
 
         var handler = new JwtSecurityTokenHandler();
         var jwtToken = handler.ReadJwtToken(token);

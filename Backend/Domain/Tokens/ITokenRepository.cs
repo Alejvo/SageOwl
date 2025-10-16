@@ -3,5 +3,5 @@
 public interface ITokenRepository
 {
     Task<Token?> GetToken(string token);
-    Task SaveToken(Guid userId, string token, Guid id, DateTime expiryTime);
+    Task SaveOrUpdateTokenAsync(Guid userId, string refreshToken, DateTime expiryTime);
 }

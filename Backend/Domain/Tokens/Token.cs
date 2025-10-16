@@ -5,19 +5,19 @@ namespace Domain.Tokens;
 public class Token
 {
     public Guid Id { get; set; }
-    public string JwtToken { get; set; }
+    public string RefreshToken { get; set; }
     public DateTime ExpiryTime { get; set; }
     public Guid UserId { get; set; }
     public User? User { get; set; }
 
     protected Token() { }
-    private Token(string jwtToken, Guid userId)
+    private Token(string refreshToken, Guid userId,DateTime expiryTime)
     {
         Id = Guid.NewGuid();
-        JwtToken = jwtToken;
-        ExpiryTime = DateTime.Now.AddMinutes(15);
+        RefreshToken = refreshToken;
+        ExpiryTime = expiryTime;
         UserId = userId;
     }
 
-    public static Token Create(string jwtToken, Guid userId) => new(jwtToken, userId);
+    public static Token Create(string refreshToken, Guid userId, DateTime expiryTime) => new(refreshToken, userId,expiryTime);
 }

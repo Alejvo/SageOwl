@@ -16,7 +16,8 @@ builder.Services.AddScoped<IQualificationService,QualificationService>();
 builder.Services.AddSingleton<CurrentTeam>();
 builder.Services.AddSingleton<CurrentUser>();
 
-builder.Services.AddHttpClient("Backend", client => client.BaseAddress = new Uri("https://localhost:7027/api/"));
+builder.Services.AddHttpClient("Backend", client =>
+    client.BaseAddress = new Uri("https://localhost:7027/api/"));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -29,6 +30,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+//app.UseMiddleware<TokenRefreshMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

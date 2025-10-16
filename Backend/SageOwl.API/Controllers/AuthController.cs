@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -26,5 +27,24 @@ public class AuthController : ControllerBase
             AccessToken = accessToken,
             RefreshToken = refreshToken
         });
+    }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
+    {
+        try
+        {
+            var (accessToken, refreshToken) = await _authService.RefreshTokenAsync(request.RefreshToken);
+
+            return Ok(new
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
     }
 }

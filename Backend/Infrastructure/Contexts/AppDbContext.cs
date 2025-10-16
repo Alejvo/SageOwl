@@ -4,7 +4,11 @@ using Domain.Qualifications;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
+using Infrastructure.Configurations;
 using Infrastructure.Configurations.Announcements;
+using Infrastructure.Configurations.Forms;
+using Infrastructure.Configurations.Qualifications;
+using Infrastructure.Configurations.Teams;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Contexts;
@@ -34,16 +38,19 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        /*
+        modelBuilder.ApplyConfiguration(new AnnouncementConfiguration());
         modelBuilder.ApplyConfiguration(new AnswerConfiguration());
         modelBuilder.ApplyConfiguration(new FormConfiguration());
+        modelBuilder.ApplyConfiguration(new FormResultConfiguration());
         modelBuilder.ApplyConfiguration(new OptionConfiguration());
         modelBuilder.ApplyConfiguration(new QuestionConfiguration());
         modelBuilder.ApplyConfiguration(new TeamConfiguration());
         modelBuilder.ApplyConfiguration(new TeamMembershipConfiguration());
         modelBuilder.ApplyConfiguration(new TokenConfiguration());
-        modelBuilder.ApplyConfiguration(new UserConfiguration());*/
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AnnouncementConfiguration).Assembly);
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new QualificationConfiguration());
+        modelBuilder.ApplyConfiguration(new UserQualificationConfiguration());
+
         base.OnModelCreating(modelBuilder);
     }
 }
