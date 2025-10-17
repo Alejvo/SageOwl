@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Models;
+using SageOwl.UI.Services.Interfaces;
 using System.Diagnostics;
 
 namespace SageOwl.UI.Controllers

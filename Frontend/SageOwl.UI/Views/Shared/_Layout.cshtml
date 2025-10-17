@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using SageOwl.UI.Helpers
+
+@{
+    bool isAuthenticated = AuthHelper.IsUserAuthenticated(Context.Request);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,11 +29,19 @@
             <li>
                 <a href="" class="header_link">Contact Us</a>
             </li>
-            <li>
-                <a class="header_login" href="@Url.Action("Login","Account")">
-                    Log In
-                </a>
-            </li>
+            @if (isAuthenticated)
+            {
+                <li>
+                    <a class="header_login" href="@Url.Action("Index", "Workspace")">Open Session</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a class="header_login" href="@Url.Action("Login", "Account")">Log In</a>
+                </li>
+            }
+
         </ul>
     </header>
             @RenderBody()
