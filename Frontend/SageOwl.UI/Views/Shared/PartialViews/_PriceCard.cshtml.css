@@ -10,15 +10,20 @@
     flex-direction:column;
     border-radius:10px;
     overflow:hidden;
+    background-color:white;
 }
 
 .priceCard_title {
-    text-align:center;
-    color:white;
-    background-color: #E44E29;
+    text-align: center;
+    color: white;
+    background: linear-gradient(45deg, #D76F25,#EDC835);
     padding: 10px;
     font-weight: bold;
     font-size: 22px;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .priceCard_list{
@@ -30,20 +35,10 @@
 
 .priceCard_item{
     font-size:18px;
-}
-.priceCard_button_list {
-    display: flex;
-    flex-direction: column;
-    padding: 20px 10px;
-    gap: 10px;
+    border-bottom:1px solid #767676;
 }
 
-.priceCard_button {
-    border-radius:10px;
-    font-size:18px;
-    background-color: #E44E29;
-    color:white;
-    width: 100%;
-    border: none;
-    padding: 10px;
+.priceCard_item_title {
+    color:#767676;
+    font-weight:bold;
 }

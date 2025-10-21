@@ -7,28 +7,23 @@
     var plan1 = new PlanViewModel
     {
         Title = "Free Plan",
-        Characteristics = new List<string>{"Create and fill out forms","Create max 5 teams","Create max 20 forms","Access to advices from teams"}
     };
 
     var plan2 = new PlanViewModel
     {
         Title = "Duo Plan",
-                Characteristics = new List<string> { "Create and fill out forms", "Create max 50 teams", "Create max 200 forms", "Access to advices from teams","Access to dashboard","Up to 10 associated accounts" },
-        MonthlyCost = 39.9m,
         YearlyCost = 69.9m
     };
 
     var plan3 = new PlanViewModel
     {
         Title = "Business Plan",
-                Characteristics = new List<string> { "Create and fill out forms", "Create unlimited teams", "Create unlimited forms", "Access to advices from teams","Access to dashboard","Unlimited associated accounts" },
-        MonthlyCost = 59.9m,
         YearlyCost = 99.9m
     };
 }
 
 <div class="home">
-    <div class="home_main">
+    <div class="home_section">
         <header class="header">
             <p class="header_logo">SAGEOWL</p>
             <ul class="header_menu">
@@ -67,11 +62,51 @@
             </div>
         </div>
     </div>
-    <div class="plans_list">
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan1)
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan2)
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan3)
+
+    <div class="price_section">
+        <h4 class="borderline">Learn more about our plans</h4>
+        <div class="plans_list">
+            @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan1)
+            @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan2)
+            @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan3)
+        </div>
+
     </div>
+
+    <div class="about_section">
+        <h4 class="borderline">About our software</h4>
+        <div class="about_container">
+            <div class="about_card">
+                <p class="about_title">Easy to use</p>
+                <p class="about_description">
+                    We made an application easy to
+                    use for people of every age
+                </p>
+            </div>
+            <div class="about_card">
+                <p class="about_title">Easy to use</p>
+                <p class="about_description">
+                    We made an application easy to
+                    use for people of every age
+                </p>
+            </div>
+            <div class="about_card">
+                <p class="about_title">Easy to use</p>
+                <p class="about_description">
+                    We made an application easy to
+                    use for people of every age
+                </p>
+            </div>
+            <div class="about_card">
+                <p class="about_title">Easy to use</p>
+                <p class="about_description">
+                    We made an application easy to
+                    use for people of every age
+                </p>
+            </div>
+        </div>
+    </div>
+
     <div class="contact_section">
         <div class="contact_section_info">
             <p class="contact_title">Let's work together!</p>

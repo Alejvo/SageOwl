@@ -3,20 +3,21 @@
 <div class="priceCard">
     <p class="priceCard_title">@Model.Title</p>
     <ul class="priceCard_list">
-        @foreach(var item in Model.Characteristics)
-        {
-            <li class="priceCard_item">@item</li>
-        }
+        <li class="priceCard_item">
+            <p class="priceCard_item_title">Yearly Price</p>
+            <p class="priceCard_item_value">39,99$</p>
+        </li>
+        <li class="priceCard_item">
+            <p class="priceCard_item_title">Max. Number of accounts associated</p>
+            <p class="priceCard_item_value">50</p>
+        </li>
+        <li class="priceCard_item">
+            <p class="priceCard_item_title">Max. Number of accounts associated</p>
+            <p class="priceCard_item_value">50</p>
+        </li>
+        <li class="priceCard_item">
+            <p class="priceCard_item_title">Max. Number of accounts associated</p>
+            <p class="priceCard_item_value">50</p>
+        </li>
     </ul>
-
-    <div class="priceCard_button_list">
-        @if (Model.MonthlyCost.HasValue)
-        {
-            <button class="priceCard_button">@Model.MonthlyCost.Value$ Monthly</button>
-        }
-        @if (Model.YearlyCost.HasValue)
-        {
-            <button class="priceCard_button">@Model.YearlyCost.Value$ Yearly</button>
-        }
-    </div>
 </div>
