@@ -1,5 +1,9 @@
-﻿@{
+﻿@using SageOwl.UI.Helpers
+@{
     ViewData["Title"] = "Home";
+
+    bool isAuthenticated = AuthHelper.IsUserAuthenticated(Context.Request);
+
     var plan1 = new PlanViewModel
     {
         Title = "Free Plan",
@@ -24,14 +28,45 @@
 }
 
 <div class="home">
-    <div class="info">
-    <div class="info_wrapper">
-        <p class="info_title">Education to the next level</p>
-        <p class="info_description">An interactive software platform designed to streamline academic assessment processes. This application is tailored for managing, creating, and delivering academic solutions efficiently and securely.</p>
-        <button class="info_button">See our products plans</button>
+    <div class="home_main">
+        <header class="header">
+            <p class="header_logo">SAGEOWL</p>
+            <ul class="header_menu">
+                <li>
+                    <a href="" class="header_link">News</a>
+                </li>
+                <li>
+                    <a href="" class="header_link">Prices</a>
+                </li>
+                <li>
+                    <a href="" class="header_link">Contact Us</a>
+                </li>
+                @if (isAuthenticated)
+                {
+                    <li>
+                        <a class="header_login" href="@Url.Action("Index", "Workspace")">Open Session</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a class="header_login" href="@Url.Action("Login", "Account")">Log In</a>
+                    </li>
+                }
+
+            </ul>
+        </header>
+
+        <div class="info">
+            <div class="info_wrapper">
+                <p class="info_title">Education to the next level</p>
+                <p class="info_description">An interactive software platform designed to streamline academic assessment processes. This application is tailored for managing, creating, and delivering academic solutions efficiently and securely.</p>
+                <button class="info_button">See our products plans</button>
+            </div>
+            <div class="image-container">
+            </div>
+        </div>
     </div>
-    <img src="images/teaching.svg" width="480" height="480"/>
-</div>
     <div class="plans_list">
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan1)
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan2)
