@@ -1,39 +1,10 @@
 ﻿@using SageOwl.UI.Helpers
-@{
-    bool isAuthenticated = AuthHelper.IsUserAuthenticated(Context.Request);
-}
 
 @model List<Plan>
 
 <div class="home">
     <div class="home_section">
-        <header class="header">
-            <p class="header_logo">SAGEOWL</p>
-            <ul class="header_menu">
-                <li>
-                    <a href="" class="header_link">News</a>
-                </li>
-                <li>
-                    <a href="" class="header_link">Prices</a>
-                </li>
-                <li>
-                    <a href="" class="header_link">Contact Us</a>
-                </li>
-                @if (isAuthenticated)
-                {
-                    <li>
-                        <a class="header_login" href="@Url.Action("Index", "Workspace")">Open Session</a>
-                    </li>
-                }
-                else
-                {
-                    <li>
-                        <a class="header_login" href="@Url.Action("Login", "Account")">Log In</a>
-                    </li>
-                }
-
-            </ul>
-        </header>
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_Header.cshtml")
 
         <div class="info">
             <div class="info_wrapper">

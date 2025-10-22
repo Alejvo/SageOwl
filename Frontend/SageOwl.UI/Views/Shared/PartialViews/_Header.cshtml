@@ -1,0 +1,43 @@
+﻿@using SageOwl.UI.Helpers
+@{
+    bool isAuthenticated = AuthHelper.IsUserAuthenticated(Context.Request);
+}
+
+<header class="header">
+    <p class="header_logo">SAGEOWL</p>
+    <ul class="header_menu" id="header_menu">
+        <li>
+            <a href="" class="header_link">News</a>
+        </li>
+        <li>
+            <a href="" class="header_link">Prices</a>
+        </li>
+        <li>
+            <a href="" class="header_link">Contact Us</a>
+        </li>
+        @if (isAuthenticated)
+        {
+            <li>
+                <a class="header_login" href="@Url.Action("Index", "Workspace")">Open Session</a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a class="header_login" href="@Url.Action("Login", "Account")">Log In</a>
+            </li>
+        }
+
+    </ul>
+
+    <button class="header_button" id="header_button">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</header>
+
+<script>
+        document.getElementById("header_button").addEventListener("click", function() {
+        const menu = document.getElementById("header_menu");
+        menu.style.display = (menu.style.display === "none") ? "flex" : "none";
+    });
+</script>

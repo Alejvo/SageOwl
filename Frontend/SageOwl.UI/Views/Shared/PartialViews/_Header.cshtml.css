@@ -1,0 +1,117 @@
+﻿*{
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+.header {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    padding: 15px 20px;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.header_menu {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    gap: 20px;
+    align-content: center;
+    justify-content: center;
+}
+
+    .header_menu li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+.header_link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+    .header_link:hover,
+    .header_link:active {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 2px;
+    }
+
+.header_logo {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.header_login {
+    text-align: center;
+    text-decoration: none;
+    min-width: 120px;
+    color: white;
+    background-color: transparent;
+    border: 2px white solid;
+    border-radius: 10px;
+    padding: 5px 20px;
+    font-weight: bold;
+    margin-left: 40px;
+}
+
+.header_button{
+    border:none;
+    background-color:transparent;
+    display:none;
+}
+
+.header_button i{
+    font-size:30px;
+    color:white;
+}
+
+@media only screen and (max-width:1024px) {
+    .header{
+        padding:20px;
+        position:relative;
+        height:auto;
+    }
+
+    .header_button{
+        display:block;
+    }
+
+    .header_link {
+        font-size: 22px;
+    }
+
+    .header_menu {
+        display:none;
+        width: 96%;
+        border-radius: 10px;
+        padding: 20px;
+        top: 70px;
+        left:50%;
+        transform: translateX(-50%);
+        position: absolute;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        flex-direction: column;
+    }
+
+    .header_login{
+        margin:0;
+        font-size:22px;
+        border:none;
+    }
+}
+
+@media only screen and (min-width:1024px) {
+    .header_menu {
+        display: flex !important;
+    }
+}
