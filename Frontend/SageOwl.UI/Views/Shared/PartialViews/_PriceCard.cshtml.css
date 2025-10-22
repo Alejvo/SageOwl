@@ -1,9 +1,10 @@
 ﻿*{
     margin:0;
     padding:0;
+    font-family:roboto;
 }
 
-.priceCard{
+.priceCard_body{
     box-shadow:2px 5px 10px rgba(0,0,0,0.25);
     width:380px;
     display:flex;
@@ -41,4 +42,73 @@
 .priceCard_item_title {
     color:#767676;
     font-weight:bold;
+}
+
+.plans_desktop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.plans_mobile {
+    background-color:white;
+    padding:10px;
+    display: none;
+    width: 100%;
+    max-width: 400px;
+}
+
+.tab_buttons {
+    display: flex;
+    gap:10px;
+    justify-content: center;
+}
+
+.tab_btn {
+    background-color: #eee;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+    .tab_btn.active {
+        background: linear-gradient(90deg, #f39c12, #f1c40f);
+        color: white;
+        font-weight: bold;
+    }
+
+.tab-content {
+    width: 100%;
+}
+
+.tab-panel {
+    display: none;
+}
+
+    .tab-panel.active {
+        display: block;
+    }
+
+@media only screen and  (max-width:1024px) {
+    .plans_desktop {
+        display: none;
+    }
+
+    .plans_mobile {
+        display: block;
+        width:100%;
+    }
+    .priceCard_body {
+        box-shadow: none;
+        width:100%;
+    }
+
+    .priceCard_list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
 }

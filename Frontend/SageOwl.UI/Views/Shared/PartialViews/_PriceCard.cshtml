@@ -1,23 +1,90 @@
-﻿@model PlanViewModel
+﻿@model List<Plan>
 
-<div class="priceCard">
-    <p class="priceCard_title">@Model.Title</p>
-    <ul class="priceCard_list">
-        <li class="priceCard_item">
-            <p class="priceCard_item_title">Yearly Price</p>
-            <p class="priceCard_item_value">39,99$</p>
-        </li>
-        <li class="priceCard_item">
-            <p class="priceCard_item_title">Max. Number of accounts associated</p>
-            <p class="priceCard_item_value">50</p>
-        </li>
-        <li class="priceCard_item">
-            <p class="priceCard_item_title">Max. Number of accounts associated</p>
-            <p class="priceCard_item_value">50</p>
-        </li>
-        <li class="priceCard_item">
-            <p class="priceCard_item_title">Max. Number of accounts associated</p>
-            <p class="priceCard_item_value">50</p>
-        </li>
-    </ul>
+<div class="">
+    <div class="plans_desktop">
+        @foreach (var plan in Model)
+        {
+            <div class="priceCard_body">
+                <p class="priceCard_title">Free Plan</p>
+                <ul class="priceCard_list">
+                    <li class="priceCard_item">
+                        <p class="priceCard_item_title">Yearly Price</p>
+                        <p class="priceCard_item_value">39,99$</p>
+                    </li>
+                    <li class="priceCard_item">
+                        <p class="priceCard_item_title">Max. Number of accounts associated</p>
+                        <p class="priceCard_item_value">50</p>
+                    </li>
+                    <li class="priceCard_item">
+                        <p class="priceCard_item_title">Max. Number of accounts associated</p>
+                        <p class="priceCard_item_value">50</p>
+                    </li>
+                    <li class="priceCard_item">
+                        <p class="priceCard_item_title">Max. Number of accounts associated</p>
+                        <p class="priceCard_item_value">50</p>
+                    </li>
+                </ul>
+            </div>
+
+        }
+
+    </div>
+
+    <div class="plans_mobile">
+        <div class="tab_buttons">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var plan = Model.ElementAt(i);
+                <button class="tab_btn @(i == 0 ? "active" : "")" data-index="@i">@plan.Title</button>
+            }
+        </div>
+
+        <div class="tab-content">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var plan = Model.ElementAt(i);
+                <div class="tab-panel @(i == 0 ? "active" : "")" data-index="@i">
+                    <div class="priceCard_body">
+                        <ul class="priceCard_list">
+                            <li class="priceCard_item">
+                                <p class="priceCard_item_title">Yearly Price</p>
+                                <p class="priceCard_item_value">@plan.YearlyCost</p>
+                            </li>
+                            <li class="priceCard_item">
+                                <p class="priceCard_item_title">Max. Number of accounts associated</p>
+                                <p class="priceCard_item_value">@plan.NumberAccounts</p>
+                            </li>
+                            <li class="priceCard_item">
+                                <p class="priceCard_item_title">Max. Number of accounts associated</p>
+                                <p class="priceCard_item_value">@plan.NumberForms</p>
+                            </li>
+                            <li class="priceCard_item">
+                                <p class="priceCard_item_title">Max. Number of accounts associated</p>
+                                <p class="priceCard_item_value">@plan.NumberTeams</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
 </div>
+</div>
+
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabs = document.querySelectorAll(".tab_btn");
+            const panels = document.querySelectorAll(".tab-panel");
+
+            tabs.forEach(tab => {
+                tab.addEventListener("click", () => {
+                    const index = tab.getAttribute("data-index");
+
+                    tabs.forEach(t => t.classList.remove("active"));
+                    panels.forEach(p => p.classList.remove("active"));
+
+                    tab.classList.add("active");
+                    document.querySelector(`.tab-panel[data-index='${index}']`).classList.add("active");
+                });
+            });
+        });
+    </script>

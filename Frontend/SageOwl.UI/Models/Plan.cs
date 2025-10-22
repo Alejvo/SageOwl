@@ -1,9 +1,11 @@
 ﻿namespace SageOwl.UI.Models;
 
-public record Plan(
-    string Title,
-    List<string> Characteristics,
-    double? YearlyPrice,
-    double? MonthlyPrice
-    );
+public class Plan
+{
+    public required string Title { get; set; }
+    public decimal? YearlyCost { get; set; }
+    public int NumberAccounts { get; set; }
+    public int NumberForms { get; set; }
+    public int NumberTeams { get; set; } 
+};
 

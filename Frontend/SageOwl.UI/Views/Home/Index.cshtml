@@ -1,26 +1,9 @@
 ﻿@using SageOwl.UI.Helpers
 @{
-    ViewData["Title"] = "Home";
-
     bool isAuthenticated = AuthHelper.IsUserAuthenticated(Context.Request);
-
-    var plan1 = new PlanViewModel
-    {
-        Title = "Free Plan",
-    };
-
-    var plan2 = new PlanViewModel
-    {
-        Title = "Duo Plan",
-        YearlyCost = 69.9m
-    };
-
-    var plan3 = new PlanViewModel
-    {
-        Title = "Business Plan",
-        YearlyCost = 99.9m
-    };
 }
+
+@model List<Plan>
 
 <div class="home">
     <div class="home_section">
@@ -65,11 +48,7 @@
 
     <div class="price_section">
         <h4 class="borderline">Learn more about our plans</h4>
-        <div class="plans_list">
-            @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan1)
-            @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan2)
-            @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml", plan3)
-        </div>
+            @await Html.PartialAsync("~/Views/Shared/PartialViews/_PriceCard.cshtml",Model)
 
     </div>
 
@@ -127,3 +106,4 @@
 
     </div>
 </div>
+

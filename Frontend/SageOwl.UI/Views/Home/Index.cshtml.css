@@ -171,12 +171,7 @@
     resize:none;
 }
 
-.plans_list{
-    margin:20px 0;
-    display:flex;
-    flex-direction:row;
-    justify-content:space-evenly;
-}
+
 
 .image-container {
     position: relative;
@@ -198,6 +193,9 @@
 }
 
 .price_section{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
     padding:40px;
 }
 
@@ -317,6 +315,18 @@
         align-items:center;
         gap:10px;
     }
+
+    .price_section{
+        padding:20px;
+    }
+
+    .about_section {
+        padding: 20px;
+    }
+
+    .borderline{
+        font-size:24px;
+    }
 }
 
 @media only screen and (min-width:601px) and (max-width:1024px){
@@ -381,5 +391,17 @@
         flex-direction: column;
         align-items: center;
         gap: 10px;
+    }
+
+    .price_section {
+        padding: 20px;
+    }
+
+    .about_section {
+        padding: 20px;
+    }
+
+    .borderline {
+        font-size: 24px;
     }
 } 

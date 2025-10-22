@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Models;
-using SageOwl.UI.Services.Interfaces;
-using System.Diagnostics;
 
 namespace SageOwl.UI.Controllers
 {
@@ -16,7 +14,32 @@ namespace SageOwl.UI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<Plan> planList = new List<Plan>
+            { 
+                new Plan{
+                    Title = "Free Plan", 
+                    NumberForms=20,
+                    NumberAccounts=20,
+                    NumberTeams=20,
+                    YearlyCost=0
+                },
+                new Plan{
+                    Title = "Premium Plan",
+                    NumberForms=50,
+                    NumberAccounts=50,
+                    NumberTeams=50,
+                    YearlyCost=39.99M
+                },
+                new Plan{
+                    Title = "Deluxe Plan",
+                    NumberForms=60,
+                    NumberAccounts=60,
+                    NumberTeams=60,
+                    YearlyCost=29.99M
+                }
+            };
+
+            return View(planList);
         }
 
         public IActionResult News()
