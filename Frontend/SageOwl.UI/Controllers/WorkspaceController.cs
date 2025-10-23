@@ -2,6 +2,7 @@
 using SageOwl.UI.Attributes;
 using SageOwl.UI.Models;
 using SageOwl.UI.Services.Interfaces;
+using SageOwl.UI.ViewModels;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
 using SageOwl.UI.ViewModels.Qualifications;
@@ -27,11 +28,34 @@ public class WorkspaceController : Controller
         _currentUser = currentUser;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         ViewData["HeaderTitle"] = "Recent Activity";
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
-        return View();
+
+        var announcements = await _announcementService.GetAnnouncements();
+        var forms = await _formService.GetFormsByUserId();
+
+
+
+        var homeWorkspaceVM = new HomeWorkspaceViewModel
+        {
+            Announcements = announcements.Select(a => new AnnouncementViewModel
+            {
+                Content = a.Content,
+                PublisherName = a.Author,
+                Title = a.Title,
+                SentAt = a.CreatedAt
+            }).ToList(),
+            Forms = forms.Select(f => new FormViewModel
+            {
+                Title = f.Title,
+                Deadline = f.Deadline,
+                Id = f.Id,
+                TeamId = f.TeamId
+            }).ToList()
+        };
+        return View(homeWorkspaceVM);
     }
 
     public async Task<IActionResult> Forms()

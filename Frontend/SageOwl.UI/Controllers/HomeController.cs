@@ -14,6 +14,7 @@ namespace SageOwl.UI.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Title"] = "Home";
             List<Plan> planList = new List<Plan>
             { 
                 new Plan{
@@ -44,6 +45,7 @@ namespace SageOwl.UI.Controllers
 
         public IActionResult News()
         {
+            ViewData["Title"] = "News";
             return View();
         }
     }

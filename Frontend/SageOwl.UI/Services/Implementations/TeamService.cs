@@ -22,7 +22,8 @@ public class TeamService : ITeamService
 
     public async Task<bool> CreateTeam(CreateTeamViewModel newTeam)
     {
-        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        var token = await _accountService.GetValidAccessTokenAsync();
+
         if (string.IsNullOrEmpty(token))
             return false; 
 
@@ -39,7 +40,7 @@ public class TeamService : ITeamService
 
     public async Task<Team> GetTeamById(Guid teamId)
     {
-        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        var token = await _accountService.GetValidAccessTokenAsync();
 
         if (string.IsNullOrEmpty(token))
             throw new Exception("Token was not found");
@@ -104,7 +105,7 @@ public class TeamService : ITeamService
 
     public async Task<bool> UpdateTeam(UpdateTeamDto updateTeam)
     {
-        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        var token = await _accountService.GetValidAccessTokenAsync();
         if (string.IsNullOrEmpty(token))
             return false;
 

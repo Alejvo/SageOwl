@@ -10,16 +10,18 @@ public class AnnouncementService : IAnnouncementService
 {
     private readonly HttpClient _httpClient;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IAccountService _accountService;
 
-    public AnnouncementService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+    public AnnouncementService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IAccountService accountService)
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
+        _accountService = accountService;
     }
 
     public async Task<bool> CreateAnnouncement(CreateAnnouncementViewModel createAnnouncement)
     {
-        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        var token = await _accountService.GetValidAccessTokenAsync();
         if (string.IsNullOrEmpty(token))
             return false;
 
@@ -36,7 +38,8 @@ public class AnnouncementService : IAnnouncementService
 
     public async Task<List<Announcement>> GetAnnouncements()
     {
-        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        //var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        var token = await _accountService.GetValidAccessTokenAsync();
 
         var request = new HttpRequestMessage(HttpMethod.Get, $"announcements");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -59,7 +62,7 @@ public class AnnouncementService : IAnnouncementService
 
     public async Task<List<Announcement>> GetAnnouncementsByTeamId(Guid teamId)
     {
-        var token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+        var token = await _accountService.GetValidAccessTokenAsync();
 
         var request = new HttpRequestMessage(HttpMethod.Get, $"announcements/teamId/{teamId}");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
