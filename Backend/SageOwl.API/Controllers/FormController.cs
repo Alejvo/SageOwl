@@ -1,4 +1,5 @@
 ﻿using Application.Forms.Create;
+using Application.Forms.GetById;
 using Application.Forms.GetByTeamId;
 using Application.Forms.GetByUserId;
 using MediatR;
@@ -39,6 +40,14 @@ public class FormController : ControllerBase
     public async Task<IActionResult> GetFormByUserId([FromRoute] Guid userId)
     {
         var res = await _sender.Send(new GetPendingFormsByUserIdQuery(userId));
+
+        return res.IsSuccess ? Ok(res.Value) : BadRequest();
+    }
+
+    [HttpGet("{formId:guid}")]
+    public async Task<IActionResult> GetFormById([FromRoute] Guid formId)
+    {
+        var res = await _sender.Send(new GetFormByIdQuery(formId));
 
         return res.IsSuccess ? Ok(res.Value) : BadRequest();
     }

@@ -23,14 +23,20 @@ public class FormRepository : IFormRepository
     {
         return await _dbContext.Forms
             .Where(f => f.TeamId == teamId)
-            .Include(f => f.Questions)
-            .ThenInclude(f => f.Options)
             .ToListAsync();
     }
 
     public Task<FormResult> GetFormResults(Guid formId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<Form?> GetFormById(Guid formId)
+    {
+        return await _dbContext.Forms
+             .Include(f => f.Questions)
+                .ThenInclude(f => f.Options)
+            .FirstOrDefaultAsync(f => f.Id == formId);
     }
 
     public async Task<List<Form>> GetPendingFormsByUserId(Guid userId)

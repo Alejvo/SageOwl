@@ -12,15 +12,17 @@ public static class FormExtensions
             form.Title,
             form.TeamId,
             form.Deadline,
-            form.Questions.Select(fq => new FormQuestionResponse
-            (
-                fq.Title,
-                fq.Description,
-                fq.QuestionType.ToString(),
-                fq.Options.Select(fo => new FormOptionResponse(
+            form.Questions != null && form.Questions.Any()
+                ?form.Questions.Select(fq => new FormQuestionResponse
+                (
+                    fq.Title,
+                    fq.Description,
+                    fq.QuestionType.ToString(),
+                    fq.Options.Select(fo => new FormOptionResponse(
                     fo.Value,
                     fo.IsCorrect)).ToList()
-            )).ToList()
+                )).ToList()
+                : null
         );
     }
 }
