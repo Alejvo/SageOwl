@@ -1,7 +1,9 @@
 using Application;
+using HealthChecks.UI.Client;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -56,6 +58,10 @@ builder.Services.AddAuthentication(config =>
     };
 });
 
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,5 +79,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseCors("SageOwl");
+
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
