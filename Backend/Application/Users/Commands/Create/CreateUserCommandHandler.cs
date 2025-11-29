@@ -31,6 +31,8 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
                 await _mediator.Publish(new UserCreatedNotification(ue.Name, ue.Email));
         }
 
+        user.ClearDomainEvents();
+
         return await _userRepository.CreateUser(user) ? Result.Success() : Result.Failure(Error.DBFailure);
     }
 }

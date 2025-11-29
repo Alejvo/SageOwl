@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Interfaces;
 using Domain.Tokens;
 using Domain.Users;
 using Microsoft.Extensions.Configuration;

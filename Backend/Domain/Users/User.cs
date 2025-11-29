@@ -40,7 +40,7 @@ public class User : BaseEntity
         var passwordValue = Password.Create(password);
 
         var newUser = new User(id, name, surname, emailValue, passwordValue, username, birthday);
-        newUser.AddDomainEvent(new UserCreatedDomainEvent($"", emailValue.Value));
+        newUser.AddDomainEvent(new UserCreatedDomainEvent($"{name} {surname}", emailValue.Value));
         return newUser;
     }
 }

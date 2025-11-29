@@ -1,5 +1,5 @@
-﻿using Application.Abstractions;
-using Application.Behaviors;
+﻿using Application.Behaviors;
+using Application.Interfaces;
 using Application.Users.Services;
 using FluentValidation;
 using MediatR;

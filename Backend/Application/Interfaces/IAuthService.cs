@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions;
+﻿namespace Application.Interfaces;
 public interface IAuthService
 {
     string GenerateToken(Guid userId, string name);

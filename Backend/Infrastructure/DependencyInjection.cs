@@ -1,12 +1,15 @@
-﻿using Domain.Announcements;
+﻿using Application.Interfaces;
+using Domain.Announcements;
 using Domain.Forms;
 using Domain.Qualifications;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
+using FluentValidation.Validators;
 using Infrastructure.Contexts;
 using Infrastructure.PasswordHasher;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IFormRepository,FormRepository>();
         services.AddScoped<IAnnouncementRepository,AnnouncementRepository>();
         services.AddScoped<IQualificationRepository,QualificationRepository>();
+        services.AddScoped<IEmailService,EmailService>();
         return services;
     }
 }
