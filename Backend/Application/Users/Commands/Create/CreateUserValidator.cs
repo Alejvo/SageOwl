@@ -1,7 +1,7 @@
 ﻿using Domain.Users;
 using FluentValidation;
 
-namespace Application.Users.Create;
+namespace Application.Users.Commands.Create;
 
 public class CreateUserValidator : AbstractValidator<CreateUserCommand>
 {

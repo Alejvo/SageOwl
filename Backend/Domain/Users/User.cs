@@ -1,9 +1,11 @@
 ﻿using Domain.Teams;
 using Domain.Tokens;
+using Domain.Users.Events;
+using Shared;
 
 namespace Domain.Users;
 
-public class User
+public class User : BaseEntity
 {
     public Guid Id { get; private set; }
     public string Name { get; set; } = string.Empty;
@@ -37,6 +39,8 @@ public class User
         var emailValue = Email.Create(email);
         var passwordValue = Password.Create(password);
 
-        return new User(id,name,surname,emailValue,passwordValue,username,birthday);
+        var newUser = new User(id, name, surname, emailValue, passwordValue, username, birthday);
+        newUser.AddDomainEvent(new UserCreatedDomainEvent($"", emailValue.Value));
+        return newUser;
     }
 }

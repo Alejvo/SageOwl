@@ -2,7 +2,7 @@
 using Application.Users.Common;
 using Shared;
 
-namespace Application.Users.GetAll;
+namespace Application.Users.Queries.GetAll;
 
 public record GetUsersQuery(
         int Page,

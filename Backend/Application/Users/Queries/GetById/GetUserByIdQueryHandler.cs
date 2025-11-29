@@ -3,7 +3,7 @@ using Application.Users.Common;
 using Domain.Users;
 using Shared;
 
-namespace Application.Users.GetById;
+namespace Application.Users.Queries.GetById;
 
 internal sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserResponse>
 {

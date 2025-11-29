@@ -1,7 +1,7 @@
-﻿using Application.Users.Create;
-using Application.Users.GetAll;
-using Application.Users.GetById;
-using Application.Users.Update;
+﻿using Application.Users.Commands.Create;
+using Application.Users.Commands.Update;
+using Application.Users.Queries.GetAll;
+using Application.Users.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

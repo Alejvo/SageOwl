@@ -2,7 +2,7 @@
 using Domain.Users;
 using Shared;
 
-namespace Application.Users.Update;
+namespace Application.Users.Commands.Update;
 
 internal sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
 {

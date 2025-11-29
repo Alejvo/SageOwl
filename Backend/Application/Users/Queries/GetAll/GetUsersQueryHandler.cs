@@ -3,7 +3,7 @@ using Application.Users.Common;
 using Domain.Users;
 using Shared;
 
-namespace Application.Users.GetAll;
+namespace Application.Users.Queries.GetAll;
 
 internal sealed class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, PagedList<UserResponse>>
 {

@@ -1,9 +1,8 @@
 ﻿using Application.Abstractions;
 
-namespace Application.Users.Update;
+namespace Application.Users.Commands.Create;
 
-public record UpdateUserCommand(
-    Guid Id,
+public record CreateUserCommand(
     string Name,
     string Surname,
     string Email,
