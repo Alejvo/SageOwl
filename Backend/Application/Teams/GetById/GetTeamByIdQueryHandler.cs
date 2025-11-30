@@ -18,6 +18,6 @@ internal sealed class GetTeamByIdQueryHandler : IQueryHandler<GetTeamByIdQuery, 
     public async Task<Result<TeamResponse>> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
     {
         var team = await _teamRepository.GetTeamById(request.TeamId);
-        return team?.ToTeamResponse();
+        return team is not null ? team.ToTeamResponse() : Result.Failure<TeamResponse>(TeamErrors.NotFound);
     }
 }
