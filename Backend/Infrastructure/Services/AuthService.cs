@@ -1,14 +1,16 @@
-﻿using Application.Interfaces;
+﻿using Application.Auth.Common;
+using Application.Interfaces;
 using Domain.Tokens;
 using Domain.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Shared;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Application.Users.Services;
+namespace Infrastructure.Services;
 
 public class AuthService : IAuthService
 {
@@ -71,35 +73,43 @@ public class AuthService : IAuthService
         await _tokenRepository.SaveOrUpdateTokenAsync(userId, refreshToken, expiryTime);
     }
 
-    public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string email, string password)
+    public async Task<Result<LoginResponse>> LoginAsync(string email, string password)
     {
         var user = await _userRepository.GetUserByEmail(email);
-        if (user == null || !_passwordHasher.Verify(password, user.Password.ToString()))
-            throw new UnauthorizedAccessException("Invalid credentials.");
+
+        if (user is null)
+            return Result.Failure<LoginResponse>(UserErrors.UserNotFoundByEmail(email));
+
+        if (!_passwordHasher.Verify(password, user.Password.ToString()))
+            return Result.Failure<LoginResponse>(UserErrors.LoginFailure());
 
         var accessToken = GenerateToken(user.Id, user.Name);
         var refreshToken = GenerateRefreshToken();
 
         await SaveRefreshToken(user.Id, refreshToken);
 
-        return (accessToken, refreshToken);
+        return new LoginResponse(accessToken, refreshToken);
     }
-    public async Task<(string AccessToken, string RefreshToken)> RefreshTokenAsync(string refreshToken)
+    public async Task<Result<LoginResponse>> RefreshTokenAsync(string refreshToken)
     {
+        if (string.IsNullOrWhiteSpace(refreshToken))
+            return Result.Failure<LoginResponse>(UserErrors.LoginFailure());
+
         var storedToken = await _tokenRepository.GetToken(refreshToken);
 
         if (storedToken == null)
-            throw new UnauthorizedAccessException("Invalid refresh token.");
+            return Result.Failure<LoginResponse>(UserErrors.LoginFailure());
 
         var user = await _userRepository.GetUserById(storedToken.UserId);
+
         if (user == null)
-            throw new UnauthorizedAccessException("User not found.");
+            return Result.Failure<LoginResponse>(UserErrors.UserNotFound());
 
         var newAccessToken = GenerateToken(user.Id, user.Name);
         var newRefreshToken = GenerateRefreshToken();
 
         await _tokenRepository.SaveOrUpdateTokenAsync(user.Id, newRefreshToken, DateTime.UtcNow.AddDays(7));
 
-        return (newAccessToken, newRefreshToken);
+        return new LoginResponse(newAccessToken,newRefreshToken);
     }
 }

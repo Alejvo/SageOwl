@@ -1,5 +1,8 @@
-﻿using Application.Interfaces;
+﻿using Application.Auth.Login;
+using Application.Auth.RefreshToken;
+using Application.Interfaces;
 using Azure.Core;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -7,44 +10,28 @@ using Microsoft.AspNetCore.Mvc;
 namespace SageOwl.API.Controllers;
 
 [Route("api/[controller]")]
-[ApiController]
-public class AuthController : ControllerBase
+public class AuthController : ApiController
 {
-    private readonly IAuthService _authService;
+    private readonly ISender _sender;
 
-    public AuthController(IAuthService authService)
+    public AuthController(ISender sender)
     {
-        _authService = authService;
+        _sender = sender;
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody]LoginRequest request)
     {
-        var (accessToken,refreshToken) = await _authService.LoginAsync(request.Email, request.Password);
+        var res = await _sender.Send(new LoginCommand(request.Email, request.Password));
 
-        return Ok(new
-        {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken
-        });
+        return res.IsSuccess ? Ok(res.Value): Problem(res.Errors);
     }
 
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
     {
-        try
-        {
-            var (accessToken, refreshToken) = await _authService.RefreshTokenAsync(request.RefreshToken);
+        var res = await _sender.Send(new RefreshTokenCommand(request.RefreshToken));
 
-            return Ok(new
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            });
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return Unauthorized(new { message = ex.Message });
-        }
+        return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
     }
 }

@@ -30,6 +30,8 @@ public static class DependencyInjection
         services.AddScoped<IAnnouncementRepository,AnnouncementRepository>();
         services.AddScoped<IQualificationRepository,QualificationRepository>();
         services.AddScoped<IEmailService,EmailService>();
+        services.AddScoped<IAuthService, AuthService>();
+
         return services;
     }
 }
