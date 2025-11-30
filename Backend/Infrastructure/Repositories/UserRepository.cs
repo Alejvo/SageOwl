@@ -24,6 +24,11 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
+    public async Task<bool> EmailExists(string email)
+    {
+        return await _dbContext.Users.AnyAsync(u => u.Email == Email.Create(email));
+    }
+
     public async Task<User?> GetUserByEmail(string email)
     {
         var userEmail = Email.Create(email);
@@ -45,10 +50,9 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public async Task<bool> Update(User userUpdated)
+    public async Task<bool> Update(User user,User userUpdated)
     {
-        var user = await GetUserById(userUpdated.Id);
-        if (userUpdated is not null)
+        if (userUpdated is not null && user is not null)
         {
             user.Name = userUpdated.Name;
             user.Surname = userUpdated.Surname;
@@ -58,5 +62,10 @@ public class UserRepository : IUserRepository
         }
 
         return await _dbContext.SaveChangesAsync() > 0;
+    }
+
+    public async Task<bool> UsernameExists(string username)
+    {
+        return await _dbContext.Users.AnyAsync(u => u.Username == username);
     }
 }

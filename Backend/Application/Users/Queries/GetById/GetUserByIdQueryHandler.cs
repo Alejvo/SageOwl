@@ -17,6 +17,7 @@ internal sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, 
     public async Task<Result<UserResponse>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserById(request.Id);
-        return user != null ? user.ToUserResponse() :null;
+
+        return user != null ? user.ToUserResponse() : Result.Failure<UserResponse>(UserErrors.UserNotFound());
     }
 }

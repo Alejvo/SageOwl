@@ -1,9 +1,6 @@
 ﻿using Application.Auth.Login;
 using Application.Auth.RefreshToken;
-using Application.Interfaces;
-using Azure.Core;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
