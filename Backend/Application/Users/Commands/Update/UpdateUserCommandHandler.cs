@@ -15,7 +15,15 @@ internal sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserComma
 
     public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var updatedUser = User.Create(request.Id,request.Name,request.Surname,request.Email,request.Password,request.Username,request.Birthday);
+        var updatedUser = User.Create(
+            request.Id,
+            request.Name.Capitalize(),
+            request.Surname.Capitalize(),
+            request.Email,
+            request.Password,
+            request.Username.ToLower(),
+            request.Birthday);
+
         return await _userRepository.Update(updatedUser) ? Result.Success() : Result.Failure(Error.DBFailure);
     }
 }

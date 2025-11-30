@@ -15,20 +15,27 @@ internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserComma
 
     public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher,IMediator mediator)
     {
-        _userRepository = userRepository;
-        _passwordHasher = passwordHasher;
-        _mediator = mediator;
+        _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+        _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
     public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var hashedPassword = _passwordHasher.Hash(request.Password);
-        var user = User.Create(Guid.NewGuid(),request.Name,request.Surname,request.Email,hashedPassword,request.Username,request.Birthday);
+        var user = User.Create(
+            Guid.NewGuid(),
+            request.Name.Capitalize(),
+            request.Surname.Capitalize(),
+            request.Email,
+            hashedPassword,
+            request.Username.ToLower(),
+            request.Birthday);
 
         foreach (var userEvent in user.DomainEvents)
         {
             if(userEvent is UserCreatedDomainEvent ue)
-                await _mediator.Publish(new UserCreatedNotification(ue.Name, ue.Email));
+                await _mediator.Publish(new UserCreatedNotification(ue.Name, ue.Email),cancellationToken);
         }
 
         user.ClearDomainEvents();
