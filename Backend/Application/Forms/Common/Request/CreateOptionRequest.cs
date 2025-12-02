@@ -1,6 +1,6 @@
 ﻿namespace Application.Forms.Common.Request;
 
-public record FormOptionRequest(
+public record CreateOptionRequest(
     string Value, 
     bool IsCorrect
     );

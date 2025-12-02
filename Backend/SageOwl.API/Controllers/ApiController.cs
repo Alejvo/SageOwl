@@ -9,7 +9,7 @@ public class ApiController : ControllerBase
 {
     protected IActionResult Problem(List<Error> errors)
     {
-        if (errors.Count is 0)
+        if (errors is null || errors.Count is 0)
         {
             return Problem();
         }
@@ -18,7 +18,6 @@ public class ApiController : ControllerBase
         {
             return ValidationProblem(errors);
         }
-
 
         return Problem(errors[0]);
     }

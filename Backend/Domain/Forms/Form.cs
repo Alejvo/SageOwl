@@ -33,6 +33,12 @@ public class Form
         return new Form(Guid.NewGuid(),teamId, title, deadline);
     }
 
+    public void Update(string title, DateTime deadline)
+    {
+        Title = title;
+        Deadline = deadline;
+    }
+
     public void AddResults(List<Guid> members)
     {
         foreach (var member in members)
@@ -43,8 +49,34 @@ public class Form
 
     public Question AddQuestion(string questionTitle, string questionDescription, Guid formId, QuestionType questionType)
     {
+        var existingQuestion = _questions.FirstOrDefault(q => q.FormId == formId);
+        if (existingQuestion != null)
+        {
+            return existingQuestion;
+        }
+
         var question = Question.Create(formId, questionTitle, questionType ,questionDescription);
         _questions.Add(question);
         return question;
+    }
+
+    public Question UpdateQuestion(Guid questionId, string title, string description, QuestionType type)
+    {
+        var question = _questions.FirstOrDefault(q => q.Id == questionId);
+        if (question != null)
+        {
+            question.Update(title, type, description);
+        }
+
+        return question;
+    }
+
+    public void RemoveQuestion(Guid questionId)
+    {
+        var question = _questions.FirstOrDefault(q => q.Id == questionId);
+        if (question != null)
+        {
+            _questions.Remove(question);
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Forms.Common.Response;
 
-namespace Application.Forms.GetByUserId;
+namespace Application.Forms.Queries.GetByUserId;
 
 public record GetPendingFormsByUserIdQuery(
     Guid UserId

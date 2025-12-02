@@ -3,7 +3,7 @@ using Domain.Forms;
 using Domain.Teams;
 using Shared;
 
-namespace Application.Forms.Create;
+namespace Application.Forms.Commands.Create;
 
 internal sealed class CreateFormCommandHandler : ICommandHandler<CreateFormCommand>
 {
@@ -51,6 +51,4 @@ internal sealed class CreateFormCommandHandler : ICommandHandler<CreateFormComma
             ? Result.Success()
             : Result.Failure(Error.DBFailure);
     }
-
-       
 }

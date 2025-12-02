@@ -4,7 +4,7 @@ using Application.Forms.Common.Response;
 using Domain.Forms;
 using Shared;
 
-namespace Application.Forms.GetByUserId;
+namespace Application.Forms.Queries.GetByUserId;
 
 internal sealed class GetPendingFormsByUserIdQueryHandler : IQueryHandler<GetPendingFormsByUserIdQuery, List<FormResponse>>
 {

@@ -15,6 +15,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
 
         RuleFor(u => u.Email)
             .EmailAddress()
+            .MustAsync((email, cancellationToken) => userRepository.EmailExists(email))
             .NotEmpty();
 
         RuleFor(u => u.Password)

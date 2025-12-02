@@ -4,7 +4,7 @@ using Application.Forms.Common.Response;
 using Domain.Forms;
 using Shared;
 
-namespace Application.Forms.GetById;
+namespace Application.Forms.Queries.GetById;
 
 internal sealed class GetFormByIdQueryHandler : IQueryHandler<GetFormByIdQuery, FormResponse>
 {

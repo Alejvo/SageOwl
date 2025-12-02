@@ -54,4 +54,10 @@ public class FormRepository : IFormRepository
         }
         return await _dbContext.SaveChangesAsync() > 0;
     }
+
+    public async Task<bool> DeleteForm(Form form)
+    {
+        _dbContext.Forms.Remove(form);
+        return await _dbContext.SaveChangesAsync() > 0;
+    }
 }

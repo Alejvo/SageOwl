@@ -1,11 +1,11 @@
 ﻿using Application.Abstractions;
 using Application.Forms.Common.Request;
 
-namespace Application.Forms.Create;
+namespace Application.Forms.Commands.Create;
 
 public record CreateFormCommand(
     string Title,
     Guid TeamId,
     DateTime Deadline,
-    List<FormQuestionRequest> Questions
+    List<CreateQuestionRequest> Questions
     ):ICommand;

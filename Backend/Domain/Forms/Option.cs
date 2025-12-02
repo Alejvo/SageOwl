@@ -19,4 +19,10 @@ public class Option
 
     public static Option Create(string value, bool isCorrect, Guid questionId)
         => new(value, isCorrect,questionId);
+
+    public void Update(string value, bool isCorrect)
+    {
+        Value = value;
+        IsCorrect = isCorrect;
+    }
 }

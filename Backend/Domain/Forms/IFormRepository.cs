@@ -8,4 +8,5 @@ public interface IFormRepository
     Task<FormResult> GetFormResults(Guid formId);
     Task<bool> CreateForm(Form form);
     Task<bool> UpdateForm(Form form);
+    Task<bool> DeleteForm(Form form);
 }

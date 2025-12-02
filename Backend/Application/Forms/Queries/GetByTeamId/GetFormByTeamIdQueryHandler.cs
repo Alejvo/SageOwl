@@ -4,7 +4,7 @@ using Application.Forms.Common.Response;
 using Domain.Forms;
 using Shared;
 
-namespace Application.Forms.GetByTeamId;
+namespace Application.Forms.Queries.GetByTeamId;
 
 internal sealed class GetFormByTeamIdQueryHandler : IQueryHandler<GetFormByTeamIdQuery, List<FormResponse>>
 {
