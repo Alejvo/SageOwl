@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.Forms.Common.Validators;
 
-public class OptionRequestValidator : AbstractValidator<CreateOptionRequest>
+public class CreateOptionValidator : AbstractValidator<CreateOptionRequest>
 {
-    public OptionRequestValidator()
+    public CreateOptionValidator()
     {
         RuleFor(o => o.Value).NotEmpty();
     }

@@ -17,6 +17,6 @@ public class CreateFormValidator : AbstractValidator<CreateFormCommand>
             .NotEmpty();
 
         RuleForEach(x => x.Questions)
-            .SetValidator(new QuestionRequestValidator());
+            .SetValidator(new CreateQuestionValidator());
     }
 }

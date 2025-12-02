@@ -3,14 +3,13 @@ using FluentValidation;
 
 namespace Application.Forms.Common.Validators;
 
-public class QuestionRequestValidator : AbstractValidator<CreateQuestionRequest>
+public class UpdateQuestionValidator : AbstractValidator<UpdateQuestionRequest>
 {
-    public QuestionRequestValidator()
+    public UpdateQuestionValidator()
     {
         RuleFor(f => f.Title).NotEmpty();
         RuleFor(f => f.QuestionType).NotEmpty();
-
         RuleForEach(q => q.Options)
-            .SetValidator(new OptionRequestValidator());
+            .SetValidator(new UpdateOptionValidator());
     }
 }
