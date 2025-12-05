@@ -1,4 +1,6 @@
 ﻿using Application.Forms.Commands.Create;
+using Application.Forms.Commands.Delete;
+using Application.Forms.Commands.Update;
 using Application.Forms.Queries.GetById;
 using Application.Forms.Queries.GetByTeamId;
 using Application.Forms.Queries.GetByUserId;
@@ -49,5 +51,20 @@ public class FormController : ApiController
         var res = await _sender.Send(new GetFormByIdQuery(formId));
 
         return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateForm([FromBody] UpdateFormCommand command)
+    {
+        var res = await _sender.Send(command);
+
+        return res.IsSuccess ? NoContent(): Problem(res.Errors);
+    }
+    [HttpDelete]
+    public async Task<IActionResult> DeleteForm([FromBody] DeleteFormCommand command)
+    {
+        var res = await _sender.Send(command);
+
+        return res.IsSuccess ? NoContent() : Problem(res.Errors);
     }
 }

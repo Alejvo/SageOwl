@@ -1,6 +1,9 @@
 ﻿using Application.Abstractions;
 using Domain.Forms;
 using Shared;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Xml;
 
 namespace Application.Forms.Commands.Update;
 
@@ -52,7 +55,7 @@ internal sealed class UpdateFormCommandHandler : ICommandHandler<UpdateFormComma
                     //Update Option
                     if (optionReq.OptionId is not null && !optionReq.IsDeleted)
                     {
-                        question.UpdateOption(optionReq.OptionId.Value, optionReq.Text);
+                        question.UpdateOption(optionReq.OptionId.Value,optionReq.Value, optionReq.IsCorrect);
                         continue;
                     }
 
@@ -71,7 +74,7 @@ internal sealed class UpdateFormCommandHandler : ICommandHandler<UpdateFormComma
             }
         }
 
-        return await _formRepository.UpdateForm(form) 
+        return await _formRepository.SaveChanges() 
             ? Result.Success()
             : Result.Failure(Error.DBFailure);
     }

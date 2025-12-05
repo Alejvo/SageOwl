@@ -46,12 +46,8 @@ public class FormRepository : IFormRepository
             .ToListAsync();
     }
 
-    public async Task<bool> UpdateForm(Form form)
+    public async Task<bool> SaveChanges()
     {
-        if (_dbContext.Entry(form).State == EntityState.Detached)
-        {
-            _dbContext.Forms.Update(form);
-        }
         return await _dbContext.SaveChangesAsync() > 0;
     }
 

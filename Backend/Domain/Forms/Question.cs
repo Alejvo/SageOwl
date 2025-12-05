@@ -1,6 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-
-namespace Domain.Forms;
+﻿namespace Domain.Forms;
 
 public class Question
 {
@@ -43,9 +41,9 @@ public class Question
         var option = Option.Create(value, isCorrect,Id);
         _options.Add(option);
     }
-    public void UpdateOption(Guid questionId, string value, bool isCorrect)
+    public void UpdateOption(Guid optionId, string value, bool isCorrect)
     {
-        var option = _options.FirstOrDefault(x => x.QuestionId == questionId);
+        var option = _options.FirstOrDefault(x => x.Id == optionId);
         if (option is null) return;
 
         option.Update(value,isCorrect);

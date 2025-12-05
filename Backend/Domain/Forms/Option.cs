@@ -11,7 +11,6 @@ public class Option
     public Option() { }
     private Option(string value, bool isCorrect,Guid questionId)
     {
-        Id = Guid.NewGuid();
         Value = value;
         IsCorrect = isCorrect;
         QuestionId = questionId;
