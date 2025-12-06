@@ -1,0 +1,17 @@
+**/bin/
+**/obj/
+
+**/*.pdb
+**/*.exe
+**/*.dll
+**/*.git
+
+.git
+.gitignore
+.vs/
+.vscode/
+**/node_modules/
+
+**/*.user
+**/*.suo
+**/*.userprefs
