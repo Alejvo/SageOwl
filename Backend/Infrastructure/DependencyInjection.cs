@@ -5,14 +5,15 @@ using Domain.Qualifications;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
-using FluentValidation.Validators;
-using Infrastructure.Contexts;
-using Infrastructure.PasswordHasher;
-using Infrastructure.Repositories;
-using Infrastructure.Services;
+using Infrastructure.Auth;
+using Infrastructure.Caching;
+using Infrastructure.Messaging;
+using Infrastructure.Persistence.Contexts;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace Infrastructure;
 
@@ -21,7 +22,11 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(opts =>opts.UseSqlServer(configuration.GetConnectionString("Default")));
-        
+        services.AddSingleton<IConnectionMultiplexer>(
+            ConnectionMultiplexer.Connect(
+                    configuration["Redis:ConnectionString"]
+                ));
+
         services.AddScoped<IUserRepository,UserRepository>();
         services.AddScoped<IPasswordHasher,BCryptPasswordHasher>();
         services.AddScoped<ITokenRepository,TokenRepository>();
@@ -31,6 +36,7 @@ public static class DependencyInjection
         services.AddScoped<IQualificationRepository,QualificationRepository>();
         services.AddScoped<IEmailService,EmailService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ICacheService, RedisCacheService>();
 
         return services;
     }

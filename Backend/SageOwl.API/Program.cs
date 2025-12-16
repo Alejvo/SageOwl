@@ -1,7 +1,7 @@
 using Application;
 using HealthChecks.UI.Client;
 using Infrastructure;
-using Infrastructure.Contexts;
+using Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
