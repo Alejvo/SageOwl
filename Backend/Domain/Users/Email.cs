@@ -3,6 +3,10 @@ public class Email
 {
     public string Value { get; }
 
+    public Email()
+    {
+    }
+
     private Email(string value)
     {
         Value = value;

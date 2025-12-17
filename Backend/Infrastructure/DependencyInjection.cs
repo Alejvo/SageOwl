@@ -27,7 +27,8 @@ public static class DependencyInjection
                     configuration["Redis:ConnectionString"]
                 ));
 
-        services.AddScoped<IUserRepository,UserRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+
         services.AddScoped<IPasswordHasher,BCryptPasswordHasher>();
         services.AddScoped<ITokenRepository,TokenRepository>();
         services.AddScoped<ITeamRepository,TeamRepository>();

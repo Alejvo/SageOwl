@@ -15,7 +15,8 @@ public class RedisCacheService : ICacheService
 
     public async Task<T?> GetAsync<T>(string key)
     {
-        var value = await _database.StringGetAsync(key);
+        var value = await _database
+            .StringGetAsync(key);
 
         if (value.IsNullOrEmpty)
             return default;
@@ -24,14 +25,13 @@ public class RedisCacheService : ICacheService
     }
 
     public async Task RemoveAsync(string key)
-    {
-        await _database.KeyDeleteAsync(key);
-    }
+         => await _database
+                .KeyDeleteAsync(key);
 
-    public async Task SetAsync<T>(string key, T value)
-    {
+     public async Task SetAsync<T>(string key,T value, TimeSpan expiryTime)
+     {
         var json = JsonSerializer.Serialize(value);
-
-        await _database.StringSetAsync(key, json);
-    }
+        await _database
+            .StringSetAsync(key, json,expiryTime);
+     }
 }

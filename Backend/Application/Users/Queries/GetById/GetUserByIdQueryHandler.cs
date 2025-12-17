@@ -1,23 +1,31 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Application.Users.Common;
 using Domain.Users;
 using Shared;
 
 namespace Application.Users.Queries.GetById;
 
-internal sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserResponse>
+internal sealed class GetUserByIdQueryHandler(
+    IUserRepository userRepository, 
+    ICacheService cacheService) : IQueryHandler<GetUserByIdQuery, UserResponse>
 {
-    private readonly IUserRepository _userRepository;
-
-    public GetUserByIdQueryHandler(IUserRepository userRepository)
-    {
-        _userRepository = userRepository;
-    }
-
     public async Task<Result<UserResponse>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetUserById(request.Id);
+        var cacheKey = $"user:{request.Id}";
 
-        return user != null ? user.ToUserResponse() : Result.Failure<UserResponse>(UserErrors.UserNotFound());
+        var cachedUser = await cacheService.GetAsync<UserResponse>(cacheKey);
+        if (cachedUser is not null)
+            return cachedUser;
+
+        var user = await userRepository.GetUserById(request.Id);
+
+        if (user is null)
+            return Result.Failure<UserResponse>(UserErrors.UserNotFound());
+
+        var response = user.ToUserResponse();
+        await cacheService.SetAsync(cacheKey, response);
+
+        return response;
     }
 }

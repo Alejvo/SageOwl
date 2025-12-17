@@ -1,25 +1,23 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Domain.Users;
 using Shared;
 
 namespace Application.Users.Commands.Update;
 
-internal sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
+internal sealed class UpdateUserCommandHandler(
+    IUserRepository userRepository,
+    ICacheService cacheService) : ICommandHandler<UpdateUserCommand>
 {
-    private readonly IUserRepository _userRepository;
-
-    public UpdateUserCommandHandler(IUserRepository userRepository)
-    {
-        _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-    }
-
     public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
 
-        var user = await _userRepository.GetUserById(request.Id);
+        var user = await userRepository.GetUserById(request.Id);
 
         if (user is null)
             return Result.Failure(UserErrors.UserNotFound());
+
+        await cacheService.RemoveAsync($"user:{user.Id}");
 
         var updatedUser = User.Create(
             request.Id,
@@ -30,6 +28,6 @@ internal sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserComma
             request.Username.ToLower(),
             request.Birthday);
 
-        return await _userRepository.Update(user,updatedUser) ? Result.Success() : Result.Failure(Error.DBFailure);
+        return await userRepository.Update(user,updatedUser) ? Result.Success() : Result.Failure(Error.DBFailure);
     }
 }

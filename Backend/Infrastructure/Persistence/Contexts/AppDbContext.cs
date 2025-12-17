@@ -4,11 +4,11 @@ using Domain.Qualifications;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
-using Infrastructure.Configurations;
-using Infrastructure.Configurations.Announcements;
-using Infrastructure.Configurations.Forms;
-using Infrastructure.Configurations.Qualifications;
-using Infrastructure.Configurations.Teams;
+using Infrastructure.Persistence.Configurations;
+using Infrastructure.Persistence.Configurations.Announcements;
+using Infrastructure.Persistence.Configurations.Forms;
+using Infrastructure.Persistence.Configurations.Qualifications;
+using Infrastructure.Persistence.Configurations.Teams;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Contexts;
