@@ -1,6 +1,7 @@
 ﻿using Domain.Announcements;
 using Domain.Forms;
 using Domain.Qualifications;
+using Domain.Subscriptions;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
@@ -8,7 +9,9 @@ using Infrastructure.Persistence.Configurations;
 using Infrastructure.Persistence.Configurations.Announcements;
 using Infrastructure.Persistence.Configurations.Forms;
 using Infrastructure.Persistence.Configurations.Qualifications;
+using Infrastructure.Persistence.Configurations.Subscriptions;
 using Infrastructure.Persistence.Configurations.Teams;
+using Infrastructure.Persistence.Configurations.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Contexts;
@@ -35,6 +38,11 @@ public class AppDbContext : DbContext
     //Qualifications
     public DbSet<Qualification> Qualifications { get; set; }
     public DbSet<UserQualification> UserQualifications { get; set; }
+    //Subscriptions
+    public DbSet<Plan> Plans { get; set; }
+    public DbSet<SubscriptionMember> SubscriptionMembers { get; set; }
+    public DbSet<Subscription> Subscriptions { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -50,6 +58,9 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new QualificationConfiguration());
         modelBuilder.ApplyConfiguration(new UserQualificationConfiguration());
+        modelBuilder.ApplyConfiguration(new PlanConfiguration());
+        modelBuilder.ApplyConfiguration(new SubscriptionMemberConfiguration());
+        modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }
