@@ -24,7 +24,7 @@ internal sealed class GetUserByIdQueryHandler(
             return Result.Failure<UserResponse>(UserErrors.UserNotFound());
 
         var response = user.ToUserResponse();
-        await cacheService.SetAsync(cacheKey, response);
+        await cacheService.SetAsync(cacheKey, response, new TimeSpan(1,30,0));
 
         return response;
     }

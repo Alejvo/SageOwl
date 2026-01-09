@@ -14,12 +14,10 @@ public class SubscriptionMemberConfiguration : IEntityTypeConfiguration<Subscrip
 
         builder.HasOne(s => s.LinkedUser)
             .WithMany()
-            .HasForeignKey(s => s.LinkedUserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(s => s.LinkedUserId);
 
         builder.HasOne(s => s.Subscription)
             .WithMany()
-            .HasForeignKey(s => s.SubscriptionId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(s => s.SubscriptionId);
     }
 }
