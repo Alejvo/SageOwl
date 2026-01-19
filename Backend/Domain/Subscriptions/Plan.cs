@@ -15,4 +15,5 @@ public class Plan
 
     public static Plan Create(string name, double value)
         => new (name, value);
+
 }

@@ -2,6 +2,6 @@
 
 public interface ISubscriptionRepository
 {
-    Task<Subscription> GetSubscriptionsByUserId(Guid UserId);
-    Task SaveSubscription(Subscription subscription);
+    Task<ICollection<Subscription>> GetSubscriptionsByUserId(Guid UserId);
+    Task<bool> SaveSubscription(Subscription subscription);
 }

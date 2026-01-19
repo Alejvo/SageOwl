@@ -1,34 +1,52 @@
 ﻿using Application.Abstractions;
 using Application.Interfaces;
 using Stripe;
+using Stripe.Checkout;
 
 namespace Infrastructure.Payments;
 
 public class StripePaymentService : IPaymentService
 {
-    public async Task<PaymentIntentResult> CreatePaymentIntent(
+    public async Task<CheckoutSessionResult> CreatePaymentIntent(
         decimal amount,
-        string currency,
-        string description)
+        string description,
+        Guid subscriberId,
+        string successUrl)
     {
-        var options = new PaymentIntentCreateOptions
+        var options = new SessionCreateOptions
         {
-            Amount = (long)(amount * 100),
-            Currency = currency,
-            Description = description,
-            AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+            SuccessUrl = successUrl,
+            Mode = "payment",
+            PaymentMethodTypes = new List<string> { "card" },
+            LineItems = new List<SessionLineItemOptions>
             {
-                Enabled = true
+                new()
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        Currency = "usd",
+                        UnitAmount = (long)(amount * 100),
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = description
+                        }
+                    },
+                    Quantity = 1
+                }
+            },
+            Metadata = new Dictionary<string, string>
+            {
+                ["userId"] = subscriberId.ToString()
             }
         };
 
-        var service = new PaymentIntentService();
-        var intent = await service.CreateAsync(options);
+        var service = new SessionService();
+        var session = await service.CreateAsync(options);
 
-        return new PaymentIntentResult
+        return new CheckoutSessionResult
         {
-            PaymentIntentId = intent.Id,
-            ClientSecret = intent.ClientSecret
+            SessionId = session.Id,
+            ClientSecret = session.ClientSecret
         };
     }
 }

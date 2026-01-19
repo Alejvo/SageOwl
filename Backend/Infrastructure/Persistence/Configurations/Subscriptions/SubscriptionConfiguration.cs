@@ -10,8 +10,6 @@ public class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription>
     {
         builder.HasKey(s => s.Id);
 
-        builder.ToTable("subscription");
-
         builder.HasOne(s => s.Plan)
             .WithMany()
             .HasForeignKey(s => s.PlanId);

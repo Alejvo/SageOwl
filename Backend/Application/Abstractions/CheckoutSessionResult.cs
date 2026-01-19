@@ -1,7 +1,7 @@
 ﻿namespace Application.Abstractions;
 
-public class PaymentIntentResult
+public class CheckoutSessionResult
 {
-    public string PaymentIntentId { get; init; }
+    public string SessionId { get; init; }
     public string ClientSecret { get; init; }
 }

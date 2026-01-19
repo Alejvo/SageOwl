@@ -4,8 +4,9 @@ namespace Application.Interfaces;
 
 public interface IPaymentService
 {
-    Task<PaymentIntentResult> CreatePaymentIntent(
+    Task<CheckoutSessionResult> CreatePaymentIntent(
         decimal amount,
-        string currency,
-        string description);
+        string description,
+        Guid subscriberId,
+        string successUrl);
 }

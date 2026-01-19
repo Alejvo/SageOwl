@@ -10,10 +10,12 @@ public class PlanConfiguration : IEntityTypeConfiguration<Plan>
     {
         builder.HasKey(x => x.Id);
 
-        builder.ToTable("plan");
+        builder.Property(p => p.Id)
+       .ValueGeneratedOnAdd();
 
         builder.Property(p => p.Value).IsRequired();
 
         builder.Property(p => p.Name).IsRequired();
+
     }
 }

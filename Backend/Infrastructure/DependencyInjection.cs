@@ -2,6 +2,7 @@
 using Domain.Announcements;
 using Domain.Forms;
 using Domain.Qualifications;
+using Domain.Subscriptions;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
@@ -40,6 +41,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICacheService, RedisCacheService>();
         services.AddScoped<IPaymentService,StripePaymentService>();
+        services.AddScoped<ISubscriptionRepository,SubscriptionRepository>();
 
         Stripe.StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
         return services;

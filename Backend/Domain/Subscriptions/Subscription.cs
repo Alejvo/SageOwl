@@ -13,14 +13,16 @@ public class Subscription
     public User Subscriber { get; set; }
     public Plan Plan { get; set; }
 
-    private Subscription(DateTime startAt, DateTime endAt)
+    private Subscription(Guid subscriberId, Guid planId, DateTime startAt, DateTime endAt)
     {
+        PlanId = planId;
+        SubscriberId = subscriberId;
         StartAt = startAt;
         EndAt = endAt;
     }
 
     public Subscription() { }
 
-    public  static Subscription Create(DateTime startAt, DateTime endAt)
-        => new (startAt, endAt);       
+    public  static Subscription Create(Guid subscriberId,Guid planId,DateTime startAt, DateTime endAt)
+        => new (subscriberId, planId, startAt, endAt);       
 }
