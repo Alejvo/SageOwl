@@ -46,7 +46,7 @@ public class StripePaymentService : IPaymentService
         return new CheckoutSessionResult
         {
             SessionId = session.Id,
-            ClientSecret = session.ClientSecret
+            CheckoutUrl = session.Url
         };
     }
 }
