@@ -22,10 +22,15 @@
     <PackageReference Include="MimeKit" Version="4.14.0" />
     <PackageReference Include="Scrutor" Version="7.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.10.1" />
+    <PackageReference Include="Stripe.net" Version="50.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
   </ItemGroup>
 
 </Project>
