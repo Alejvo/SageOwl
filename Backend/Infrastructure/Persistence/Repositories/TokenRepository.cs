@@ -19,23 +19,16 @@ internal class TokenRepository : ITokenRepository
             .FirstOrDefaultAsync(t => t.RefreshToken == token);
     }
 
-    public async Task SaveOrUpdateTokenAsync(Guid userId, string refreshToken, DateTime expiryTime)
+    public async Task SaveTokenAsync(Guid userId, string refreshToken, DateTime expiryTime)
     {
-        var existingToken = await _dbContext.Tokens
-            .FirstOrDefaultAsync(t => t.UserId == userId);
+        var isTokenAvailable = await _dbContext.Tokens.AnyAsync(t => t.RefreshToken == refreshToken);
 
-        if (existingToken is null)
+        if (isTokenAvailable)
         {
             var newToken = Token.Create(refreshToken, userId, expiryTime);
             _dbContext.Tokens.Add(newToken);
-        }
-        else
-        {
-            existingToken.RefreshToken = refreshToken;
-            existingToken.ExpiryTime = expiryTime;
-            _dbContext.Tokens.Update(existingToken);
+            await _dbContext.SaveChangesAsync();
         }
 
-        await _dbContext.SaveChangesAsync();
     }
 }

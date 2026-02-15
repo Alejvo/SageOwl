@@ -70,7 +70,7 @@ public class AuthService : IAuthService
     public async Task SaveRefreshToken(Guid userId, string refreshToken)
     {
         var expiryTime = DateTime.UtcNow.AddDays(7);
-        await _tokenRepository.SaveOrUpdateTokenAsync(userId, refreshToken, expiryTime);
+        await _tokenRepository.SaveTokenAsync(userId, refreshToken, expiryTime);
     }
 
     public async Task<Result<LoginResponse>> LoginAsync(string email, string password)
@@ -108,7 +108,7 @@ public class AuthService : IAuthService
         var newAccessToken = GenerateToken(user.Id, user.Name);
         var newRefreshToken = GenerateRefreshToken();
 
-        await _tokenRepository.SaveOrUpdateTokenAsync(user.Id, newRefreshToken, DateTime.UtcNow.AddDays(7));
+        await _tokenRepository.SaveTokenAsync(user.Id, newRefreshToken, DateTime.UtcNow.AddDays(7));
 
         return new LoginResponse(newAccessToken,newRefreshToken);
     }
