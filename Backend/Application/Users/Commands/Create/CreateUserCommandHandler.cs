@@ -7,7 +7,7 @@ using Shared;
 
 namespace Application.Users.Commands.Create;
 
-internal sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
+public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
