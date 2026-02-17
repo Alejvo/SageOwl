@@ -26,9 +26,11 @@ public class FormRepository : IFormRepository
             .ToListAsync();
     }
 
-    public Task<FormResult> GetFormResults(Guid formId)
+    public async Task<List<FormResult>> GetFormResults(Guid formId)
     {
-        throw new NotImplementedException();
+        return await _dbContext.FormResults
+            .Where(f => f.FormId == formId)
+            .ToListAsync();
     }
 
     public async Task<Form?> GetFormById(Guid formId)
@@ -55,5 +57,11 @@ public class FormRepository : IFormRepository
     {
         _dbContext.Forms.Remove(form);
         return await _dbContext.SaveChangesAsync() > 0;
+    }
+
+    public async Task CreateFormResult(FormResult formResult)
+    {
+        _dbContext.FormResults.Add(formResult);
+        await _dbContext.SaveChangesAsync();
     }
 }
