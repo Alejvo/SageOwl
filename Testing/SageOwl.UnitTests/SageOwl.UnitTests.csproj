@@ -20,9 +20,7 @@
     <ProjectReference Include="..\..\Backend\Application\Application.csproj" />
     <ProjectReference Include="..\..\Backend\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\Backend\Shared\Shared.csproj" />
-    <ProjectReference Include="..\Backend\Application\Application.csproj" />
-    <ProjectReference Include="..\Backend\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Backend\Shared\Shared.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>
