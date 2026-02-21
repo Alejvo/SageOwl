@@ -26,7 +26,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(opts =>opts.UseSqlServer(configuration.GetConnectionString("Default")));
         services.AddSingleton<IConnectionMultiplexer>(
             ConnectionMultiplexer.Connect(
-                    configuration["Redis:ConnectionString"]
+                    configuration["Redis:ConnectionString"] + ",abortConnect=false"
                 ));
 
         services.AddScoped<IUserRepository, UserRepository>();
