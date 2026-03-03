@@ -32,6 +32,10 @@ public class TestWebApplicationFactory
     {
         await _sqlContainer.StartAsync();
         await _redisContainer.StartAsync();
+
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await db.Database.MigrateAsync();
     }
 
     async Task IAsyncLifetime.DisposeAsync()
@@ -65,11 +69,6 @@ public class TestWebApplicationFactory
             {
                 options.UseSqlServer(_sqlContainer.GetConnectionString());
             });
-
-            var sp = services.BuildServiceProvider();
-            using var scope = sp.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            db.Database.Migrate();
         });
     }
 }
