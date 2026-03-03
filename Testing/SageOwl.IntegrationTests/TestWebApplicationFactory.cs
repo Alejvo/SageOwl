@@ -42,6 +42,7 @@ public class TestWebApplicationFactory
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+
         builder.ConfigureAppConfiguration((context, config) =>
         {
             var configuration = new Dictionary<string, string>
@@ -63,7 +64,8 @@ public class TestWebApplicationFactory
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(_sqlContainer.GetConnectionString());
+                options.UseSqlServer(_sqlContainer.GetConnectionString(), 
+                    b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
             });
 
             var sp = services.BuildServiceProvider();
