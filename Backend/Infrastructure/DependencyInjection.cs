@@ -24,10 +24,15 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(opts =>opts.UseSqlServer(configuration.GetConnectionString("Default")));
-        services.AddSingleton<IConnectionMultiplexer>(
-            ConnectionMultiplexer.Connect(
-                    configuration["Redis:ConnectionString"] + ",abortConnect=false"
-                ));
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            var configuration = sp.GetRequiredService<IConfiguration>();
+            var connectionString = configuration["Redis:ConnectionString"];
+
+            return ConnectionMultiplexer.Connect(
+                connectionString + ",abortConnect=false"
+            );
+        });
 
         services.AddScoped<IUserRepository, UserRepository>();
 
