@@ -8,7 +8,7 @@ public class TeamMembership
     public Guid UserId {  get;  private set; }
     public Guid TeamId { get; private set; }
     public TeamRole Role { get; private set; }
-    public DateTime JoinedAt {  get; private set; } = DateTime.UtcNow;
+    public DateTime JoinedAt {  get; private set; }
 
     public User User {  get; private set; }
     public Team Team { get; private set; }

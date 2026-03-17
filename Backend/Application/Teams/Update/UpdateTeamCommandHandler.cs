@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Domain.Teams;
-using Domain.Users;
 using Shared;
 
 namespace Application.Teams.Update;
