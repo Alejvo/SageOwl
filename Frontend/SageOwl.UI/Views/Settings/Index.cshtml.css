@@ -1,0 +1,65 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+}
+
+.settings_main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height:100%;
+    background-color: white;
+    padding: 20px 16px;
+    border-radius:10px;
+    gap:20px;
+}
+
+.settings_delete_button {
+    border-radius: 10px;
+    color: #fff;
+    background-color: #F24A4A;
+    border:none;
+    height:40px;
+    font-size:18px;
+    font-weight:bold;
+    width:200px;
+}
+
+.settings_buttons{
+    display:flex;
+    flex-direction:row;
+    gap:20px;
+}
+    .settings_delete_button:active,
+    .settings_delete_button:hover {
+        background-color: #C42727;
+    }
+
+.settings_update_button {
+    border-radius: 10px;
+    color: #fff;
+    background-color: #50C918;
+    border: none;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 200px;
+}
+
+    .settings_update_button:active,
+    .settings_update_button:hover {
+        background-color: #459321;
+    }
+
+.settings_data_container {
+    width: 100%;
+    border: 1px solid #595959;
+    border-radius:10px;
+    gap:5px;
+    display:flex;
+    flex-direction:column;
+    padding:10px;
+}
+.settings_data_container label{
+    width:80px;
+}
