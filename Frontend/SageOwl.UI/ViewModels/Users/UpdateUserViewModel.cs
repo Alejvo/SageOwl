@@ -1,17 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
+﻿namespace SageOwl.UI.ViewModels.Users;
 
-namespace SageOwl.UI.ViewModels;
-
-public class RegisterViewModel
+public class UpdateUserViewModel
 {
-    //Name
     public string Name { get; set; }
     public string Email { get; set; }
     public string Surname { get; set; }
 
     //Birth
-    public int Day {  get; set; }
+    public int Day { get; set; }
     public int Month { get; set; }
     public int Year { get; set; }
 
@@ -21,8 +17,4 @@ public class RegisterViewModel
     public string ConfirmPassword { get; set; }
 
     public DateTime BirthDay => new(Year, Month, Day);
-
-    //Submit
-    public bool AcceptTerms { get; set; }
-
 }

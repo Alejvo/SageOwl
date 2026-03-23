@@ -140,15 +140,6 @@ public class TeamController : Controller
                 })).ToList()
             };
 
-            foreach(var q in qualification.UserQualifications)
-            {
-                Console.WriteLine(q.UserId);
-                foreach (var item in q.Positions)
-                {
-                    Console.WriteLine(item);
-                }
-            }
-
             await _qualificationService.SaveQualifications(newQualification);
             return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
         }

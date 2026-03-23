@@ -1,6 +1,6 @@
 ﻿using SageOwl.UI.Models;
 using SageOwl.UI.Services.Interfaces;
-using SageOwl.UI.ViewModels;
+using SageOwl.UI.ViewModels.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
@@ -10,13 +10,18 @@ namespace SageOwl.UI.Services.Implementations;
 public class UserService : IUserService
 {
     private readonly HttpClient _httpClient;
+    private readonly IAccountService _accountService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-    public UserService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+    public UserService(
+        IHttpClientFactory httpClientFactory, 
+        IHttpContextAccessor httpContextAccessor,
+        IAccountService accountService)
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
+        _accountService = accountService;
     }
 
     public async Task<bool> Create(RegisterViewModel data)
@@ -99,5 +104,23 @@ public class UserService : IUserService
 
         var users = JsonSerializer.Deserialize<List<User>>(content, options);
         return users;
+    }
+
+    public async Task<bool> Update(UpdateUserViewModel user)
+    {
+        var token = await _accountService.GetValidAccessTokenAsync();
+
+        if (string.IsNullOrEmpty(token))
+            return false;
+
+        var json = JsonSerializer.Serialize(user);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.PutAsync("user", content);
+
+        return response.IsSuccessStatusCode;
     }
 }

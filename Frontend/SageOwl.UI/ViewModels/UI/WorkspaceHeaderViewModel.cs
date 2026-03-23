@@ -1,4 +1,4 @@
-﻿namespace SageOwl.UI.ViewModels;
+﻿namespace SageOwl.UI.ViewModels.UI;
 
 public class WorkspaceHeaderViewModel
 {

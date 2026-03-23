@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 using SageOwl.UI.Models;
 using SageOwl.UI.Services.Interfaces;
-using SageOwl.UI.ViewModels;
+using SageOwl.UI.ViewModels.UI;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Text;

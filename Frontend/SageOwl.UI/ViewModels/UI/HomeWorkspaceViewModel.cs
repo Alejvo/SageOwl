@@ -2,7 +2,7 @@
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
 
-namespace SageOwl.UI.ViewModels;
+namespace SageOwl.UI.ViewModels.UI;
 
 public class HomeWorkspaceViewModel
 {
