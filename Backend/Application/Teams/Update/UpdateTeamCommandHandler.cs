@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Domain.Teams;
-using Domain.Users;
 using Shared;
 
 namespace Application.Teams.Update;
@@ -24,7 +23,7 @@ internal sealed class UpdateTeamCommandHandler : ICommandHandler<UpdateTeamComma
         team.Name = request.Name;
         team.Description = request.Description;
 
-        var userIds = request.Members.Select(m => m.UserId).ToList();
+        //var userIds = request.Members.Select(m => m.UserId).ToList();
 
         foreach (var member in request.Members)
         {

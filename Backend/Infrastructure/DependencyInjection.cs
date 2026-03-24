@@ -1,15 +1,21 @@
-﻿using Domain.Announcements;
+﻿using Application.Interfaces;
+using Domain.Announcements;
 using Domain.Forms;
 using Domain.Qualifications;
+using Domain.Subscriptions;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
-using Infrastructure.Contexts;
-using Infrastructure.PasswordHasher;
-using Infrastructure.Repositories;
+using Infrastructure.Auth;
+using Infrastructure.Caching;
+using Infrastructure.Messaging;
+using Infrastructure.Payments;
+using Infrastructure.Persistence.Contexts;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace Infrastructure;
 
@@ -18,14 +24,31 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(opts =>opts.UseSqlServer(configuration.GetConnectionString("Default")));
-        
-        services.AddScoped<IUserRepository,UserRepository>();
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            var configuration = sp.GetRequiredService<IConfiguration>();
+            var connectionString = configuration["Redis:ConnectionString"];
+
+            return ConnectionMultiplexer.Connect(
+                connectionString + ",abortConnect=false"
+            );
+        });
+
+        services.AddScoped<IUserRepository, UserRepository>();
+
         services.AddScoped<IPasswordHasher,BCryptPasswordHasher>();
         services.AddScoped<ITokenRepository,TokenRepository>();
         services.AddScoped<ITeamRepository,TeamRepository>();
         services.AddScoped<IFormRepository,FormRepository>();
         services.AddScoped<IAnnouncementRepository,AnnouncementRepository>();
         services.AddScoped<IQualificationRepository,QualificationRepository>();
+        services.AddScoped<IEmailService,EmailService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ICacheService, RedisCacheService>();
+        services.AddScoped<IPaymentService,StripePaymentService>();
+        services.AddScoped<ISubscriptionRepository,SubscriptionRepository>();
+
+        Stripe.StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
         return services;
     }
 }

@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace SageOwl.API.Controllers;
 
 [Route("api/[controller]")]
-[ApiController]
 [Authorize]
-public class QualificationsController : ControllerBase
+public class QualificationsController : ApiController
 {
     private readonly ISender _sender;
 
@@ -24,7 +23,7 @@ public class QualificationsController : ControllerBase
     {
         var res = await _sender.Send(new GetQualificationsByTeamIdQuery(teamId));
 
-        return res.IsSuccess ? Ok(res.Value) : BadRequest();
+        return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
     }
 
     [HttpGet("userId/{userId}")]
@@ -32,7 +31,7 @@ public class QualificationsController : ControllerBase
     {
         var res = await _sender.Send(new GetQualificationsByUserIdQuery(userId));
 
-        return res.IsSuccess ? Ok(res.Value) : BadRequest();
+        return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
     }
 
     [HttpPost]
@@ -40,6 +39,6 @@ public class QualificationsController : ControllerBase
     {
         var res = await _sender.Send(command);
 
-        return res.IsSuccess ? Created() : BadRequest(res.Errors);
+        return res.IsSuccess ? Created() : Problem(res.Errors);
     }
 }

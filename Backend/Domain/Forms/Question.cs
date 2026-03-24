@@ -28,9 +28,33 @@ public class Question
     public static Question Create(Guid formId, string title,QuestionType questionType,string? description)
         => new(title, description,formId,questionType);
 
+    public void Update(string title, QuestionType questionType, string? description)
+    {
+        Title = title;
+        Description = description;
+        QuestionType = questionType;
+        Description = description;
+
+    }
     public void AddOption(string value, bool isCorrect)
     {
         var option = Option.Create(value, isCorrect,Id);
         _options.Add(option);
+    }
+    public void UpdateOption(Guid optionId, string value, bool isCorrect)
+    {
+        var option = _options.FirstOrDefault(x => x.Id == optionId);
+        if (option is null) return;
+
+        option.Update(value,isCorrect);
+    }
+
+    public void RemoveOption(Guid questionId)
+    {
+        var question = _options.FirstOrDefault(q => q.Id == questionId);
+        if (question != null)
+        {
+            _options.Remove(question);
+        }
     }
 }

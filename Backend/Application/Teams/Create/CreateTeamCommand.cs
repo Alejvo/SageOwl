@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Application.Teams.Common;
-using Domain.Teams;
 
 namespace Application.Teams.Create;
 

@@ -9,9 +9,8 @@ using Shared;
 namespace SageOwl.API.Controllers;
 
 [Route("api/[controller]")]
-[ApiController]
 [Authorize]
-public class AnnouncementsController : ControllerBase
+public class AnnouncementsController : ApiController
 {
     private readonly ISender _sender;
 
@@ -24,14 +23,14 @@ public class AnnouncementsController : ControllerBase
     public async Task<IActionResult> GetAnnouncementByTeamId([FromRoute] Guid teamId)
     {
         var res = await _sender.Send(new GetAnnouncementByTeamIdQuery(teamId));
-        return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Errors);
+        return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAnnouncements()
     {
         var res = await _sender.Send(new GetAnnouncementsQuery());
-        return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Errors);
+        return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
     }
 
     [HttpPost]
@@ -39,15 +38,6 @@ public class AnnouncementsController : ControllerBase
     {
         var res = await _sender.Send(command);
 
-        if (res.IsSuccess)
-            return Created();
-
-        if (res.Errors[0] == Error.Forbidden)
-            return Forbid();
-
-        if (res.Errors[0] == Error.Unauthorized)
-            return Unauthorized();
-
-        return BadRequest(res.Errors);
+         return res.IsSuccess ? Created() : Problem(res.Errors);
     }
 }

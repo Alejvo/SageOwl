@@ -51,9 +51,6 @@ artifacts/
 *.snupkg
 *.lock.json
 
-## Entity Framework
-Migrations/
-
 ## Resharper
 _ReSharper*/
 *.[Rr]e[Ss]harper

@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+    db:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        container_name: sageowl_db
+        environment:
+            SA_PASSWORD: "MySecurePassword123!" 
+            ACCEPT_EULA: "Y"
+        ports:
+            - "15433:1433" 
+        volumes:
+            - sageowl_data:/var/opt/mssql
+        restart: always
+    redis:
+        image: redis:7-alpine
+        container_name: sageowl_cache
+        ports:
+            - "6379:6379"
+        volumes:
+            - sageowl_cache:/data
+    backend_api:
+        build:
+            context: ./Backend
+            dockerfile: Dockerfile
+        container_name: sageowl_api
+        ports:
+            - 8081:8080
+        environment:
+            ASPNETCORE_ENVIRONMENT: "Production"
+            ASPNETCORE_URLS: "http://+:8080"
+            ConnectionStrings__DefaultConnection: "Server=db,1433;Database=SageOwl;User Id=sa;Password=MySecurePassword123!;TrustServerCertificate=true;Encrypt=false;"
+            Redis_Configuration: "redis:6379,abortConnect=False"
+        depends_on:
+            - redis
+            - db
+        restart: always
+    frontend_ui:
+        build:
+            context: ./frontend/SageOwl.UI
+            dockerfile: Dockerfile
+        container_name: sageowl_ui
+        ports:
+            - "8080:8080"
+        environment:
+            ASPNETCORE_URLS: "http://+:8080"
+        depends_on:
+            - backend_api
+        restart: always
+volumes:
+  sageowl_data:
+  sageowl_cache:

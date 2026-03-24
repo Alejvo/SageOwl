@@ -1,13 +1,19 @@
 using Application;
+using HealthChecks.UI.Client;
 using Infrastructure;
+using Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var config = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine("SQL Server ConnectionString: " + config);
 
 builder.Services.AddControllers()
         .AddJsonOptions(opt =>
@@ -56,6 +62,10 @@ builder.Services.AddAuthentication(config =>
     };
 });
 
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -74,4 +84,18 @@ app.MapControllers();
 
 app.UseCors("SageOwl");
 
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 app.Run();
+public partial class Program { }

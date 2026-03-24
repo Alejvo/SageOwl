@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Teams.Common;
 using Domain.Teams;
 using Domain.Users;
 using Shared;
@@ -18,6 +19,9 @@ internal sealed class CreateTeamCommandHandler : ICommandHandler<CreateTeamComma
 
     public async Task<Result> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
     {
+        if (request.Members.Count == 0)
+            Result.Failure<TeamResponse>(TeamErrors.NoMembersAdded);
+
         var team = Team.Create(request.Name,request.Description);
 
         foreach (var member in request.Members)
@@ -25,7 +29,8 @@ internal sealed class CreateTeamCommandHandler : ICommandHandler<CreateTeamComma
             team.AddMember(member.UserId, TeamRole.FromString(member.Role));
         }
 
-        team.EnsureAtLeastOneAdmin();
+        if (!team.Members.Any(m => m.Role == TeamRole.Admin))
+            Result.Failure<TeamResponse>(TeamErrors.NoAdminAdded);
 
         return await _teamRepository.CreateTeam(team) 
             ? Result.Success() 
