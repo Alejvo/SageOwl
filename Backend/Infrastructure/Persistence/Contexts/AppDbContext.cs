@@ -62,6 +62,9 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new SubscriptionMemberConfiguration());
         modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
 
+        // Query Filters
+        modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
+
         base.OnModelCreating(modelBuilder);
     }
 }

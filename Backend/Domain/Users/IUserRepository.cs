@@ -8,8 +8,7 @@ public interface IUserRepository
     Task<User?> GetUserByEmail(string email);
     Task<bool> CreateUser(User user);
     Task<bool> Update(User user, User userUpdated);
-    Task Delete();
-    Task SoftDelete();
+    Task<bool> SoftDelete(Guid userId);
     Task<bool> EmailExists(string email);
     Task<bool> UsernameExists(string username);
 }

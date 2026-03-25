@@ -1,5 +1,7 @@
-﻿namespace Application.Users.Commands.SoftDelete;
+﻿using Application.Abstractions;
 
-internal class SoftDeleteUserCommand
-{
-}
+namespace Application.Users.Commands.SoftDelete;
+
+public record SoftDeleteUserCommand(
+    Guid UserId
+    ) : ICommand;

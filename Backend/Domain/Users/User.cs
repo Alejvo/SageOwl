@@ -15,6 +15,8 @@ public class User : BaseEntity
     public string Username {  get; set; } = string.Empty;
     public DateTime Birthday { get; set; }
     public DateTime CreatedAt { get; set; }
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeleteAt { get; set; }
     public Token? Token { get; set; }
     public ICollection<TeamMembership> UserTeams { get; set; } = new List<TeamMembership>();
 

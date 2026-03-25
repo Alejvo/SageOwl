@@ -1,10 +1,12 @@
 ﻿using Application.Users.Commands.Create;
+using Application.Users.Commands.SoftDelete;
 using Application.Users.Commands.Update;
 using Application.Users.Queries.GetAll;
 using Application.Users.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SageOwl.API.Controllers;
 
@@ -54,9 +56,10 @@ public class UsersController : ApiController
         return res.IsSuccess ? NoContent() : Problem(res.Errors);
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> Delete()
+    [HttpDelete("userId/{userId}")]
+    public async Task<IActionResult> SoftDelete([FromRoute] Guid userId)
     {
-        return Ok();
+        var res = await _sender.Send(new SoftDeleteUserCommand(userId));
+        return res.IsSuccess ? NoContent() : Problem(res.Errors);
     }
 }

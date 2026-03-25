@@ -19,11 +19,6 @@ public class UserRepository : IUserRepository
         return await _dbContext.SaveChangesAsync() > 0;
     }
 
-    public Task Delete()
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<bool> EmailExists(string email)
     {
         return await _dbContext.Users.AnyAsync(u => u.Email == Email.Create(email));
@@ -45,9 +40,16 @@ public class UserRepository : IUserRepository
         return await _dbContext.Users.ToListAsync();
     }
 
-    public Task SoftDelete()
+    public async Task<bool> SoftDelete(Guid UserId)
     {
-        throw new NotImplementedException();
+        var user = await _dbContext.Users.FindAsync(UserId);
+
+        if(user != null)
+        {
+            user.IsDeleted = true;
+            user.DeleteAt = DateTime.Now;
+        }
+        return await _dbContext.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> Update(User user,User userUpdated)
