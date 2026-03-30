@@ -21,7 +21,7 @@ services:
             - sageowl_cache:/data
     backend_api:
         build:
-            context: ./Backend
+            context: ./Backend/SageOwl.API/Backend
             dockerfile: Dockerfile
         container_name: sageowl_api
         ports:
