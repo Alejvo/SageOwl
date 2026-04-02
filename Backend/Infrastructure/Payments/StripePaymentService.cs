@@ -11,6 +11,7 @@ public class StripePaymentService : IPaymentService
         decimal amount,
         string description,
         Guid subscriberId,
+        int planId,
         string successUrl)
     {
         var options = new SessionCreateOptions
@@ -34,9 +35,13 @@ public class StripePaymentService : IPaymentService
                     Quantity = 1
                 }
             },
-            Metadata = new Dictionary<string, string>
+            PaymentIntentData = new SessionPaymentIntentDataOptions
             {
-                ["userId"] = subscriberId.ToString()
+                Metadata = new Dictionary<string, string>
+                {
+                    ["userId"] = subscriberId.ToString(),
+                    ["planId"] = planId.ToString()
+                }
             }
         };
 

@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +17,8 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Plans",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Value = table.Column<double>(type: "float", nullable: false)
                 },
@@ -48,7 +51,9 @@ namespace Infrastructure.Persistence.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeleteAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -132,7 +137,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubscriberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlanId = table.Column<int>(type: "int", nullable: false),
                     StartAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -352,6 +357,15 @@ namespace Infrastructure.Persistence.Migrations
                         principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Plans",
+                columns: new[] { "Id", "Name", "Value" },
+                values: new object[,]
+                {
+                    { 1, "Free", 0.0 },
+                    { 2, "Basic", 20.0 }
                 });
 
             migrationBuilder.CreateIndex(

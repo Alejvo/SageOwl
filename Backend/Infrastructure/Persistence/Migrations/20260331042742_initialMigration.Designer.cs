@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260119201748_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20260331042742_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,9 +255,11 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Subscriptions.Plan", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -269,6 +271,20 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Plans");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Free",
+                            Value = 0.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Basic",
+                            Value = 20.0
+                        });
                 });
 
             modelBuilder.Entity("Domain.Subscriptions.Subscription", b =>
@@ -280,8 +296,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("EndAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("PlanId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("PlanId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartAt")
                         .HasColumnType("datetime2");
@@ -406,10 +422,16 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeleteAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

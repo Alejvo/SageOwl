@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SageOwl.API.Settings;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,9 @@ builder.Services.AddHttpContextAccessor();
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
+
+builder.Services.Configure<StripeSettings>(
+    builder.Configuration.GetSection("Stripe"));
 
 builder.Services.AddCors(options =>
 {

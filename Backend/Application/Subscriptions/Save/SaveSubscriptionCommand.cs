@@ -4,7 +4,7 @@ namespace Application.Subscriptions.Save;
 
 public sealed record SaveSubscriptionCommand(
     Guid SubscriberId,
-    Guid PlanId,
+    int PlanId,
     DateTime StartAt, 
     DateTime EndAt
     ) : ICommand;

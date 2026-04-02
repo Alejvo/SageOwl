@@ -1,8 +1,8 @@
 ﻿using Application.Auth.Login;
 using Application.Auth.RefreshToken;
 using MediatR;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using SageOwl.API.Requests;
 
 namespace SageOwl.API.Controllers;
 
@@ -25,9 +25,9 @@ public class AuthController : ApiController
     }
 
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
     {
-        var res = await _sender.Send(new RefreshTokenCommand(request.RefreshToken));
+        var res = await _sender.Send(command);
 
         return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
     }

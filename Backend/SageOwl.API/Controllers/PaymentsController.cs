@@ -1,9 +1,10 @@
 ﻿using Application.Interfaces;
 using Application.Subscriptions.Save;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SageOwl.API.Requests;
+using SageOwl.API.Settings;
 using Stripe;
 
 namespace SageOwl.API.Controllers;
@@ -13,14 +14,19 @@ namespace SageOwl.API.Controllers;
 public class PaymentsController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
-    private readonly IConfiguration _configuration;
     private readonly IMediator _mediator;
+    private readonly ILogger<PaymentsController> _logger;
+    private readonly StripeSettings _stripeSettings;
 
-    public PaymentsController(IPaymentService paymentService, IConfiguration configuration,IMediator mediator)
+    public PaymentsController(IPaymentService paymentService, 
+        IMediator mediator,
+        ILogger<PaymentsController> logger,
+        IOptions<StripeSettings> stripeOptions)
     {
         _paymentService = paymentService;
-        _configuration = configuration;
         _mediator = mediator;
+        _logger = logger;
+        _stripeSettings = stripeOptions.Value;
     }
 
     [HttpPost]
@@ -34,6 +40,7 @@ public class PaymentsController : ControllerBase
             request.Amount,
             request.Description,
             request.SubscriberId,
+            request.PlanId,
             request.SucessUrl
         );
 
@@ -46,34 +53,56 @@ public class PaymentsController : ControllerBase
 
         try
         {
-            Event? stripeEvent = EventUtility.ConstructEvent(json,
-                    Request.Headers["Stripe-Signature"], _configuration["StripeWebhookSecret"]);
-            var intent = stripeEvent.Data.Object as PaymentIntent;
+            var stripeEvent = EventUtility.ConstructEvent(
+                json,
+                Request.Headers["Stripe-Signature"],
+                _stripeSettings.WebhookSecret
+            );
 
-            var userId = Guid.Parse(intent.Metadata["userId"]);
-            var planId = Guid.Parse(intent.Metadata["planId"]);
-            // Handle the event
             switch (stripeEvent.Type)
             {
                 case "payment_intent.succeeded":
-                    var command = new SaveSubscriptionCommand 
-                    (
-                        userId,
-                       planId,
-                        DateTime.UtcNow,
-                        DateTime.UtcNow.AddMonths(1)
-                    );
-                    var result = await _mediator.Send(command);
-                    return Ok(result);
+                    {
+                        var intent = stripeEvent.Data.Object as PaymentIntent;
+                        if (intent == null) return Ok();
+
+                        if (!intent.Metadata.TryGetValue("userId", out var userIdStr) ||
+                            !intent.Metadata.TryGetValue("planId", out var planIdStr))
+                            return Ok();
+
+                        if (!Guid.TryParse(userIdStr, out var userId))
+                            return Ok();
+
+                        if (!int.TryParse(planIdStr, out var planId))
+                            return Ok();
+
+                        var command = new SaveSubscriptionCommand(
+                            userId,
+                            planId,
+                            DateTime.UtcNow,
+                            DateTime.UtcNow.AddMonths(1)
+                        );
+
+                        await _mediator.Send(command);
+
+                        break;
+                    }
 
                 default:
-                    Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
-                    return BadRequest();
+                    break;
             }
+
+            return Ok();
         }
-        catch (StripeException e)
+        catch (StripeException ex)
         {
+            _logger.LogError(ex, "Stripe signature validation failed");
             return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Stripe webhook processing failed");
+            return StatusCode(500);
         }
     }
 

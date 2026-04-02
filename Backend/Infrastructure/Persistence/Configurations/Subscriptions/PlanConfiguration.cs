@@ -17,5 +17,19 @@ public class PlanConfiguration : IEntityTypeConfiguration<Plan>
 
         builder.Property(p => p.Name).IsRequired();
 
+        builder.HasData(
+            new Plan
+            {
+                Id = 1,
+                Name = "Free",
+                Value = 0
+            },
+            new Plan
+            {
+                Id = 2,
+                Name = "Basic",
+                Value = 20
+            }
+        );
     }
 }

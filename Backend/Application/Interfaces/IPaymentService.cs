@@ -8,5 +8,6 @@ public interface IPaymentService
         decimal amount,
         string description,
         Guid subscriberId,
+        int planId,
         string successUrl);
 }
