@@ -21,6 +21,11 @@ public class Team
     private readonly List<Qualification> _qualifications = new();
     public IReadOnlyCollection<Qualification> Qualifications => _qualifications.AsReadOnly();
 
+    public Team()
+    {
+
+    }
+
     private Team(Guid id, string name,string description)
     {
         Id = id;

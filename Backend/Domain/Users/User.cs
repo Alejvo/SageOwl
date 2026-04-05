@@ -7,7 +7,7 @@ namespace Domain.Users;
 
 public class User : BaseEntity
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; init; }
     public string Name { get; set; } = string.Empty;
     public string Surname { get; set; } = string.Empty;
     public Email Email { get; set; }

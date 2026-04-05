@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,8 @@ public class TestWebApplicationFactory
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         await db.Database.MigrateAsync();
+        await TestDataSeeder.SeedAsync(scope.ServiceProvider);
+
     }
 
     async Task IAsyncLifetime.DisposeAsync()
@@ -55,7 +58,9 @@ public class TestWebApplicationFactory
                     _sqlContainer.GetConnectionString(),
 
                 ["Redis:ConnectionString"] =
-                    _redisContainer.GetConnectionString()
+                    _redisContainer.GetConnectionString(),
+                ["JwtSettings:Key"] = "+08M7+wskskLtUMVsMQb3s8eKMbwqheJFaUdUXGaVwM=",
+                ["JwtSettings:ExpiryTime"] = "15"
             };
 
             config.AddInMemoryCollection(configuration!);
