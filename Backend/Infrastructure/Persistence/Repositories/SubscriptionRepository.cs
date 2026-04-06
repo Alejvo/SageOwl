@@ -22,8 +22,20 @@ public class SubscriptionRepository : ISubscriptionRepository
 
     public async Task<bool> SaveSubscription(Subscription subscription)
     {
-        await _dbContext.Subscriptions
-            .AddAsync(subscription);
+        var existingSubscription = await _dbContext.Subscriptions
+            .FirstOrDefaultAsync(s => s.SubscriberId == subscription.SubscriberId);
+
+        if (existingSubscription is not null)
+        {
+            existingSubscription.PlanId = subscription.PlanId;
+            existingSubscription.StartAt = subscription.StartAt;
+            existingSubscription.EndAt = subscription.EndAt;
+        }
+        else
+        {
+            await _dbContext.Subscriptions.AddAsync(subscription);
+        }
+
         return await _dbContext.SaveChangesAsync() > 0;
     }
 }

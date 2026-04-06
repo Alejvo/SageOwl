@@ -1,4 +1,5 @@
-﻿using Domain.Teams;
+﻿using Domain.Subscriptions;
+using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users.Events;
 using Shared;
@@ -18,6 +19,7 @@ public class User : BaseEntity
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeleteAt { get; set; }
     public Token? Token { get; set; }
+    public Subscription? Subscription { get; set; }
     public ICollection<TeamMembership> UserTeams { get; set; } = new List<TeamMembership>();
 
     public User()

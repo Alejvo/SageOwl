@@ -11,7 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace SageOwl.API.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
+[Authorize] 
 public class UsersController : ApiController
 {
     private readonly ISender _sender;

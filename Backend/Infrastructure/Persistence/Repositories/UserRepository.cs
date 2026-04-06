@@ -27,12 +27,15 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetUserByEmail(string email)
     {
         var userEmail = Email.Create(email);
-        return await _dbContext.Users.FirstOrDefaultAsync(user => user.Email == userEmail);
+        return await _dbContext.Users
+            .FirstOrDefaultAsync(user => user.Email == userEmail);
     }
 
     public async Task<User?> GetUserById(Guid id)
     {
-        return await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
+        return await _dbContext.Users
+            .Include(u => u.Subscription)
+            .FirstOrDefaultAsync(user => user.Id == id);
     }
 
     public async Task<List<User>> GetUsers()

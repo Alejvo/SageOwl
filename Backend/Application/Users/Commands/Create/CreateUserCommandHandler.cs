@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Users.Events;
+using Domain.Subscriptions;
 using Domain.Users;
 using Domain.Users.Events;
 using MediatR;
@@ -10,14 +11,20 @@ namespace Application.Users.Commands.Create;
 public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 {
     private readonly IUserRepository _userRepository;
+    private readonly ISubscriptionRepository _subscriptionRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IMediator _mediator;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher,IMediator mediator)
+    public CreateUserCommandHandler(
+        IUserRepository userRepository, 
+        IPasswordHasher passwordHasher,
+        IMediator mediator, 
+        ISubscriptionRepository subscriptionRepository)
     {
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _subscriptionRepository = subscriptionRepository ?? throw new ArgumentNullException(nameof(subscriptionRepository));
     }
 
     public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -46,6 +53,12 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
 
         user.ClearDomainEvents();
 
-        return await _userRepository.CreateUser(user) ? Result.Success() : Result.Failure(Error.DBFailure);
+        var newSubscription = Subscription.Create(
+            user.Id,
+            1,
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddYears(1));
+
+        return await _userRepository.CreateUser(user) && await _subscriptionRepository.SaveSubscription(newSubscription) ? Result.Success() : Result.Failure(Error.DBFailure);
     }
 }
