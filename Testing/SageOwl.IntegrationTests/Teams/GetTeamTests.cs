@@ -5,6 +5,7 @@ using FluentAssertions;
 using Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,52 @@ public class GetTeamTests : IClassFixture<TestWebApplicationFactory>
         teams.Should().Contain(t => t.Name == "Team A");
         teams.Should().Contain(t => t.Name == "Team B");
         teams.Should().OnlyHaveUniqueItems(t => t.TeamId);
+
+    }
+
+    [Fact]
+    public async Task Should_Get_Team_By_Id()
+    {
+        await Utilities.AuthenticateAsync(_client, _factory.Services);
+
+        using var scope = _factory.Services.CreateScope();
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var team = await dbContext.Teams
+            .FirstAsync(u => u.Name == "Team A");
+
+        var teamId = team.Id;
+
+        var response = await _client.GetAsync($"/api/team/id/{teamId}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        var teams = JsonSerializer.Deserialize<TeamResponse>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        teams.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public async Task Should_Try_To_Get_Team_By_Id_And_Return_401() 
+    { 
+        using var scope = _factory.Services.CreateScope();
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var team = await dbContext.Teams
+            .FirstAsync(u => u.Name == "Team A");
+
+        var teamId = team.Id;
+
+        var response = await _client.GetAsync($"/api/team/id/{teamId}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
     }
 }

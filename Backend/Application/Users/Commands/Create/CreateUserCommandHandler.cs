@@ -59,6 +59,8 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
             DateTime.UtcNow,
             DateTime.UtcNow.AddYears(1));
 
-        return await _userRepository.CreateUser(user) && await _subscriptionRepository.SaveSubscription(newSubscription) ? Result.Success() : Result.Failure(Error.DBFailure);
+        var result = await _userRepository.CreateUser(user) && await _subscriptionRepository.SaveSubscription(newSubscription);
+
+        return result ? Result.Success() : Result.Failure(Error.DBFailure);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Users.Commands.Create;
 using Application.Users.Events;
+using Domain.Subscriptions;
 using Domain.Users;
 using FluentAssertions;
 using MediatR;
@@ -13,6 +14,7 @@ public class CreateUserCommandHandlerTests
     private readonly IUserRepository _userRepositoryMock;
     private readonly IPasswordHasher _passwordHasherMock;
     private readonly IMediator _mediatorMock;
+    private readonly ISubscriptionRepository _subscriptionRepository;
     private readonly CreateUserCommandHandler _handler;
 
     public CreateUserCommandHandlerTests()
@@ -20,11 +22,14 @@ public class CreateUserCommandHandlerTests
         _userRepositoryMock = Substitute.For<IUserRepository>();
         _passwordHasherMock = Substitute.For<IPasswordHasher>();
         _mediatorMock = Substitute.For<IMediator>();
+        _subscriptionRepository = Substitute.For<ISubscriptionRepository>();
 
         _handler = new CreateUserCommandHandler(
             _userRepositoryMock,
             _passwordHasherMock,
-            _mediatorMock);
+            _mediatorMock,
+            _subscriptionRepository
+            );
     }
 
     [Fact]
@@ -32,17 +37,18 @@ public class CreateUserCommandHandlerTests
     {
         // Arrange
         var command = new CreateUserCommand(
-            "John", 
+            "Marie", 
             "Doe", 
-            "john@example.com", 
+            "mariedoe@example.com", 
             "Password123!", 
-            "johndoe", 
+            "Marie-123", 
             DateTime.Now.AddYears(-20));
 
         _userRepositoryMock.EmailExists(command.Email).Returns(false);
         _userRepositoryMock.UsernameExists(command.Username).Returns(false);
         _passwordHasherMock.Hash(command.Password).Returns("hashed_password");
         _userRepositoryMock.CreateUser(Arg.Any<User>()).Returns(true);
+        _subscriptionRepository.SaveSubscription(Arg.Any<Subscription>()).Returns(true);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

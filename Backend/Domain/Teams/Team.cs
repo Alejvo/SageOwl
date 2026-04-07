@@ -44,6 +44,7 @@ public class Team
 
         Name = newName;
     }
+
     public void AddMember(Guid userId, TeamRole role)
     {
         var existingMember = _members.FirstOrDefault(m => m.UserId == userId);
