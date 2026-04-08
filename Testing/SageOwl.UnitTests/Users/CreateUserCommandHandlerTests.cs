@@ -1,4 +1,5 @@
-﻿using Application.Users.Commands.Create;
+﻿using Application.Interfaces;
+using Application.Users.Commands.Create;
 using Application.Users.Events;
 using Domain.Subscriptions;
 using Domain.Users;
@@ -15,6 +16,7 @@ public class CreateUserCommandHandlerTests
     private readonly IPasswordHasher _passwordHasherMock;
     private readonly IMediator _mediatorMock;
     private readonly ISubscriptionRepository _subscriptionRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly CreateUserCommandHandler _handler;
 
     public CreateUserCommandHandlerTests()
@@ -23,12 +25,14 @@ public class CreateUserCommandHandlerTests
         _passwordHasherMock = Substitute.For<IPasswordHasher>();
         _mediatorMock = Substitute.For<IMediator>();
         _subscriptionRepository = Substitute.For<ISubscriptionRepository>();
+        _unitOfWork = Substitute.For<IUnitOfWork>();
 
         _handler = new CreateUserCommandHandler(
             _userRepositoryMock,
             _passwordHasherMock,
             _mediatorMock,
-            _subscriptionRepository
+            _subscriptionRepository,
+            _unitOfWork
             );
     }
 
@@ -47,8 +51,9 @@ public class CreateUserCommandHandlerTests
         _userRepositoryMock.EmailExists(command.Email).Returns(false);
         _userRepositoryMock.UsernameExists(command.Username).Returns(false);
         _passwordHasherMock.Hash(command.Password).Returns("hashed_password");
-        _userRepositoryMock.CreateUser(Arg.Any<User>()).Returns(true);
+        _userRepositoryMock.CreateUser(Arg.Any<User>()).Returns(Task.CompletedTask);
         _subscriptionRepository.SaveSubscription(Arg.Any<Subscription>()).Returns(true);
+        _unitOfWork.SaveChangesAsync().Returns(Task.CompletedTask);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -104,7 +109,7 @@ public class CreateUserCommandHandlerTests
         _userRepositoryMock.UsernameExists(command.Username).Returns(false);
         _passwordHasherMock.Hash(Arg.Any<string>()).Returns("HASHED_PASSWORD_SECURE");
 
-        _userRepositoryMock.CreateUser(Arg.Any<User>()).Returns(false);
+        _userRepositoryMock.CreateUser(Arg.Any<User>()).Returns(Task.CompletedTask);
 
         // Act
 

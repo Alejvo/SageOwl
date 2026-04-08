@@ -13,16 +13,11 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
-    public async Task<bool> CreateUser(User user)
-    {
-        await _dbContext.Users.AddAsync(user);
-        return await _dbContext.SaveChangesAsync() > 0;
-    }
+    public async Task CreateUser(User user)
+        => await _dbContext.Users.AddAsync(user);
 
     public async Task<bool> EmailExists(string email)
-    {
-        return await _dbContext.Users.AnyAsync(u => u.Email == Email.Create(email));
-    }
+        => await _dbContext.Users.AnyAsync(u => u.Email == Email.Create(email));
 
     public async Task<User?> GetUserByEmail(string email)
     {
@@ -43,7 +38,7 @@ public class UserRepository : IUserRepository
         return await _dbContext.Users.ToListAsync();
     }
 
-    public async Task<bool> SoftDelete(Guid UserId)
+    public async Task SoftDelete(Guid UserId)
     {
         var user = await _dbContext.Users.FindAsync(UserId);
 
@@ -52,10 +47,9 @@ public class UserRepository : IUserRepository
             user.IsDeleted = true;
             user.DeleteAt = DateTime.Now;
         }
-        return await _dbContext.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> Update(User user,User userUpdated)
+    public async Task Update(User user,User userUpdated)
     {
         if (userUpdated is not null && user is not null)
         {
@@ -65,12 +59,9 @@ public class UserRepository : IUserRepository
             user.Password = userUpdated.Password;
             user.Username = userUpdated.Username;
         }
-
-        return await _dbContext.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> UsernameExists(string username)
-    {
-        return await _dbContext.Users.AnyAsync(u => u.Username == username);
-    }
+        => await _dbContext.Users.AnyAsync(u => u.Username == username);
+    
 }

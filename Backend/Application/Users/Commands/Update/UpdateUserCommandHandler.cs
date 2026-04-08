@@ -7,11 +7,11 @@ namespace Application.Users.Commands.Update;
 
 internal sealed class UpdateUserCommandHandler(
     IUserRepository userRepository,
-    ICacheService cacheService) : ICommandHandler<UpdateUserCommand>
+    ICacheService cacheService,
+    IUnitOfWork unitOfWork) : ICommandHandler<UpdateUserCommand>
 {
     public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-
         var user = await userRepository.GetUserById(request.Id);
 
         if (user is null)
@@ -28,6 +28,7 @@ internal sealed class UpdateUserCommandHandler(
             request.Username.ToLower(),
             request.Birthday);
 
-        return await userRepository.Update(user,updatedUser) ? Result.Success() : Result.Failure(Error.DBFailure);
+        await userRepository.Update(user, updatedUser);
+        return await unitOfWork.SaveChangesAsync(cancellationToken) ? Result.Success() : Result.Failure(Error.DBFailure);
     }
 }

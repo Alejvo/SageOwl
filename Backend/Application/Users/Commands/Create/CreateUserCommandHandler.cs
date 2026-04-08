@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Application.Users.Events;
 using Domain.Subscriptions;
 using Domain.Users;
@@ -14,17 +15,20 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
     private readonly ISubscriptionRepository _subscriptionRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IMediator _mediator;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository, 
         IPasswordHasher passwordHasher,
         IMediator mediator, 
-        ISubscriptionRepository subscriptionRepository)
+        ISubscriptionRepository subscriptionRepository,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _subscriptionRepository = subscriptionRepository ?? throw new ArgumentNullException(nameof(subscriptionRepository));
+        _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
     public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -59,7 +63,10 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
             DateTime.UtcNow,
             DateTime.UtcNow.AddYears(1));
 
-        var result = await _userRepository.CreateUser(user) && await _subscriptionRepository.SaveSubscription(newSubscription);
+        await _userRepository.CreateUser(user);
+        await _subscriptionRepository.SaveSubscription(newSubscription);
+
+        var result = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return result ? Result.Success() : Result.Failure(Error.DBFailure);
     }

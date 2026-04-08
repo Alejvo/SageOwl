@@ -10,6 +10,7 @@ using Infrastructure.Auth;
 using Infrastructure.Caching;
 using Infrastructure.Messaging;
 using Infrastructure.Payments;
+using Infrastructure.Persistence;
 using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ public static class DependencyInjection
         services.AddScoped<ICacheService, RedisCacheService>();
         services.AddScoped<IPaymentService,StripePaymentService>();
         services.AddScoped<ISubscriptionRepository,SubscriptionRepository>();
+        services.AddScoped<IUnitOfWork,UnitOfWork>();
 
         Stripe.StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
         return services;
