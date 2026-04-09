@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Domain.Announcements;
 using Domain.Teams;
 using Microsoft.AspNetCore.Http;
@@ -12,15 +13,18 @@ internal sealed class CreateAnnouncementCommandHandler : ICommandHandler<CreateA
     private readonly IAnnouncementRepository _announcementRepository;
     private readonly ITeamRepository _teamRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreateAnnouncementCommandHandler(
         IAnnouncementRepository announcementRepository,
         ITeamRepository teamRepository,
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IUnitOfWork unitOfWork)
     {
         _announcementRepository = announcementRepository;
         _teamRepository = teamRepository;
         _httpContextAccessor = httpContextAccessor;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> Handle(CreateAnnouncementCommand request, CancellationToken cancellationToken)
@@ -45,9 +49,9 @@ internal sealed class CreateAnnouncementCommandHandler : ICommandHandler<CreateA
             request.TeamId
         );
 
-        var created = await _announcementRepository.CreateAnnouncement(newAnnouncement);
+        await _announcementRepository.CreateAnnouncement(newAnnouncement);
 
-        return created
+        return await _unitOfWork.SaveChangesAsync(cancellationToken)
             ? Result.Success()
             : Result.Failure(Error.DBFailure);
     }
