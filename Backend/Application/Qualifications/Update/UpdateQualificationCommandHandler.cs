@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Domain.Qualifications;
 using Shared;
 
@@ -7,10 +8,14 @@ namespace Application.Qualifications.Update;
 internal sealed class UpdateQualificationCommandHandler : ICommandHandler<UpdateQualificationCommand>
 {
     private readonly IQualificationRepository _qualificationRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateQualificationCommandHandler(IQualificationRepository qualificationRepository)
+    public UpdateQualificationCommandHandler(
+        IQualificationRepository qualificationRepository,
+        IUnitOfWork unitOfWork)
     {
         _qualificationRepository = qualificationRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> Handle(UpdateQualificationCommand request, CancellationToken cancellationToken)
@@ -30,7 +35,9 @@ internal sealed class UpdateQualificationCommandHandler : ICommandHandler<Update
                 qualification.AddUserQualification(uq.UserId, uq.Grade, uq.Position, uq.HasValue, uq.Description);
             }
 
-            return await _qualificationRepository.UpdateQualifications(qualification)
+            await _qualificationRepository.UpdateQualifications(qualification);
+
+            return await _unitOfWork.SaveChangesAsync(cancellationToken)
                 ? Result.Success()
                 : Result.Failure(Error.DBFailure);
         }
@@ -43,9 +50,10 @@ internal sealed class UpdateQualificationCommandHandler : ICommandHandler<Update
             qualification.AddUserQualification(uq.UserId, uq.Grade, uq.Position, uq.HasValue, uq.Description);
         }
 
-        return await _qualificationRepository.CreateQualifications(qualification)
+        await _qualificationRepository.CreateQualifications(qualification);
+
+        return await _unitOfWork.SaveChangesAsync(cancellationToken)
                 ? Result.Success()
                 : Result.Failure(Error.DBFailure);
     }
 }
-

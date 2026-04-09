@@ -13,11 +13,8 @@ public class QualificationRepository : IQualificationRepository
         _dbContext = dbContext;
     }
 
-    public async Task<bool> CreateQualifications(Qualification qualification)
-    {
-        await _dbContext.Qualifications.AddAsync(qualification);
-        return await _dbContext.SaveChangesAsync() > 0;
-    }
+    public async Task CreateQualifications(Qualification qualification) 
+        => await _dbContext.Qualifications.AddAsync(qualification);
 
     public async Task<Qualification?> GetQualificationById(Guid id)
     {
@@ -51,12 +48,11 @@ public class QualificationRepository : IQualificationRepository
             .ToListAsync();
     }
 
-    public async Task<bool> UpdateQualifications(Qualification qualification)
+    public async Task UpdateQualifications(Qualification qualification)
     {
         if (_dbContext.Entry(qualification).State == EntityState.Detached)
         {
             _dbContext.Qualifications.Update(qualification);
         }
-        return await _dbContext.SaveChangesAsync() > 0;
     }
 }
