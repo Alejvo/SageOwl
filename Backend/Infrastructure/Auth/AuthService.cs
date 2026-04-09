@@ -18,17 +18,20 @@ public class AuthService : IAuthService
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AuthService(
         ITokenRepository tokenRepository, 
         IConfiguration configuration, 
         IUserRepository userRepository, 
-        IPasswordHasher passwordHasher)
+        IPasswordHasher passwordHasher,
+        IUnitOfWork unitOfWork)
     {
         _tokenRepository = tokenRepository;
         _configuration = configuration;
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _unitOfWork = unitOfWork;
     }
 
     public string GenerateRefreshToken()
@@ -70,7 +73,8 @@ public class AuthService : IAuthService
     public async Task SaveRefreshToken(Guid userId, string refreshToken)
     {
         var expiryTime = DateTime.UtcNow.AddDays(7);
-        await _tokenRepository.SaveTokenAsync(userId, refreshToken, expiryTime);
+        await _tokenRepository.CreateToken(userId, refreshToken, expiryTime);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task<Result<LoginResponse>> LoginAsync(string email, string password)
@@ -87,6 +91,7 @@ public class AuthService : IAuthService
         var refreshToken = GenerateRefreshToken();
 
         await SaveRefreshToken(user.Id, refreshToken);
+        await _unitOfWork.SaveChangesAsync();
 
         return new LoginResponse(accessToken, refreshToken);
     }
@@ -100,16 +105,33 @@ public class AuthService : IAuthService
         if (storedToken == null)
             return Result.Failure<LoginResponse>(UserErrors.LoginFailure());
 
+        if (storedToken.IsRevoked)
+        {
+            await _tokenRepository.RevokeTokensByUserId(storedToken.UserId);
+            await _unitOfWork.SaveChangesAsync();
+
+            return Result.Failure<LoginResponse>(UserErrors.LoginFailure());
+        }
+
+        if (storedToken.ExpiryTime <= DateTime.UtcNow)
+            return Result.Failure<LoginResponse>(UserErrors.LoginFailure());
+
         var user = await _userRepository.GetUserById(storedToken.UserId);
 
         if (user == null)
             return Result.Failure<LoginResponse>(UserErrors.UserNotFound());
 
+        storedToken.IsRevoked = true;
+
         var newAccessToken = GenerateToken(user.Id, user.Name);
         var newRefreshToken = GenerateRefreshToken();
 
-        await _tokenRepository.SaveTokenAsync(user.Id, newRefreshToken, DateTime.UtcNow.AddDays(7));
+        await _tokenRepository.CreateToken(
+            user.Id, 
+            newRefreshToken, 
+            DateTime.UtcNow.AddDays(7));
 
-        return new LoginResponse(newAccessToken,newRefreshToken);
+        await _unitOfWork.SaveChangesAsync();
+        return new LoginResponse(newAccessToken, newRefreshToken);
     }
 }

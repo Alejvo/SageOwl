@@ -13,22 +13,23 @@ internal class TokenRepository : ITokenRepository
         _dbContext = dbContext;
     }
 
+    public async Task RevokeTokensByUserId(Guid userId)
+    {
+        await _dbContext.Tokens
+            .Where(t => t.UserId == userId)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(t => t.IsRevoked,true));
+    }
+
     public async Task<Token?> GetToken(string token)
     {
         return await _dbContext.Tokens
             .FirstOrDefaultAsync(t => t.RefreshToken == token);
     }
 
-    public async Task SaveTokenAsync(Guid userId, string refreshToken, DateTime expiryTime)
+    public async Task CreateToken(Guid userId, string refreshToken, DateTime expiryTime)
     {
-        var isTokenAvailable = await _dbContext.Tokens.AnyAsync(t => t.RefreshToken == refreshToken);
-
-        if (isTokenAvailable)
-        {
-            var newToken = Token.Create(refreshToken, userId, expiryTime);
-            _dbContext.Tokens.Add(newToken);
-            await _dbContext.SaveChangesAsync();
-        }
-
+        var newToken = Token.Create(refreshToken, userId, expiryTime);
+        await _dbContext.Tokens.AddAsync(newToken);
     }
 }

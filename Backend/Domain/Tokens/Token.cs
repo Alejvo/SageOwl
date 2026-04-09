@@ -8,6 +8,7 @@ public class Token
     public string RefreshToken { get; set; }
     public DateTime ExpiryTime { get; set; }
     public Guid UserId { get; set; }
+    public bool IsRevoked { get; set; } = false;
     public User? User { get; set; }
 
     protected Token() { }
