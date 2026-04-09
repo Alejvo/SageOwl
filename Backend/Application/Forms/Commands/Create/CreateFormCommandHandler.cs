@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Domain.Forms;
 using Domain.Teams;
 using Shared;
@@ -9,11 +10,17 @@ internal sealed class CreateFormCommandHandler : ICommandHandler<CreateFormComma
 {
     private readonly IFormRepository _formRepository;
     private readonly ITeamRepository _teamRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateFormCommandHandler(IFormRepository formRepository,ITeamRepository teamRepository)
+    public CreateFormCommandHandler(
+        IFormRepository formRepository,
+        ITeamRepository teamRepository,
+        IUnitOfWork unitOfWork
+        )
     {
         _formRepository = formRepository;
         _teamRepository = teamRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> Handle(CreateFormCommand request, CancellationToken cancellationToken)
@@ -47,7 +54,9 @@ internal sealed class CreateFormCommandHandler : ICommandHandler<CreateFormComma
 
         }
 
-        return await _formRepository.CreateForm(form)
+        await _formRepository.CreateForm(form);
+
+        return await _unitOfWork.SaveChangesAsync(cancellationToken)
             ? Result.Success()
             : Result.Failure(Error.DBFailure);
     }

@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Domain.Forms;
 using Shared;
 using System.Text.Json;
@@ -10,10 +11,12 @@ namespace Application.Forms.Commands.Update;
 internal sealed class UpdateFormCommandHandler : ICommandHandler<UpdateFormCommand>
 {
     private readonly IFormRepository _formRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateFormCommandHandler(IFormRepository formRepository)
+    public UpdateFormCommandHandler(IFormRepository formRepository, IUnitOfWork unitOfWork)
     {
         _formRepository = formRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> Handle(UpdateFormCommand request, CancellationToken cancellationToken)
@@ -74,7 +77,7 @@ internal sealed class UpdateFormCommandHandler : ICommandHandler<UpdateFormComma
             }
         }
 
-        return await _formRepository.SaveChanges() 
+        return await _unitOfWork.SaveChangesAsync(cancellationToken)
             ? Result.Success()
             : Result.Failure(Error.DBFailure);
     }

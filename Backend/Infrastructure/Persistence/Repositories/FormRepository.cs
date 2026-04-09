@@ -13,11 +13,8 @@ public class FormRepository : IFormRepository
         _dbContext = dbContext;
     }
 
-    public async Task<bool> CreateForm(Form form)
-    {
-        _dbContext.Forms.Add(form);
-        return await _dbContext.SaveChangesAsync() > 0;
-    }
+    public async Task CreateForm(Form form)
+        => await _dbContext.Forms.AddAsync(form);
 
     public async Task<List<Form>> GetByTeamId(Guid teamId)
     {
@@ -48,20 +45,9 @@ public class FormRepository : IFormRepository
             .ToListAsync();
     }
 
-    public async Task<bool> SaveChanges()
-    {
-        return await _dbContext.SaveChangesAsync() > 0;
-    }
-
-    public async Task<bool> DeleteForm(Form form)
-    {
-        _dbContext.Forms.Remove(form);
-        return await _dbContext.SaveChangesAsync() > 0;
-    }
+    public async Task DeleteForm(Form form) 
+        => _dbContext.Forms.Remove(form);
 
     public async Task CreateFormResult(FormResult formResult)
-    {
-        _dbContext.FormResults.Add(formResult);
-        await _dbContext.SaveChangesAsync();
-    }
+        => _dbContext.FormResults.Add(formResult);
 }
