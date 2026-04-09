@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Application.Teams.Common;
 using Domain.Teams;
 using Domain.Users;
@@ -9,12 +10,14 @@ namespace Application.Teams.Create;
 internal sealed class CreateTeamCommandHandler : ICommandHandler<CreateTeamCommand>
 {
     private readonly ITeamRepository _teamRepository;
-    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateTeamCommandHandler(ITeamRepository teamRepository,IUserRepository userRepository)
+    public CreateTeamCommandHandler(
+        ITeamRepository teamRepository,
+        IUnitOfWork unitOfWork)
     {
         _teamRepository = teamRepository;
-        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
@@ -32,7 +35,9 @@ internal sealed class CreateTeamCommandHandler : ICommandHandler<CreateTeamComma
         if (!team.Members.Any(m => m.Role == TeamRole.Admin))
             Result.Failure<TeamResponse>(TeamErrors.NoAdminAdded);
 
-        return await _teamRepository.CreateTeam(team) 
+        await _teamRepository.CreateTeam(team);
+
+        return await _unitOfWork.SaveChangesAsync(cancellationToken)
             ? Result.Success() 
             : Result.Failure(Error.DBFailure);
     }

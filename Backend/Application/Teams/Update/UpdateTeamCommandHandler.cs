@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.Interfaces;
 using Domain.Teams;
 using Shared;
 
@@ -7,10 +8,12 @@ namespace Application.Teams.Update;
 internal sealed class UpdateTeamCommandHandler : ICommandHandler<UpdateTeamCommand>
 {
     private readonly ITeamRepository _teamRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateTeamCommandHandler(ITeamRepository teamRepository)
+    public UpdateTeamCommandHandler(ITeamRepository teamRepository, IUnitOfWork unitOfWork)
     {
         _teamRepository = teamRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
@@ -23,8 +26,6 @@ internal sealed class UpdateTeamCommandHandler : ICommandHandler<UpdateTeamComma
         team.Name = request.Name;
         team.Description = request.Description;
 
-        //var userIds = request.Members.Select(m => m.UserId).ToList();
-
         foreach (var member in request.Members)
         {
             team.AddMember(member.UserId, TeamRole.FromString(member.Role));
@@ -32,7 +33,9 @@ internal sealed class UpdateTeamCommandHandler : ICommandHandler<UpdateTeamComma
 
         team.EnsureAtLeastOneAdmin();
 
-        return await _teamRepository.UpdateTeam(team)
+        await _teamRepository.UpdateTeam(team);
+
+        return await _unitOfWork.SaveChangesAsync(cancellationToken) 
             ? Result.Success()
             : Result.Failure(Error.DBFailure);
     }

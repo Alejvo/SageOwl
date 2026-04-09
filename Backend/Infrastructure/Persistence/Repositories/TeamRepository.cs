@@ -13,17 +13,11 @@ public class TeamRepository : ITeamRepository
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
-    public async Task<bool> CreateTeam(Team team)
-    {
-        _dbContext.Teams.Add(team);
-        return await _dbContext.SaveChangesAsync() > 0;
-    }
+    public async Task CreateTeam(Team team) 
+        => await _dbContext.Teams.AddAsync(team);
 
-    public async Task<bool> DeleteTeam(Team team)
-    {
-        _dbContext.Teams.Remove(team);
-        return await _dbContext.SaveChangesAsync() > 0;
-    }
+    public async Task DeleteTeam(Team team) 
+        => _dbContext.Teams.Remove(team);
 
     public async Task<Team?> GetTeamById(Guid id)
     {
@@ -52,13 +46,12 @@ public class TeamRepository : ITeamRepository
         return role?.ToString();
     }
 
-    public async Task<bool> UpdateTeam(Team team)
+    public async Task UpdateTeam(Team team)
     {
         if (_dbContext.Entry(team).State == EntityState.Detached)
         {
             _dbContext.Teams.Update(team);
         }
-        return await _dbContext.SaveChangesAsync() > 0;
     }
 
 }

@@ -80,7 +80,7 @@ public class ApiController : ControllerBase
         return StatusCode(statusCode, problemDetails);
     }
 
-    private IActionResult CreateValidationProblem(List<Error> errors)
+    private ActionResult CreateValidationProblem(List<Error> errors)
     {
         var modelStateDictionary = new ModelStateDictionary();
 
