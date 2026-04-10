@@ -52,8 +52,9 @@ public class CreateUserCommandHandlerTests
         _userRepositoryMock.UsernameExists(command.Username).Returns(false);
         _passwordHasherMock.Hash(command.Password).Returns("hashed_password");
         _userRepositoryMock.CreateUser(Arg.Any<User>()).Returns(Task.CompletedTask);
-        _subscriptionRepository.SaveSubscription(Arg.Any<Subscription>()).Returns(true);
-        _unitOfWork.SaveChangesAsync().Returns(Task.CompletedTask);
+        _subscriptionRepository.SaveSubscription(Arg.Any<Subscription>()).Returns(Task.CompletedTask);
+        _unitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(true));
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

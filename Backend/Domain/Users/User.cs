@@ -18,7 +18,7 @@ public class User : BaseEntity
     public DateTime CreatedAt { get; set; }
     public bool IsDeleted { get; set; } = false;
     public DateTime? DeleteAt { get; set; }
-    public Token? Token { get; set; }
+    public ICollection<Token>? Tokens { get; set; }
     public Subscription? Subscription { get; set; }
     public ICollection<TeamMembership> UserTeams { get; set; } = new List<TeamMembership>();
 

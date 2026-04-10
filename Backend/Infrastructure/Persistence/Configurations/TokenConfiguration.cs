@@ -13,8 +13,8 @@ public class TokenConfiguration : IEntityTypeConfiguration<Token>
         builder.HasIndex(t => t.UserId);
 
         builder.HasOne(t => t.User)
-            .WithOne(t => t.Token)
-            .HasForeignKey<Token>(t => t.UserId)
+            .WithMany(u => u.Tokens)
+            .HasForeignKey(t => t.UserId)
             .IsRequired();
 
         builder.Property(t => t.RefreshToken)

@@ -13,10 +13,9 @@ public class AnnouncementRepository : IAnnouncementRepository
         _dbContext = dbContext;
     }
 
-    public async Task<bool> CreateAnnouncement(Announcement announcement)
+    public async Task CreateAnnouncement(Announcement announcement)
     {
         _dbContext.Announcements.Add(announcement);
-        return await _dbContext.SaveChangesAsync() > 0;
     }
 
     public async Task<List<Announcement>> GetAnnouncements()
