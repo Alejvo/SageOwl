@@ -1,7 +1,8 @@
-﻿using Application.Teams.Create;
-using Application.Teams.GetById;
-using Application.Teams.GetByUserId;
-using Application.Teams.Update;
+﻿using Application.Teams.Commands.Create;
+using Application.Teams.Commands.Delete;
+using Application.Teams.Commands.Update;
+using Application.Teams.Queries.GetById;
+using Application.Teams.Queries.GetByUserId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,5 +47,13 @@ public class TeamController : ApiController
     {
         var res = await _sender.Send(command);
         return res.IsSuccess ? Created() : Problem(res.Errors);
+    }
+
+    [HttpDelete]
+    [Route("{teamId:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid teamId)
+    {
+        var res = await _sender.Send(new DeleteTeamCommand(teamId));
+        return res.IsSuccess ? NoContent() : Problem(res.Errors);
     }
 }

@@ -5,7 +5,7 @@ using Domain.Teams;
 using Domain.Users;
 using Shared;
 
-namespace Application.Teams.Create;
+namespace Application.Teams.Commands.Create;
 
 internal sealed class CreateTeamCommandHandler : ICommandHandler<CreateTeamCommand>
 {

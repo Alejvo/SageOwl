@@ -3,7 +3,7 @@ using Application.Interfaces;
 using Domain.Teams;
 using Shared;
 
-namespace Application.Teams.Delete;
+namespace Application.Teams.Commands.Delete;
 
 internal sealed class DeleteTeamCommandHandler : ICommandHandler<DeleteTeamCommand>
 {

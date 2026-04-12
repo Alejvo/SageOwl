@@ -1,10 +1,9 @@
 ﻿using Application.Abstractions;
 using Application.Teams.Common;
 
-namespace Application.Teams.Update;
+namespace Application.Teams.Commands.Create;
 
-public record UpdateTeamCommand(
-    Guid TeamId,
+public record CreateTeamCommand(
     string Name,
     string Description,
     List<MemberDto> Members

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Teams.Update;
+namespace Application.Teams.Commands.Update;
 
 public class UpdateTeamValidator : AbstractValidator<UpdateTeamCommand>
 {

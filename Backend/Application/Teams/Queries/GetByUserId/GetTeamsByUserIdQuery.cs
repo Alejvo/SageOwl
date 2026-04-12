@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Teams.Common;
 
-namespace Application.Teams.GetByUserId;
+namespace Application.Teams.Queries.GetByUserId;
 
 public record GetTeamsByUserIdQuery(
     Guid UserId

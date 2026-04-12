@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Teams.GetByUserId;
+namespace Application.Teams.Queries.GetByUserId;
 
 public class GetTeamsByUserIdValidator : AbstractValidator<GetTeamsByUserIdQuery>
 {

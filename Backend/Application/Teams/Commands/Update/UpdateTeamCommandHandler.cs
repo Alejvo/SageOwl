@@ -3,7 +3,7 @@ using Application.Interfaces;
 using Domain.Teams;
 using Shared;
 
-namespace Application.Teams.Update;
+namespace Application.Teams.Commands.Update;
 
 internal sealed class UpdateTeamCommandHandler : ICommandHandler<UpdateTeamCommand>
 {

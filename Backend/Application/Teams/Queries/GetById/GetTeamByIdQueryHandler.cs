@@ -4,7 +4,7 @@ using Domain.Teams;
 using Domain.Users;
 using Shared;
 
-namespace Application.Teams.GetById;
+namespace Application.Teams.Queries.GetById;
 
 internal sealed class GetTeamByIdQueryHandler : IQueryHandler<GetTeamByIdQuery, TeamResponse>
 {
