@@ -25,7 +25,7 @@ internal sealed class SaveQualificationCommandHandler : ICommandHandler<SaveQual
         
         foreach (var uq in request.UserQualifications)
         {
-            qualification.AddUserQualification(uq.UserId, uq.Grade, uq.Position, uq.HasValue, uq.Description);
+            qualification.AddUserQualification(uq.UserId, uq.Grade, uq.Description);
         }
 
         await _qualificationRepository.CreateQualifications(qualification);
@@ -33,6 +33,5 @@ internal sealed class SaveQualificationCommandHandler : ICommandHandler<SaveQual
         return await _unitOfWork.SaveChangesAsync(cancellationToken)
                 ? Result.Success()
                 : Result.Failure(Error.DBFailure);
-        
     }
 }

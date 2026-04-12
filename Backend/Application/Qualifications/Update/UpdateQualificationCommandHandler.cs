@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Interfaces;
+using Application.Qualifications.Common;
 using Domain.Qualifications;
 using Shared;
 
@@ -22,38 +23,21 @@ internal sealed class UpdateQualificationCommandHandler : ICommandHandler<Update
     {
         var qualification = await _qualificationRepository.GetQualificationById(request.Id);
 
-        if (qualification is not null)
-        {
-            qualification.PassingGrade = request.PassingGrade;
-            qualification.MinimumGrade = request.MinimumGrade;
-            qualification.Period = request.Period;
-            qualification.MaximumGrade = request.MaximumGrade;
-            qualification.TotalGrades = request.TotalGrades;
-
-            foreach (var uq in request.UserQualifications)
-            {
-                qualification.AddUserQualification(uq.UserId, uq.Grade, uq.Position, uq.HasValue, uq.Description);
-            }
-
-            await _qualificationRepository.UpdateQualifications(qualification);
-
-            return await _unitOfWork.SaveChangesAsync(cancellationToken)
-                ? Result.Success()
-                : Result.Failure(Error.DBFailure);
-        }
-
-
-        qualification = Qualification.Create(request.TeamId, request.MinimumGrade, request.MaximumGrade, request.PassingGrade, request.Period, request.TotalGrades);
-
-        foreach (var uq in request.UserQualifications)
-        {
-            qualification.AddUserQualification(uq.UserId, uq.Grade, uq.Position, uq.HasValue, uq.Description);
-        }
-
-        await _qualificationRepository.CreateQualifications(qualification);
+        if (qualification is null)
+            return Result.Failure(Error.DBFailure);
+       
+        qualification.SyncUserQualifications(
+            request.UserQualifications.Select(x =>
+                new UserQualificationInput(
+                    x.UserId,
+                    x.Grade,
+                    x.Description
+                )
+            )
+        );
 
         return await _unitOfWork.SaveChangesAsync(cancellationToken)
-                ? Result.Success()
-                : Result.Failure(Error.DBFailure);
+            ? Result.Success()
+            : Result.Failure(Error.DBFailure);
     }
 }

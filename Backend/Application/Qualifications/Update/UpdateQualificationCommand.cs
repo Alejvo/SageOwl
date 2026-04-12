@@ -11,5 +11,5 @@ public record UpdateQualificationCommand(
     double PassingGrade,
     string Period,
     int TotalGrades,
-    List<UserQualificationDto> UserQualifications
+    IEnumerable<UserQualificationDto> UserQualifications
     ):ICommand;

@@ -27,12 +27,11 @@ public class QualificationRepository : IQualificationRepository
     public async Task<IEnumerable<Qualification>> GetQualificationByTeamId(Guid teamId)
     {
         return await _dbContext.Qualifications
+             .Where(q => q.TeamId == teamId)
             .Include(q => q.Team)
                 .ThenInclude(t => t.Members)
                     .ThenInclude(tm => tm.User)
-            .Include(q => q.UserQualifications
-                .OrderBy(uq => uq.Position))
-            .Where(q => q.TeamId == teamId)
+            .Include(q => q.UserQualifications)
             .ToListAsync();
     }
 
@@ -43,16 +42,7 @@ public class QualificationRepository : IQualificationRepository
                 .ThenInclude(t => t.Members)
                     .ThenInclude(tm => tm.User)
             .Include(q => q.UserQualifications
-                .Where(uq => uq.UserId == userId)
-                .OrderBy(uq => uq.Position))
+                .Where(uq => uq.UserId == userId))
             .ToListAsync();
-    }
-
-    public async Task UpdateQualifications(Qualification qualification)
-    {
-        if (_dbContext.Entry(qualification).State == EntityState.Detached)
-        {
-            _dbContext.Qualifications.Update(qualification);
-        }
     }
 }

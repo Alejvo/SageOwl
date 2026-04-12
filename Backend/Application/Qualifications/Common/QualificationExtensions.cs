@@ -23,9 +23,7 @@ public static class QualificationExtensions
                 q.User.Name,
                 q.QualificationId,
                 q.Grade,
-                q.Description,
-                q.Position,
-                q.HasValue
+                q.Description
             ))
         );
     }

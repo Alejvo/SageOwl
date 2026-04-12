@@ -20,7 +20,5 @@ public class UserQualificationConfiguration : IEntityTypeConfiguration<UserQuali
 
         builder.Property(uq => uq.Grade).IsRequired();
         builder.Property(uq => uq.Description).IsRequired(false);
-        builder.Property(uq => uq.Position).IsRequired();
-        builder.Property(uq => uq.HasValue).IsRequired();
     }
 }

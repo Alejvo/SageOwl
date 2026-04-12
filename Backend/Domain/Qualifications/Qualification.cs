@@ -19,35 +19,63 @@ public class Qualification
         TotalGrades = totalGrades;
     }
 
-    public Guid Id {  get; set; }
-    public Guid TeamId { get; set; }
-    public double MinimumGrade { get; set; }
-    public double MaximumGrade { get; set; }
-    public double PassingGrade { get; set; }
-    public string Period { get; set; }
-    public int TotalGrades { get; set; }
+    public Guid Id {  get; private set; }
+    public Guid TeamId { get; private set; }
+    public double MinimumGrade { get; private set; }
+    public double MaximumGrade { get; private set; }
+    public double PassingGrade { get; private set; }
+    public string Period { get; private set; }
+    public int TotalGrades { get; private set; }
 
-    private List<UserQualification> _userQualifications = new();
-    public IReadOnlyCollection<UserQualification> UserQualifications => _userQualifications.AsReadOnly();
+    public List<UserQualification> UserQualifications { get; set; }
     public Team Team { get; set; }
 
     public static Qualification Create(Guid teamId, double minimumGrade, double maximumGrade, double passingGrade,string period,int totalGrades)
         => new(Guid.NewGuid(),teamId,minimumGrade,maximumGrade,passingGrade,period,totalGrades);
 
-    public void AddUserQualification(Guid userId,double grade,int position,bool hasValue, string? description = null)
-    {
-        var existingUQ = _userQualifications.FirstOrDefault(q => q.UserId == userId && q.Position == position);
+    public void ChangeMinGrade(double newValue) => MinimumGrade = newValue; 
+    public void ChangeMaxGrade(double newValue) => MaximumGrade = newValue; 
+    public void ChangePassingGrade(double newValue) => PassingGrade = newValue; 
+    public void ChangePeriod(string newValue) => Period = newValue; 
+    public void ChangeTotalGrades(int newValue) => TotalGrades = newValue; 
 
-        if(existingUQ is null)
+    public void SyncUserQualifications(IEnumerable<UserQualificationInput> incoming)
+    {
+        var existing = UserQualifications
+            .ToDictionary(x => (x.UserId, x.Description));
+
+        var incomingKeys = incoming
+            .Select(x => (x.UserId, x.Description))
+            .ToHashSet();
+
+        UserQualifications.RemoveAll(x =>
+            !incomingKeys.Contains((x.Id, x.Description)));
+
+        foreach (var uq in incoming)
         {
-            if (description != null)
-                _userQualifications.Add(UserQualification.Create(userId,grade, position, hasValue,description));
+            var key = (uq.UserId,uq.Description);
+            if (existing.TryGetValue(key, out var entity))
+            {
+                // Update
+                entity.Description = uq.Description;
+                entity.Grade = uq.Grade;
+            }
             else
-                _userQualifications.Add(UserQualification.Create(userId,grade, position, hasValue));
+            {
+                // Insert
+                UserQualifications.Add(UserQualification.Create(
+                    uq.UserId,
+                    uq.Grade,
+                    uq.Description
+                    ));
+            }
         }
-        else
-        {
-            existingUQ.Update(grade, position, hasValue,description);
-        }
+    }
+
+    public void AddUserQualification(Guid userId, double grade, string description)
+    {
+        var uq = UserQualification.Create(userId, grade, description);
+
+        UserQualifications.Add(uq); 
     }
 }

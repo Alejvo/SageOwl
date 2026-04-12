@@ -3,7 +3,5 @@
 public record UserQualificationDto(
     Guid UserId, 
     double Grade, 
-    int Position, 
-    bool HasValue, 
-    string? Description = null
+    string Description
     );

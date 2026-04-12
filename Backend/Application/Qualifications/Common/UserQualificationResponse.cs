@@ -6,7 +6,5 @@ public record UserQualificationResponse(
     string Name,
     Guid QualificationId,
     double Grade, 
-    string? Description, 
-    int Position, 
-    bool HasValue
+    string Description
     );
