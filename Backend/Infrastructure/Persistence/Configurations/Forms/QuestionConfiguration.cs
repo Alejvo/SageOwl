@@ -9,25 +9,16 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
 {
     public void Configure(EntityTypeBuilder<Question> builder)
     {
+        builder.ToTable("Questions");
+
         builder.HasKey(f => f.Id);
 
-        builder.Property(f => f.Title).IsRequired();
+        builder.Property(q => q.Text)
+            .IsRequired()
+            .HasMaxLength(500);
 
-        builder.Property(b => b.QuestionType)
-            .HasConversion(
-                b => b.Value,
-                b => QuestionType.FromString(b)
-            );
-
-        builder.HasOne(f => f.Form)
-            .WithMany(f => f.Questions)
-            .HasForeignKey(f => f.FormId);
-
-        builder.Metadata
-            .FindNavigation(nameof(Question.Options))!
-            .SetField("_options");
-
-        builder.Navigation(q => q.Options)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
+        builder.HasDiscriminator<string>("QuestionType")
+            .HasValue<OpenQuestion>("Open")
+            .HasValue<ClosedQuestion>("Closed");
     }
 }

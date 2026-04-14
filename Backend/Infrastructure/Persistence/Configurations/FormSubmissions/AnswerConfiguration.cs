@@ -1,9 +1,9 @@
 ﻿using Domain.Forms;
-using Domain.Users;
+using Domain.FormSubmissions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.Configurations.Forms;
+namespace Infrastructure.Persistence.Configurations.FormSubmissions;
 
 public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
 {
@@ -15,13 +15,5 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
             .WithMany()
             .HasForeignKey(a => a.QuestionId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne<Option>()
-            .WithMany()
-            .HasForeignKey(a => a.SelectedOptionId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.Property(a => a.OpenQuestionAnswer)
-            .IsRequired(false);
     }
 }

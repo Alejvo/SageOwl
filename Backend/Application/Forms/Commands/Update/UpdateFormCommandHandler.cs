@@ -2,9 +2,6 @@
 using Application.Interfaces;
 using Domain.Forms;
 using Shared;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Xml;
 
 namespace Application.Forms.Commands.Update;
 
@@ -25,14 +22,15 @@ internal sealed class UpdateFormCommandHandler : ICommandHandler<UpdateFormComma
         if (form == null)
             return Result.Failure(FormErrors.FormNotFound());
 
-        form.Update(request.Title,request.Deadline);
+        //form.Update(request.Title,request.Deadline);
 
+        /*
         foreach (var qReq in request.Questions)
         {
             if (qReq.QuestionId is null && !qReq.IsDeleted)
             {
                 // Add Question
-                form.AddQuestion(qReq.Title, qReq.Description,form.Id, QuestionType.FromString(qReq.QuestionType));
+                form.AddQuestion(qReq);
                 continue;
             }
 
@@ -42,8 +40,7 @@ internal sealed class UpdateFormCommandHandler : ICommandHandler<UpdateFormComma
                 var question = form.UpdateQuestion(
                     qReq.QuestionId.Value,
                     qReq.Title,
-                    qReq.Description,
-                    QuestionType.FromString(qReq.QuestionType)
+                    qReq.Description
                 );
 
                 foreach (var optionReq in qReq.Options)
@@ -69,13 +66,7 @@ internal sealed class UpdateFormCommandHandler : ICommandHandler<UpdateFormComma
                     }
                 }
             }
-
-            if (qReq.QuestionId is not null && qReq.IsDeleted)
-            {
-                // Delete Question
-                form.RemoveQuestion(qReq.QuestionId.Value);
-            }
-        }
+        }*/
 
         return await _unitOfWork.SaveChangesAsync(cancellationToken)
             ? Result.Success()

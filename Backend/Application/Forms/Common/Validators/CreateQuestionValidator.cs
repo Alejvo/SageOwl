@@ -7,7 +7,7 @@ public class CreateQuestionValidator : AbstractValidator<CreateQuestionRequest>
 {
     public CreateQuestionValidator()
     {
-        RuleFor(f => f.Title).NotEmpty();
+        RuleFor(f => f.Text).NotEmpty();
         RuleFor(f => f.QuestionType).NotEmpty();
 
         RuleForEach(q => q.Options)

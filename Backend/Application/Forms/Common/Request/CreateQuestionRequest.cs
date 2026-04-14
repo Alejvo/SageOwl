@@ -1,8 +1,7 @@
 ﻿namespace Application.Forms.Common.Request;
 
 public record CreateQuestionRequest(
-    string Title,
-    string? Description,
+    string Text,
     string QuestionType,
-    List<CreateOptionRequest>? Options
+    List<CreateOptionRequest>? Options = null
     );

@@ -1,7 +1,7 @@
 ﻿using Domain.Teams;
 
 namespace Domain.Forms;
-
+/*
 public class QuestionType
 {
     public static readonly QuestionType OpenedEnded = new("OPENED_ENDED");
@@ -25,3 +25,4 @@ public class QuestionType
     }
 
 }
+*/

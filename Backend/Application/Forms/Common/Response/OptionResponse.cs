@@ -1,6 +1,6 @@
 ﻿namespace Application.Forms.Common.Response;
 
-public record FormOptionResponse(
+public record OptionResponse(
     string Value,
     bool IsCorrect
     );

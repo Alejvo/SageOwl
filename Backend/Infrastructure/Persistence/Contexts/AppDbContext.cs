@@ -1,5 +1,6 @@
 ﻿using Domain.Announcements;
 using Domain.Forms;
+using Domain.FormSubmissions;
 using Domain.Qualifications;
 using Domain.Subscriptions;
 using Domain.Teams;
@@ -8,6 +9,7 @@ using Domain.Users;
 using Infrastructure.Persistence.Configurations;
 using Infrastructure.Persistence.Configurations.Announcements;
 using Infrastructure.Persistence.Configurations.Forms;
+using Infrastructure.Persistence.Configurations.FormSubmissions;
 using Infrastructure.Persistence.Configurations.Qualifications;
 using Infrastructure.Persistence.Configurations.Subscriptions;
 using Infrastructure.Persistence.Configurations.Teams;
@@ -31,8 +33,9 @@ public class AppDbContext : DbContext
     public DbSet<Form> Forms { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<Option> Options { get; set; }
+    // FormSubmissions
     public DbSet<Answer> Answers { get; set; }
-    public DbSet<FormResult> FormResults { get; set; }
+    public DbSet<FormSubmission> FormResults { get; set; }
     //Announcements
     public DbSet<Announcement> Announcements { get; set; }
     //Qualifications
@@ -49,7 +52,7 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new AnnouncementConfiguration());
         modelBuilder.ApplyConfiguration(new AnswerConfiguration());
         modelBuilder.ApplyConfiguration(new FormConfiguration());
-        modelBuilder.ApplyConfiguration(new FormResultConfiguration());
+        modelBuilder.ApplyConfiguration(new FormSubmissionConfiguration());
         modelBuilder.ApplyConfiguration(new OptionConfiguration());
         modelBuilder.ApplyConfiguration(new QuestionConfiguration());
         modelBuilder.ApplyConfiguration(new TeamConfiguration());

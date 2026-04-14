@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Interfaces;
+using Application.Forms.Common;
 using Domain.Forms;
 using Domain.Teams;
 using Shared;
@@ -28,30 +29,13 @@ internal sealed class CreateFormCommandHandler : ICommandHandler<CreateFormComma
         var form = Form.Create(request.TeamId, request.Title, request.Deadline);
 
         var team = await _teamRepository.GetTeamById(form.TeamId);
+        if (team == null)
+            return Result.Failure(TeamErrors.NotFound);
 
-        var userIds = new List<Guid>();
-
-        foreach (var member in team!.Members)
+        foreach (var questionDto in request.Questions)
         {
-            if (member.Role == TeamRole.Member)
-            {
-                userIds.Add(member.UserId);
-            }
-        }
-
-        form.AddResults(userIds);
-
-        foreach (var question in request.Questions)
-        {
-            var newQuestion = form.AddQuestion(question.Title, question.Description, form.Id,QuestionType.FromString(question.QuestionType));
-            if (question.Options is not null)
-            {
-                foreach (var option in question.Options)
-                {
-                    newQuestion.AddOption(option.Value, option.IsCorrect);
-                }
-            }
-
+            var question = QuestionFactory.Create(questionDto);
+            form.AddQuestion(question);
         }
 
         await _formRepository.CreateForm(form);

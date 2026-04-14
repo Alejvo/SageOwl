@@ -8,5 +8,5 @@ public record FormResponse(
     Guid TeamId,
     DateTime Deadline,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
-    List<FormQuestionResponse>? Questions
+    List<QuestionResponse>? Questions
     );

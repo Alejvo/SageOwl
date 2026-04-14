@@ -1,5 +1,4 @@
 ﻿using Domain.Forms;
-using Domain.Teams;
 using Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,31 +22,13 @@ public class FormRepository : IFormRepository
             .ToListAsync();
     }
 
-    public async Task<List<FormResult>> GetFormResults(Guid formId)
-    {
-        return await _dbContext.FormResults
-            .Where(f => f.FormId == formId)
-            .ToListAsync();
-    }
-
     public async Task<Form?> GetFormById(Guid formId)
     {
         return await _dbContext.Forms
              .Include(f => f.Questions)
-                .ThenInclude(f => f.Options)
             .FirstOrDefaultAsync(f => f.Id == formId);
-    }
-
-    public async Task<List<Form>> GetPendingFormsByUserId(Guid userId)
-    {
-        return await _dbContext.Forms
-            .Where(f => f.Results.Any(r => r.UserId == userId) && f.Results.Any(r => r.Status == ResultStatus.Pending))
-            .ToListAsync();
     }
 
     public async Task DeleteForm(Form form) 
         => _dbContext.Forms.Remove(form);
-
-    public async Task CreateFormResult(FormResult formResult)
-        => _dbContext.FormResults.Add(formResult);
 }

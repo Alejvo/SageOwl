@@ -13,16 +13,29 @@ public static class FormExtensions
             form.TeamId,
             form.Deadline,
             form.Questions != null && form.Questions.Any()
-                ?form.Questions.Select(fq => new FormQuestionResponse
-                (
-                    fq.Title,
-                    fq.Description,
-                    fq.QuestionType.ToString(),
-                    fq.Options.Select(fo => new FormOptionResponse(
-                    fo.Value,
-                    fo.IsCorrect)).ToList()
-                )).ToList()
+                ?form.Questions.Select(MapResponse).ToList()
                 : null
         );
     }
+    public static OptionResponse ToResponse(this Option option)
+        => new(option.Value, option.IsCorrect);
+
+    private static QuestionResponse MapResponse(Question question)
+    {
+        return question switch
+        {
+            OpenQuestion open =>
+                new OpenQuestionResponse(open.Id, open.Text),
+
+            ClosedQuestion closed =>
+                new ClosedQuestionResponse(
+                    closed.Id,
+                    closed.Text,
+                    [.. closed.Options.Select(o => o.ToResponse())]
+                ),
+
+            _ => throw new Exception("Unknown type")
+        };
+    }
+
 }

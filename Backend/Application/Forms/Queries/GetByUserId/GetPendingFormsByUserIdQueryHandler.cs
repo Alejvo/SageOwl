@@ -17,7 +17,7 @@ internal sealed class GetPendingFormsByUserIdQueryHandler : IQueryHandler<GetPen
 
     public async Task<Result<List<FormResponse>>> Handle(GetPendingFormsByUserIdQuery request, CancellationToken cancellationToken)
     {
-        var forms = await _formRepository.GetPendingFormsByUserId(request.UserId);
-        return forms.Select(f => f.ToFormResponse()).ToList();
+        //var forms = await _formRepository.GetPendingFormsByUserId(request.UserId);
+        return Result.Failure<List<FormResponse>>(Error.DBFailure);
     }
 }

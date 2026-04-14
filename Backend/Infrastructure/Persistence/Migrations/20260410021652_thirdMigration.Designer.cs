@@ -109,7 +109,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Forms");
                 });
 
-            modelBuilder.Entity("Domain.Forms.FormResult", b =>
+            modelBuilder.Entity("Domain.Forms.FormSubmission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -490,7 +490,7 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Forms.Answer", b =>
                 {
-                    b.HasOne("Domain.Forms.FormResult", null)
+                    b.HasOne("Domain.Forms.FormSubmission", null)
                         .WithMany("Answers")
                         .HasForeignKey("FormResultId");
 
@@ -518,7 +518,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("Domain.Forms.FormResult", b =>
+            modelBuilder.Entity("Domain.Forms.FormSubmission", b =>
                 {
                     b.HasOne("Domain.Forms.Form", "Form")
                         .WithMany("Results")
@@ -673,7 +673,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Results");
                 });
 
-            modelBuilder.Entity("Domain.Forms.FormResult", b =>
+            modelBuilder.Entity("Domain.Forms.FormSubmission", b =>
                 {
                     b.Navigation("Answers");
                 });
