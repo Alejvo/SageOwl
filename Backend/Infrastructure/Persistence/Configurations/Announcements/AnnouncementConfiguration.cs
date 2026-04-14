@@ -17,7 +17,8 @@ public class AnnouncementConfiguration : IEntityTypeConfiguration<Announcement>
 
         builder.HasOne(a => a.Author)
             .WithMany()
-            .HasForeignKey(a => a.AuthorId);
+            .HasForeignKey(a => a.AuthorId)
+            .IsRequired(false);
 
         builder.HasOne<Team>()
             .WithMany( t => t.Announcements)

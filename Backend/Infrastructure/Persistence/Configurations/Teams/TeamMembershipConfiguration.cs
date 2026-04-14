@@ -15,7 +15,8 @@ public class TeamMembershipConfiguration : IEntityTypeConfiguration<TeamMembersh
 
         builder.HasOne(t => t.User)
             .WithMany(u => u.UserTeams)
-            .HasForeignKey(t => t.UserId);
+            .HasForeignKey(t => t.UserId)
+            .IsRequired(false);
 
         builder.HasOne(t => t.Team)
             .WithMany(t => t.Members)

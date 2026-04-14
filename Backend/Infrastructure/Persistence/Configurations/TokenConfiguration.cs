@@ -15,7 +15,7 @@ public class TokenConfiguration : IEntityTypeConfiguration<Token>
         builder.HasOne(t => t.User)
             .WithMany(u => u.Tokens)
             .HasForeignKey(t => t.UserId)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(t => t.RefreshToken)
             .HasColumnName("RefreshToken");
