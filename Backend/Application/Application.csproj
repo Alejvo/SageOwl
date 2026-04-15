@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Forms\Queries\GetFormResults\" />
+    <Folder Include="FormSubmissions\" />
     <Folder Include="Subscriptions\GetByUserId\" />
   </ItemGroup>
 

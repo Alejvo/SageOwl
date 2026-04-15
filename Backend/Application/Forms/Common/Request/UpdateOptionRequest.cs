@@ -3,6 +3,5 @@
 public record UpdateOptionRequest(
     Guid? OptionId,
     string Value,
-    bool IsCorrect,
-    bool IsDeleted = false
+    bool IsCorrect
     );
