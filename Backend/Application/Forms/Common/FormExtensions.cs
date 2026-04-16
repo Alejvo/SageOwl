@@ -12,9 +12,7 @@ public static class FormExtensions
             form.Title,
             form.TeamId,
             form.Deadline,
-            form.Questions != null && form.Questions.Any()
-                ?form.Questions.Select(MapResponse).ToList()
-                : null
+            form.Questions?.Select(MapResponse).ToList() ?? []
         );
     }
     public static OptionResponse ToResponse(this Option option)
@@ -37,5 +35,4 @@ public static class FormExtensions
             _ => throw new Exception("Unknown type")
         };
     }
-
 }

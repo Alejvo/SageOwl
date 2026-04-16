@@ -35,6 +35,7 @@ internal sealed class CreateFormCommandHandler : ICommandHandler<CreateFormComma
         foreach (var questionDto in request.Questions)
         {
             var question = QuestionFactory.Create(questionDto);
+
             form.AddQuestion(question);
         }
 

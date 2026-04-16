@@ -48,24 +48,25 @@ public class Form
 
     public void SyncQuestions(IEnumerable<QuestionInput> incoming)
     {
-        var existing = _questions.ToDictionary(x => x.Id);
+        var existing = _questions
+            .Where(o => o.Id != Guid.Empty)
+            .ToDictionary(o => o.Id);
 
         var incomingIds = incoming
             .Where(x => x.Id != Guid.Empty)
             .Select(x => x.Id)
             .ToHashSet();
 
-        _questions.RemoveAll(x =>
-            x.Id != Guid.Empty && !incomingIds.Contains(x.Id));
+        _questions.RemoveAll(x => !incomingIds.Contains(x.Id));
 
         foreach (var q in incoming)
         {
-            if (q.Id != Guid.Empty && existing.TryGetValue(q.Id.Value, out var entity))
+            if (q.Id is Guid id && existing.TryGetValue(id, out var entity))
             {
                 // Update
                 entity.UpdateText(q.Text);
 
-                if (entity is ClosedQuestion closed)
+                if (entity is ClosedQuestion closed && q.Options is not null)
                 {  
                     closed.SyncOptions(q.Options);
                 }
@@ -73,17 +74,25 @@ public class Form
             else
             {
                 // Insert
-                if(q.Type == "Open")
+                if(q.Type == "open")
                     AddQuestion(new OpenQuestion(q.Text));
 
-                else if(q.Type == "Closed")
+                else if(q.Type == "closed")
                 {
                     var cq = new ClosedQuestion(q.Text);
                     AddQuestion(cq);
-                    foreach(var opt in q.Options)
+
+                    if(q.Options is not null)
                     {
-                        cq.AddOption(Option.Create(opt.Value,opt.IsCorrect));
+                        foreach (var opt in q.Options)
+                        {
+                            cq.AddOption(Option.Create(opt.Value, opt.IsCorrect));
+                        }
                     }
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Unknown question type: {q.Type}");
                 }
             }
         }

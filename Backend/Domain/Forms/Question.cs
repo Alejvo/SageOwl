@@ -9,7 +9,6 @@ public abstract class Question
 
     protected Question(string text)
     {
-        Id = Guid.NewGuid();
         Text = text;
     }
     public void UpdateText(string newText)

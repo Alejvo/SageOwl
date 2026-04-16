@@ -19,8 +19,11 @@ internal sealed class GetFormByIdQueryHandler : IQueryHandler<GetFormByIdQuery, 
     {
         var form = await _formRepository.GetFormById(request.FormId);
 
-        return form == null 
-            ? Result.Failure<FormResponse>(Error.DBFailure) 
-            : form.ToFormResponse();
+        if (form is null)
+            Result.Failure<FormResponse>(FormErrors.FormNotFound());
+
+        var response = form.ToFormResponse();
+
+        return Result.Success(response);
     }
 }

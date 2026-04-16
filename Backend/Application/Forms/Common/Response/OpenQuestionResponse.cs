@@ -3,4 +3,4 @@
 public record OpenQuestionResponse(
     Guid Id,
     string Text
-    ) : QuestionResponse(Id,Text,"OPEN");
+    ) : QuestionResponse(Id,Text);

@@ -12,7 +12,6 @@ public class Option
 
     private Option(string value, bool isCorrect)
     {
-        Id = Guid.NewGuid();
         Value = value;
         IsCorrect = isCorrect;
     }

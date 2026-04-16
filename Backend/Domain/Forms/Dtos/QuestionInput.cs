@@ -3,6 +3,6 @@
 public record QuestionInput(
     string Text,
     string Type,
-    IEnumerable<OptionInput> Options,
+    IEnumerable<OptionInput>? Options,
     Guid? Id = null
     );

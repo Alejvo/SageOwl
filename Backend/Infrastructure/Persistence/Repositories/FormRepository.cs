@@ -25,8 +25,9 @@ public class FormRepository : IFormRepository
     public async Task<Form?> GetFormById(Guid formId)
     {
         return await _dbContext.Forms
-             .Include(f => f.Questions)
-            .FirstOrDefaultAsync(f => f.Id == formId);
+                .Include(f => f.Questions)
+                    .ThenInclude(q => (q as ClosedQuestion).Options)
+                .FirstOrDefaultAsync(f => f.Id == formId);
     }
 
     public async Task DeleteForm(Form form) 

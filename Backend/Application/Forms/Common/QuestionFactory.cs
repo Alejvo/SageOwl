@@ -9,8 +9,8 @@ public static class QuestionFactory
     {
         return dto.QuestionType switch
         {
-            "Closed" => ToClosedQuestion(dto),
-            "Open" => ToOpenQuestion(dto),
+            "closed" => ToClosedQuestion(dto),
+            "open" => ToOpenQuestion(dto),
             _ => throw new NotSupportedException($"Unsupported type: {dto.QuestionType}")
         };
     }

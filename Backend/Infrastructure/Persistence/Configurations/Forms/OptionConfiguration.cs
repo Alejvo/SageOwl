@@ -10,6 +10,9 @@ public class OptionConfiguration : IEntityTypeConfiguration<Option>
     {
         builder.HasKey(o => o.Id);
 
+        builder.Property(x => x.Id)
+            .ValueGeneratedOnAdd();
+
         builder.Property(o => o.Value)
             .IsRequired()
             .HasMaxLength(200);

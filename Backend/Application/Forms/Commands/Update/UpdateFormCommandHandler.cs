@@ -29,17 +29,17 @@ internal sealed class UpdateFormCommandHandler : ICommandHandler<UpdateFormComma
         form.SyncQuestions(
             request.Questions.Select(x =>
                 new QuestionInput(
-                    x.Title,
+                    x.Text,
                     x.QuestionType,
-                    x.Options.Select(o =>
+                    x.Options?.Select(o =>
                         new OptionInput(
                             o.Value,
                             o.IsCorrect,
                             o.OptionId
                             )),
-                    x.Id
+                    x.QuestionId
                     )
-                )
+                ).ToList() ?? []
             );
 
         return await _unitOfWork.SaveChangesAsync(cancellationToken)

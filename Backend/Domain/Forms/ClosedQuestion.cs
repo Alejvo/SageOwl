@@ -4,7 +4,7 @@ namespace Domain.Forms;
 
 public class ClosedQuestion : Question
 {
-    private readonly List<Option> _options;
+    private readonly List<Option> _options = [];
 
     public IReadOnlyCollection<Option> Options => [.. _options];
 
@@ -22,26 +22,19 @@ public class ClosedQuestion : Question
     public void SyncOptions(IEnumerable<OptionInput> incoming)
     {
         var existing = _options
-       .Where(o => o.Id != Guid.Empty)
-       .ToDictionary(o => o.Id);
+            .Where(o => o.Id != Guid.Empty)
+            .ToDictionary(o => o.Id);
 
         var incomingIds = incoming
             .Where(o => o.Id != Guid.Empty)
             .Select(o => o.Id)
             .ToHashSet();
 
-        var toRemove = _options
-            .Where(o => o.Id != Guid.Empty && !incomingIds.Contains(o.Id))
-            .ToList();
-
-        foreach (var option in toRemove)
-        {
-            _options.Remove(option);
-        }
+        _options.RemoveAll(x => !incomingIds.Contains(x.Id));
 
         foreach (var op in incoming)
         {
-            if (op.Id != Guid.Empty && existing.TryGetValue(op.Id.Value, out var existingOption))
+            if (op.Id is Guid id && existing.TryGetValue(id, out var existingOption))
             {
                 // UPDATE
                 existingOption.Update(op.Value, op.IsCorrect);

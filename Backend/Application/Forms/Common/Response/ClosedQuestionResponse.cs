@@ -4,4 +4,4 @@ public record ClosedQuestionResponse(
     Guid Id,
     string Text,
     List<OptionResponse> Options
-    ) :QuestionResponse(Id,Text,"CLOSED");
+    ) :QuestionResponse(Id,Text);
