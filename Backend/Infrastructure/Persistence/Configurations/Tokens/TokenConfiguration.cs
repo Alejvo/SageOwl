@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
-namespace Infrastructure.Persistence.Configurations;
+namespace Infrastructure.Persistence.Configurations.Tokens;
 
 public class TokenConfiguration : IEntityTypeConfiguration<Token>
 {

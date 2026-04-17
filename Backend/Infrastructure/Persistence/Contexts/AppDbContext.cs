@@ -6,7 +6,7 @@ using Domain.Subscriptions;
 using Domain.Teams;
 using Domain.Tokens;
 using Domain.Users;
-using Infrastructure.Persistence.Configurations;
+using Infrastructure.Persistence.Configurations.Tokens;
 using Infrastructure.Persistence.Configurations.Announcements;
 using Infrastructure.Persistence.Configurations.Forms;
 using Infrastructure.Persistence.Configurations.FormSubmissions;
