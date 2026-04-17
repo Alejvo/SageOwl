@@ -23,9 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FormSubmissions\Commands\" />
-    <Folder Include="FormSubmissions\Common\" />
-    <Folder Include="FormSubmissions\Queries\" />
+    <Folder Include="FormSubmissions\Queries\GetByFormId\" />
     <Folder Include="Forms\Queries\GetFormResults\" />
     <Folder Include="Subscriptions\GetByUserId\" />
   </ItemGroup>

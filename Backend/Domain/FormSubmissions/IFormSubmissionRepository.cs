@@ -2,7 +2,7 @@
 
 public interface IFormSubmissionRepository
 {
-    List<Task<FormSubmission>> GetFormSubmissionsByForm(Guid formId);
+    Task<List<FormSubmission>> GetFormSubmissionsByForm(Guid formId);
 
     Task CreateFormSubmission(FormSubmission formSubmission); 
 }

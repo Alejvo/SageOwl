@@ -35,7 +35,7 @@ public class AppDbContext : DbContext
     public DbSet<Option> Options { get; set; }
     // FormSubmissions
     public DbSet<Answer> Answers { get; set; }
-    public DbSet<FormSubmission> FormResults { get; set; }
+    public DbSet<FormSubmission> FormSubmission { get; set; }
     //Announcements
     public DbSet<Announcement> Announcements { get; set; }
     //Qualifications

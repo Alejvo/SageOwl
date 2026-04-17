@@ -11,6 +11,9 @@ public class FormSubmissionConfiguration : IEntityTypeConfiguration<FormSubmissi
     {
         builder.HasKey(r => r.Id);
 
+        builder.Property(r => r.Id)
+            .ValueGeneratedOnAdd();
+
         builder.HasOne(r => r.User)
             .WithMany()
             .HasForeignKey(r => r.UserId);

@@ -7,11 +7,11 @@ public class FormSubmission
 {
     private FormSubmission() { }
 
-    private FormSubmission(Guid formId, Guid userId, ResultStatus status)
+    private FormSubmission(Guid formId, Guid userId, DateTime submittedAt)
     {
         FormId = formId;
         UserId = userId;
-        Status = status;
+        SubmittedAt = submittedAt;
     }
 
     public Guid Id { get; set; }
@@ -19,24 +19,18 @@ public class FormSubmission
     public Form Form { get; set; }
     public Guid UserId { get; set; }
     public User User { get; set; }
-    public ResultStatus Status { get; set; }
-    public DateTime? SubmittedAt { get; set; }
+    public DateTime SubmittedAt { get; set; }
 
     private readonly List<Answer> _answers = new();
     public IReadOnlyCollection<Answer> Answers => _answers;
 
-    public static FormSubmission Create(Guid formId, Guid userId)
-        => new(formId,userId,ResultStatus.Pending);
+    public static FormSubmission Create(Guid formId, Guid userId, DateTime submittedAt)
+        => new(formId, userId, submittedAt);
 
-    public void AnswerQuestion(Question question, string value)
+    public void AnswerQuestion(Guid questionId, string value)
     {
-        var answer = Answer.Create(question.Id, value);
+        var answer = Answer.Create(questionId, value);
 
-        var existing = _answers.FirstOrDefault(a => a.QuestionId == question.Id);
-
-        if (existing is null)
-            _answers.Add(answer);
-        else
-            existing.ChangeValue(value);
+        _answers.Add(answer);
     }
 }

@@ -10,7 +10,6 @@ public class Answer
 
     private Answer(Guid questionId, string value)
     {
-        Id = Guid.NewGuid();
         QuestionId = questionId;
         Value = value;
     }

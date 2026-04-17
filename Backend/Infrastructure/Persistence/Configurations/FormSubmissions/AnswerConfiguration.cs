@@ -11,6 +11,9 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
     {
         builder.HasKey(a => a.Id);
 
+        builder.Property(r => r.Id)
+            .ValueGeneratedOnAdd();
+
         builder.HasOne<Question>()
             .WithMany()
             .HasForeignKey(a => a.QuestionId)
