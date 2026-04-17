@@ -18,10 +18,5 @@ public class FormSubmissionConfiguration : IEntityTypeConfiguration<FormSubmissi
             .WithMany()
             .HasForeignKey(r => r.UserId);
 
-        builder.Property(r => r.Status)
-            .HasConversion(
-                v => v.Value,
-                v => ResultStatus.FromString(v)
-                );
     }
 }
