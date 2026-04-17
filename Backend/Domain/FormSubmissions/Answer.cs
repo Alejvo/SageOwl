@@ -8,7 +8,7 @@ public class Answer
 
     private Answer() { }
 
-    public Answer(Guid questionId, string value)
+    private Answer(Guid questionId, string value)
     {
         Id = Guid.NewGuid();
         QuestionId = questionId;
@@ -19,4 +19,7 @@ public class Answer
     {
         Value = newValue;
     }
+
+    public static Answer Create(Guid questionId, string value)
+        => new(questionId, value);
 }

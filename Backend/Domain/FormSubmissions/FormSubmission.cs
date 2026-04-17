@@ -5,11 +5,10 @@ namespace Domain.FormSubmissions;
 
 public class FormSubmission
 {
-    public FormSubmission() { }
+    private FormSubmission() { }
 
-    public FormSubmission(Guid id,Guid formId, Guid userId, ResultStatus status)
+    private FormSubmission(Guid formId, Guid userId, ResultStatus status)
     {
-        Id = id;
         FormId = formId;
         UserId = userId;
         Status = status;
@@ -27,11 +26,11 @@ public class FormSubmission
     public IReadOnlyCollection<Answer> Answers => _answers;
 
     public static FormSubmission Create(Guid formId, Guid userId)
-        => new(Guid.NewGuid(),formId,userId,ResultStatus.Pending);
+        => new(formId,userId,ResultStatus.Pending);
 
     public void AnswerQuestion(Question question, string value)
     {
-        var answer = new Answer(question.Id, value);
+        var answer = Answer.Create(question.Id, value);
 
         var existing = _answers.FirstOrDefault(a => a.QuestionId == question.Id);
 
