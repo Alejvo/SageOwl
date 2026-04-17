@@ -3,7 +3,7 @@ using Application.Qualifications.Common;
 using Domain.Qualifications;
 using Shared;
 
-namespace Application.Qualifications.GetByUserId;
+namespace Application.Qualifications.Queries.GetByUserId;
 
 internal sealed class GetQualificationsByUserIdQueryHandler : IQueryHandler<GetQualificationsByUserIdQuery, IEnumerable<QualificationResponse>>
 {

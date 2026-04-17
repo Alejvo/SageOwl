@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Qualifications.Common;
 
-namespace Application.Qualifications.GetByUserId;
+namespace Application.Qualifications.Queries.GetByUserId;
 
 public record GetQualificationsByUserIdQuery(
     Guid UserId

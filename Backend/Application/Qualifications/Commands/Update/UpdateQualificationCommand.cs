@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Qualifications.Common;
 
-namespace Application.Qualifications.Update;
+namespace Application.Qualifications.Commands.Update;
 
 public record UpdateQualificationCommand(
     Guid Id,

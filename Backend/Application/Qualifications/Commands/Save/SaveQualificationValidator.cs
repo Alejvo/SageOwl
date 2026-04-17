@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Qualifications.Save;
+namespace Application.Qualifications.Commands.Save;
 
 public class SaveQualificationValidator : AbstractValidator<SaveQualificationCommand>
 {

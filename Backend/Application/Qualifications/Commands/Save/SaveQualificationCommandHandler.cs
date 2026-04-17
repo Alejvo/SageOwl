@@ -3,7 +3,7 @@ using Application.Interfaces;
 using Domain.Qualifications;
 using Shared;
 
-namespace Application.Qualifications.Save;
+namespace Application.Qualifications.Commands.Save;
 
 internal sealed class SaveQualificationCommandHandler : ICommandHandler<SaveQualificationCommand>
 {
@@ -28,7 +28,7 @@ internal sealed class SaveQualificationCommandHandler : ICommandHandler<SaveQual
             qualification.AddUserQualification(uq.UserId, uq.Grade, uq.Description);
         }
 
-        await _qualificationRepository.CreateQualifications(qualification);
+        await _qualificationRepository.CreateQualification(qualification);
 
         return await _unitOfWork.SaveChangesAsync(cancellationToken)
                 ? Result.Success()

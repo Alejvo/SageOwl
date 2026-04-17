@@ -3,7 +3,7 @@ using Application.Qualifications.Common;
 using Domain.Qualifications;
 using Shared;
 
-namespace Application.Qualifications.GetByTeamId;
+namespace Application.Qualifications.Queries.GetByTeamId;
 
 internal sealed class GetQualificationsByTeamIdQueryHandler : IQueryHandler<GetQualificationsByTeamIdQuery, IEnumerable<QualificationResponse>>
 {

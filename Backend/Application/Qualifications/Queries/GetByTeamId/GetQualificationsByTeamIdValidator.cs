@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Qualifications.GetByTeamId;
+namespace Application.Qualifications.Queries.GetByTeamId;
 
 public class GetQualificationsByTeamIdValidator : AbstractValidator<GetQualificationsByTeamIdQuery>
 {

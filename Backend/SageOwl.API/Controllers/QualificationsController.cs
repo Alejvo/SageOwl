@@ -1,6 +1,7 @@
-﻿using Application.Qualifications.GetByTeamId;
-using Application.Qualifications.GetByUserId;
-using Application.Qualifications.Save;
+﻿using Application.Qualifications.Commands.Delete;
+using Application.Qualifications.Commands.Save;
+using Application.Qualifications.Queries.GetByTeamId;
+using Application.Qualifications.Queries.GetByUserId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,10 +36,17 @@ public class QualificationsController : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveQualifications([FromBody] SaveQualificationCommand command)
+    public async Task<IActionResult> SaveQualification([FromBody] SaveQualificationCommand command)
     {
         var res = await _sender.Send(command);
 
         return res.IsSuccess ? Created() : Problem(res.Errors);
+    }
+
+    [HttpDelete("{qualificationId}")]
+    public async Task<IActionResult> DeleteQualification([FromRoute] Guid qualificationId)
+    {
+        var res = await _sender.Send(new DeleteQualificationCommand(qualificationId));
+        return res.IsSuccess ? NoContent() : Problem(res.Errors);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Qualifications.Common;
 
-namespace Application.Qualifications.Save;
+namespace Application.Qualifications.Commands.Save;
 
 public record SaveQualificationCommand(
     Guid TeamId, 

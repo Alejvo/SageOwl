@@ -4,6 +4,7 @@ public interface IQualificationRepository
 {
     Task<IEnumerable<Qualification>> GetQualificationByTeamId(Guid teamId);
     Task<IEnumerable<Qualification>> GetQualificationsByUserId(Guid userId);
-    Task CreateQualifications(Qualification qualification);
+    Task CreateQualification(Qualification qualification);
     Task<Qualification?> GetQualificationById(Guid id);
+    void DeleteQualification(Qualification qualification);
 }

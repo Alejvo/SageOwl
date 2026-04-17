@@ -13,8 +13,11 @@ public class QualificationRepository : IQualificationRepository
         _dbContext = dbContext;
     }
 
-    public async Task CreateQualifications(Qualification qualification) 
+    public async Task CreateQualification(Qualification qualification) 
         => await _dbContext.Qualifications.AddAsync(qualification);
+
+    public void DeleteQualification(Qualification qualification)
+        => _dbContext.Qualifications.Remove(qualification);
 
     public async Task<Qualification?> GetQualificationById(Guid id)
     {

@@ -4,7 +4,7 @@ using Application.Qualifications.Common;
 using Domain.Qualifications;
 using Shared;
 
-namespace Application.Qualifications.Update;
+namespace Application.Qualifications.Commands.Update;
 
 internal sealed class UpdateQualificationCommandHandler : ICommandHandler<UpdateQualificationCommand>
 {
