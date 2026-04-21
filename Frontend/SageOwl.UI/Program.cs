@@ -14,6 +14,8 @@ builder.Services.AddScoped<IAnnouncementService,AnnouncementService>();
 builder.Services.AddScoped<IFormService,FormService>();
 builder.Services.AddScoped<IQualificationService,QualificationService>();
 builder.Services.AddScoped<ITokenProvider,TokenProvider>();
+builder.Services.AddScoped<IFormSubmissionService,FormSubmissionService>();
+
 builder.Services.AddSingleton<CurrentTeam>();
 builder.Services.AddSingleton<CurrentUser>();
 
