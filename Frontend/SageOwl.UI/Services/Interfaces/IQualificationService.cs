@@ -8,4 +8,5 @@ public interface IQualificationService
     Task<List<Qualification>> GetQualificationByUserId(Guid userId);
     Task<List<Qualification>> GetQualificationByTeamId(Guid teamId);
     Task<HttpStatusCode> SaveQualifications(SaveQualification qualification);
+    Task<HttpStatusCode> DeleteQualification(Guid qualificationId);
 }
