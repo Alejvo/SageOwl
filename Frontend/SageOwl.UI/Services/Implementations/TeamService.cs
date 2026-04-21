@@ -2,6 +2,7 @@
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Teams;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -20,12 +21,9 @@ public class TeamService : ITeamService
         _accountService = accountService;
     }
 
-    public async Task<bool> CreateTeam(CreateTeamViewModel newTeam)
+    public async Task<HttpStatusCode> CreateTeam(CreateTeamViewModel newTeam)
     {
         var token = await _accountService.GetValidAccessTokenAsync();
-
-        if (string.IsNullOrEmpty(token))
-            return false; 
 
         var json = JsonSerializer.Serialize(newTeam);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -35,7 +33,19 @@ public class TeamService : ITeamService
 
         var response = await _httpClient.PostAsync("team", content);
 
-        return response.IsSuccessStatusCode;
+        return response.StatusCode;
+    }
+
+    public async Task<HttpStatusCode> DeleteTeam(Guid teamId)
+    {
+        var token = await _accountService.GetValidAccessTokenAsync();
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.DeleteAsync($"team/{teamId}");
+
+        return response.StatusCode;
     }
 
     public async Task<Team> GetTeamById(Guid teamId)
@@ -103,11 +113,10 @@ public class TeamService : ITeamService
         return teams;
     }
 
-    public async Task<bool> UpdateTeam(UpdateTeamDto updateTeam)
+    public async Task<HttpStatusCode> UpdateTeam(UpdateTeamDto updateTeam)
     {
         var token = await _accountService.GetValidAccessTokenAsync();
-        if (string.IsNullOrEmpty(token))
-            return false;
+
 
         var json = JsonSerializer.Serialize(updateTeam);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -117,6 +126,6 @@ public class TeamService : ITeamService
 
         var response = await _httpClient.PutAsync("team", content);
 
-        return response.IsSuccessStatusCode;
+        return response.StatusCode;
     }
 }
