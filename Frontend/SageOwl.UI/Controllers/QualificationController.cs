@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Models;
+using SageOwl.UI.Models.Qualifications;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Qualifications;
 
@@ -16,6 +17,7 @@ public class QualificationController : Controller
         _currentUser = currentUser;
     }
 
+    // GET Methods
     public async Task<IActionResult> GetQualification(string period)
     {
         var qualifications = await _qualificationService.GetQualificationByUserId(_currentUser.Id);
@@ -44,4 +46,24 @@ public class QualificationController : Controller
         return PartialView("~/Views/Shared/PartialViews/_QualificationTable.cshtml", qualificationVM);
     }
 
+    //POST Methods
+    public async Task<IActionResult> SaveQualifications(SaveQualification qualification)
+    {
+        if (ModelState.IsValid)
+        {
+            await _qualificationService.SaveQualifications(qualification);
+        }
+
+        return View(qualification);
+    }
+
+    public async Task<IActionResult> DeleteQualification(Guid qualificationId)
+    {
+        if (ModelState.IsValid)
+        {
+            await _qualificationService.DeleteQualification(qualificationId);
+        }
+
+        return View();
+    }
 }
