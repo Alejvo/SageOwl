@@ -2,6 +2,7 @@
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Users;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -24,22 +25,24 @@ public class UserService : IUserService
         _accountService = accountService;
     }
 
-    public async Task<bool> Create(RegisterViewModel data)
+    public async Task<HttpStatusCode> Create(RegisterViewModel data)
     {
-        var user = new
-        {
-            name=data.Name,
-            data.Surname,
-            data.Email,
-            data.Password,
-            data.Username,
-            data.BirthDay
-        };
-
         var json = JsonSerializer.Serialize(data);
         var content = new StringContent(json,Encoding.UTF8,"application/json");
         var response = await _httpClient.PostAsync("users",content);
-        return response.IsSuccessStatusCode;
+        return response.StatusCode;
+    }
+
+    public async Task<HttpStatusCode> DeleteUser(Guid userId)
+    {
+        var token = await _accountService.GetValidAccessTokenAsync();
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClient.DeleteAsync($"users/{userId}");
+
+        return response.StatusCode;
     }
 
     public async Task<User?> GetUserFromToken(string token)
@@ -106,12 +109,9 @@ public class UserService : IUserService
         return users;
     }
 
-    public async Task<bool> Update(UpdateUserViewModel user)
+    public async Task<HttpStatusCode> Update(UpdateUserViewModel user)
     {
         var token = await _accountService.GetValidAccessTokenAsync();
-
-        if (string.IsNullOrEmpty(token))
-            return false;
 
         var json = JsonSerializer.Serialize(user);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -121,6 +121,6 @@ public class UserService : IUserService
 
         var response = await _httpClient.PutAsync("user", content);
 
-        return response.IsSuccessStatusCode;
+        return response.StatusCode;
     }
 }
