@@ -13,8 +13,6 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var config = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine("SQL Server ConnectionString: " + config);
 
 builder.Services.AddControllers()
         .AddJsonOptions(opt =>

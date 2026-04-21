@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Announcements;
 using Domain.Forms;
+using Domain.FormSubmissions;
 using Domain.Qualifications;
 using Domain.Subscriptions;
 using Domain.Teams;
@@ -41,6 +42,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenRepository,TokenRepository>();
         services.AddScoped<ITeamRepository,TeamRepository>();
         services.AddScoped<IFormRepository,FormRepository>();
+        services.AddScoped<IFormSubmissionRepository,FormSubmissionRepository>();
         services.AddScoped<IAnnouncementRepository,AnnouncementRepository>();
         services.AddScoped<IQualificationRepository,QualificationRepository>();
         services.AddScoped<IEmailService,EmailService>();

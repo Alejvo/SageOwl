@@ -4,6 +4,7 @@ namespace SageOwl.UI.Controllers;
 
 public class FormController : Controller
 {
+    // GET Methods
     [Route("form/{formId}")]
     public IActionResult Index(string formId)
     {
@@ -38,4 +39,6 @@ public class FormController : Controller
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace"); 
         return View();
     }
+
+    // POST Methods
 }
