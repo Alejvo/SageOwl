@@ -58,12 +58,12 @@ public class FormController : ApiController
     {
         var res = await _sender.Send(command);
 
-        return res.IsSuccess ? NoContent(): Problem(res.Errors);
+        return res.IsSuccess ? NoContent() : Problem(res.Errors);
     }
-    [HttpDelete]
-    public async Task<IActionResult> DeleteForm([FromBody] DeleteFormCommand command)
+    [HttpDelete("{formId:guid}")]
+    public async Task<IActionResult> DeleteForm([FromRoute] Guid formId)
     {
-        var res = await _sender.Send(command);
+        var res = await _sender.Send(new DeleteFormCommand(formId));
 
         return res.IsSuccess ? NoContent() : Problem(res.Errors);
     }

@@ -4,7 +4,6 @@ using Application.Announcements.GetByTeamId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared;
 
 namespace SageOwl.API.Controllers;
 

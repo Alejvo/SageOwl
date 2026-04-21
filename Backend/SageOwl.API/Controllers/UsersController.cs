@@ -56,7 +56,7 @@ public class UsersController : ApiController
         return res.IsSuccess ? NoContent() : Problem(res.Errors);
     }
 
-    [HttpDelete("userId/{userId}")]
+    [HttpDelete("{userId}")]
     public async Task<IActionResult> SoftDelete([FromRoute] Guid userId)
     {
         var res = await _sender.Send(new SoftDeleteUserCommand(userId));
