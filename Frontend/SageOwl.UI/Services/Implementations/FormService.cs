@@ -99,7 +99,6 @@ public class FormService : IFormService
 
     public async Task<List<Form>> GetFormsByUserId()
     {
-
         var token = await _accountService.GetValidAccessTokenAsync();
 
         if (string.IsNullOrEmpty(token))
@@ -115,11 +114,14 @@ public class FormService : IFormService
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
 
-        var content = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<List<Form>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
-               ?? new List<Form>();
+        if(response.StatusCode == HttpStatusCode.OK)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<Form>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+        return new List<Form>();
     }
 
     public async Task<HttpStatusCode> UpdateForm(UpdateFormViewModel updateForm)

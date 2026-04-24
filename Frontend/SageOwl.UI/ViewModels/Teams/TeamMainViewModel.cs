@@ -4,5 +4,5 @@ namespace SageOwl.UI.ViewModels.Teams;
 
 public class TeamMainViewModel
 {
-    public List<AnnouncementViewModel> Announcements { get; set; }
+    public List<AnnouncementViewModel> Announcements { get; set; } = new List<AnnouncementViewModel>();
 }

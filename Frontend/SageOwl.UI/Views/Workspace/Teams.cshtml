@@ -4,19 +4,46 @@
 }
 @model List<TeamCardViewModel>
 
-<main class="workspace_teams_main">
-
-    @foreach(var team in Model)
-    {
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_TeamCard.cshtml", new TeamCardViewModel
-        {
-            TeamId = team.TeamId,
-            Name = team.Name,
-            Initials = team.Initials
-        })
+<style>
+    .team_button {
+        color:white;
+        cursor: pointer;
+        text-decoration: none;
+        background-color: #4153AC;
+        width: 200px;
+        height: 40px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
     }
-</main>
 
+        .team_button:hover,
+        .team_button:active {
+            background-color: #314191;
+            color:white;
+        }
+</style>
+
+<main class="workspace_teams_main">
+    <span>
+        <a class="team_button" asp-controller="Team" asp-action="Create">CreateTeam</a>
+    </span>
+
+    <div class="team_container">
+        @foreach (var team in Model)
+        {
+            @await Html.PartialAsync("~/Views/Shared/PartialViews/_TeamCard.cshtml", new TeamCardViewModel
+            {
+                TeamId = team.TeamId,
+                Name = team.Name,
+                Initials = team.Initials
+            })
+         }
+    </div>
+
+</main>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

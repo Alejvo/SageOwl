@@ -19,19 +19,22 @@ public class TeamController : Controller
     private readonly CurrentUser _currentUser;
     private readonly IAnnouncementService _announcementService;
     private readonly IQualificationService _qualificationService;
+    private readonly IFormService _formService;
 
     public TeamController(
         ITeamService teamService,
         CurrentTeam currentTeam,
         IAnnouncementService announcementService,
         CurrentUser currentUser,
-        IQualificationService qualificationService)
+        IQualificationService qualificationService,
+        IFormService formService)
     {
         _teamService = teamService;
         _currentTeam = currentTeam;
         _announcementService = announcementService;
         _currentUser = currentUser;
         _qualificationService = qualificationService;
+        _formService = formService;
     }
 
     [HttpGet("{teamId}/mainpage")]
@@ -39,19 +42,24 @@ public class TeamController : Controller
     {
         await GetTeam(teamId);
 
-        var teams = await _announcementService.GetAnnouncementsByTeamId(teamId);
-
-        var teamsViewModel = teams.Select(a => new AnnouncementViewModel
+        
+        var teams = await _teamService.GetTeamById(teamId);
+        var forms = await _formService.GetFormsByTeamId(teamId);
+        var announcements = await _announcementService.GetAnnouncementsByTeamId(teamId);
+        
+        var teamsViewModel = announcements.Select(a => new AnnouncementViewModel
         {
             Title = a.Title,
             Content = a.Content,
             PublisherName = a.Author,
             SentAt = a.CreatedAt
         }).ToList();
+
         var teamMainVM = new TeamMainViewModel
         {
             Announcements = teamsViewModel
         };
+
         ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
         ViewData["HeaderUrl"] = Url.Action("Teams", "Workspace");
@@ -223,7 +231,7 @@ public class TeamController : Controller
 
         if (ModelState.IsValid)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Teams", "Workspace");
         }
 
         return View(createTeam);
@@ -250,6 +258,7 @@ public class TeamController : Controller
         if (ModelState.IsValid)
         {
             await _announcementService.CreateAnnouncement(createAnnouncement);
+
             return RedirectToAction("MainPage", "Team", new { teamId = createAnnouncement.TeamId });
         }
 
