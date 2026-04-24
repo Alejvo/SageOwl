@@ -3,6 +3,7 @@
     bool isAuthenticated = AuthHelper.IsUserAuthenticated(Context.Request);
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <header class="header">
     <p class="header_logo">SAGEOWL</p>
     <ul class="header_menu" id="header_menu">
@@ -38,6 +39,9 @@
 <script>
         document.getElementById("header_button").addEventListener("click", function() {
         const menu = document.getElementById("header_menu");
-        menu.style.display = (menu.style.display === "none") ? "flex" : "none";
+        const isHidden = window.getComputedStyle(menu).display === "none";
+
+         menu.style.display = isHidden ? "flex" : "none";
+
     });
 </script>

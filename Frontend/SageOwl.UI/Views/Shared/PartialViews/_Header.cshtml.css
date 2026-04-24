@@ -75,10 +75,10 @@
     display:none;
 }
 
-.header_button i{
-    font-size:30px;
-    color:white;
-}
+    .header_button i {
+        font-size: 30px;
+        color: #C94F23;
+    }
 
 @media only screen and (max-width:1024px) {
     .header{
@@ -108,17 +108,18 @@
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         flex-direction: column;
+        z-index:30;
+    }
+
+    .header_menu:active{
+        display:flex;
     }
 
     .header_login{
         margin:0;
-        font-size:22px;
         border:none;
-    }
-}
-
-@media only screen and (min-width:1024px) {
-    .header_menu {
-        display: flex !important;
+        font-size:22px;
+        background:none;
+        color:black;
     }
 }
