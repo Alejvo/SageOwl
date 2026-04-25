@@ -27,7 +27,7 @@ public class Qualification
     public string Period { get; private set; }
     public int TotalGrades { get; private set; }
 
-    public List<UserQualification> UserQualifications { get; set; }
+    public List<UserQualification> UserQualifications { get; set; } = new();
     public Team Team { get; set; }
 
     public static Qualification Create(Guid teamId, double minimumGrade, double maximumGrade, double passingGrade,string period,int totalGrades)
@@ -65,6 +65,7 @@ public class Qualification
                 // Insert
                 UserQualifications.Add(UserQualification.Create(
                     uq.UserId,
+                    Id,
                     uq.Grade,
                     uq.Description
                     ));
@@ -74,7 +75,7 @@ public class Qualification
 
     public void AddUserQualification(Guid userId, double grade, string description)
     {
-        var uq = UserQualification.Create(userId, grade, description);
+        var uq = UserQualification.Create(userId, Id,grade, description);
 
         UserQualifications.Add(uq); 
     }

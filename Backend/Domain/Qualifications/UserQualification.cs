@@ -8,9 +8,8 @@ public class UserQualification
     {
     }
 
-    private UserQualification(Guid id, Guid userId, double grade, string description)
+    private UserQualification(Guid userId, Guid qualificationId ,double grade, string description)
     {
-        Id = id;
         UserId = userId;
         Grade = grade;
         Description = description;
@@ -24,7 +23,7 @@ public class UserQualification
     public Qualification Qualification { get; set; }
     public User User { get; set; }
 
-    public static UserQualification Create(Guid userId, double grade, string description)
-    => new(Guid.NewGuid(),userId,grade,description);
+    public static UserQualification Create(Guid userId, Guid qualificationId ,double grade, string description)
+    => new(userId,qualificationId,grade,description);
 
 }

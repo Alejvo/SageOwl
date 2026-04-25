@@ -7,19 +7,21 @@
 <main class="team_qualifications_main">
     @await Component.InvokeAsync("TeamNavigation")
 
-    <form asp-action="GetQualification" asp-controller="Qualification" method="get">
-        <select name="period">
-            @foreach (var period in Model.PeriodList)
-            {
-                <option value="@period">@period</option>
-            }
-        </select>
-        <button type="submit">Change</button>
-    </form>
+    <div>
+        <a asp-route="SaveQualifications"
+           asp-route-teamId="@Model.TeamId">Create Qualification</a>
+    </div>
 
+    @if(Model.UserQualifications == null)
+    {
+        <p>No Qualifications Available</p>
+    }
+    else{
     <div id="qualificationContainer">
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_QualificationTable.cshtml", Model)
     </div>
+    }
+
 </main>
 
 

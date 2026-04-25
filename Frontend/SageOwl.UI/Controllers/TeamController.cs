@@ -10,7 +10,7 @@ using SageOwl.UI.ViewModels.Teams;
 
 namespace SageOwl.UI.Controllers;
 
-[Route("team")]
+[Route("[controller]")]
 [AuthorizeToken]
 public class TeamController : Controller
 {
@@ -37,16 +37,17 @@ public class TeamController : Controller
         _formService = formService;
     }
 
+    // GET Method
     [HttpGet("{teamId}/mainpage")]
     public async Task<IActionResult> MainPage(Guid teamId)
     {
         await GetTeam(teamId);
 
-        
+
         var teams = await _teamService.GetTeamById(teamId);
         var forms = await _formService.GetFormsByTeamId(teamId);
         var announcements = await _announcementService.GetAnnouncementsByTeamId(teamId);
-        
+
         var teamsViewModel = announcements.Select(a => new AnnouncementViewModel
         {
             Title = a.Title,
@@ -65,23 +66,50 @@ public class TeamController : Controller
         ViewData["HeaderUrl"] = Url.Action("Teams", "Workspace");
         return View(teamMainVM);
     }
+    [HttpGet("{teamId}/forms")]
+    public async Task<IActionResult> Forms(Guid teamId)
+    {
+        await GetTeam(teamId);
+
+        ViewBag.TeamId = teamId;
+        ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
+
+        var forms = new List<FormViewModel>();
+
+        foreach (var item in _currentTeam.Forms)
+        {
+            var newform = new FormViewModel
+            {
+                Id = item.Id,
+                Title = item.Title,
+                Deadline = item.Deadline,
+                TeamId = item.TeamId
+            };
+            forms.Add(newform);
+        }
+        return View(forms);
+    }
 
     [HttpGet("{teamId}/qualifications")]
     public async Task<IActionResult> Qualifications(Guid teamId)
     {
         ViewData["HeaderTitle"] = $"{_currentTeam.Name} Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-        
-         var qualifications = await _qualificationService.GetQualificationByTeamId(_currentTeam.TeamId);
+
+        var qualifications = await _qualificationService.GetQualificationByTeamId(_currentTeam.TeamId);
 
         var qualification = qualifications.FirstOrDefault();
+
+        if (qualification == null)
+            return View(new QualificationViewModel { TeamId = _currentTeam.TeamId});
 
         QualificationViewModel qualificationVM = new QualificationViewModel
         {
             Descriptions = qualification.UserQualifications
-                            .OrderBy(x => x.Position)   
-                            .Select(x => x.Description)     
-                            .Distinct()                     
+                            .OrderBy(x => x.Position)
+                            .Select(x => x.Description)
+                            .Distinct()
                             .ToList(),
             Period = qualification.Period,
             TotalGrades = qualification.TotalGrades,
@@ -100,10 +128,9 @@ public class TeamController : Controller
         return View(qualificationVM);
     }
 
-    [HttpGet("{teamId}/qualifications/save")]
+    [HttpGet("{teamId}/qualifications/save", Name = "SaveQualifications")]
     public async Task<IActionResult> SaveQualifications(Guid teamId)
     {
-
         await GetTeam(teamId);
         ViewData["HeaderTitle"] = $"Save Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
@@ -124,68 +151,13 @@ public class TeamController : Controller
         return View(qualification);
     }
 
-    [HttpPost("qualifications/save")]
-    public async Task<IActionResult> SaveQualifications(SaveQualificationsViewModel qualification)
-    {
-        if (ModelState.IsValid)
-        {
-            var newQualification = new SaveQualification
-            {
-                MaximumGrade = qualification.MaximumGrade,
-                MinimumGrade = qualification.MinimumGrade,
-                PassingGrade = qualification.PassingGrade,
-                TotalGrades = qualification.TotalGrades,
-                Period = qualification.Period,
-                TeamId = qualification.TeamId,
-                UserQualifications = qualification.UserQualifications
-                .SelectMany(uq => uq.Grades.Select((grade, gIndex) => new SaveUserQualification
-                {
-                    UserId = uq.UserId,
-                    Grade = grade,
-                    Position = uq.Positions.Count > gIndex ? uq.Positions[gIndex] : 0,
-                    Description = qualification.Descriptions.Count > gIndex ? qualification.Descriptions[gIndex] : string.Empty,
-                    HasValue = true
-                })).ToList()
-            };
-
-            await _qualificationService.SaveQualifications(newQualification);
-            return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
-        }
-        return View(qualification);
-    }
-
     [HttpGet("{teamId}/description")]
     public IActionResult Description(Guid teamId)
     {
         ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-        return View(model:_currentTeam.Description);
-    }
-
-    [HttpGet("{teamId}/forms")]
-    public async Task<IActionResult> Forms(Guid teamId)
-    {
-        await GetTeam(teamId);
-
-        ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-
-        var forms = new List<FormViewModel>();
-
-        foreach (var item in _currentTeam.Forms)
-        {
-            var newform = new FormViewModel
-            {
-                Id = item.Id,
-                Title= item.Title,
-                Deadline = item.Deadline,
-                TeamId = item.TeamId
-            };
-            forms.Add(newform);
-        }
-        return View(forms);
+        return View(model: _currentTeam.Description);
     }
 
     [HttpGet("{teamId}/announcements")]
@@ -221,20 +193,22 @@ public class TeamController : Controller
         return View();
     }
 
-    [HttpPost("create")]
-    public async Task<IActionResult> Create(CreateTeamViewModel createTeam)
+    [HttpGet("{teamId}/update")]
+    public async Task<IActionResult> UpdateTeam(Guid teamId)
     {
-        ViewData["HeaderTitle"] = "Create Team";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team");
+        ViewData["HeaderTitle"] = $"Update: {_currentTeam.Name}";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
+        var team = await _teamService.GetTeamById(teamId);
 
-        await _teamService.CreateTeam(createTeam);
-
-        if (ModelState.IsValid)
+        var updateTeam = new UpdateTeamViewModel
         {
-            return RedirectToAction("Teams", "Workspace");
-        }
+            TeamId = team.TeamId,
+            Name = team.Name,
+            Description = team.Description,
+            Members = team.Members
+        };
 
-        return View(createTeam);
+        return View(updateTeam);
     }
 
     [HttpGet("{teamId}/announcements/create")]
@@ -252,6 +226,51 @@ public class TeamController : Controller
         return View(newAnnouncement);
     }
 
+    // POST Method
+    [HttpPost("qualifications/save")]
+    public async Task<IActionResult> SaveQualifications(SaveQualificationsViewModel qualification)
+    {
+        if (ModelState.IsValid)
+        {
+            var newQualification = new SaveQualification
+            {
+                MaximumGrade = qualification.MaximumGrade,
+                MinimumGrade = qualification.MinimumGrade,
+                PassingGrade = qualification.PassingGrade,
+                TotalGrades = qualification.TotalGrades,
+                Period = qualification.Period,
+                TeamId = qualification.TeamId,
+                UserQualifications = qualification.UserQualifications
+                .SelectMany(uq => uq.Grades.Select((grade, gIndex) => new SaveUserQualification
+                {
+                    UserId = uq.UserId,
+                    Grade = grade,
+                    Description = qualification.Descriptions.Count > gIndex ? qualification.Descriptions[gIndex] : string.Empty
+                })).ToList()
+            };
+
+            await _qualificationService.SaveQualifications(newQualification);
+            return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
+        }
+        return View(qualification);
+    }
+
+    [HttpPost("create")]
+    public async Task<IActionResult> Create(CreateTeamViewModel createTeam)
+    {
+        ViewData["HeaderTitle"] = "Create Team";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team");
+
+        await _teamService.CreateTeam(createTeam);
+
+        if (ModelState.IsValid)
+        {
+            return RedirectToAction("Teams", "Workspace");
+        }
+
+        return View(createTeam);
+    }
+
     [HttpPost("announcements/create")]
     public async Task<IActionResult> CreateAnnouncement(CreateAnnouncementViewModel createAnnouncement)
     {
@@ -263,24 +282,6 @@ public class TeamController : Controller
         }
 
         return View(createAnnouncement);
-    }
-
-    [HttpGet("{teamId}/update")]
-    public async Task<IActionResult> UpdateTeam(Guid teamId)
-    {
-        ViewData["HeaderTitle"] = $"Update: {_currentTeam.Name}";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-        var team = await _teamService.GetTeamById(teamId);
-
-            var updateTeam = new UpdateTeamViewModel
-            {
-                TeamId = team.TeamId,
-                Name = team.Name,
-                Description = team.Description,
-                Members = team.Members
-            };
-
-        return View(updateTeam);
     }
 
     [HttpPost("update")]
