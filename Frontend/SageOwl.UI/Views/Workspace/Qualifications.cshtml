@@ -1,24 +1,60 @@
-﻿@{
-    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
-}
+﻿<style>
+    .qualification_button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        background-color: #9C3D2A;
+        width: 200px;
+        height: 40px;
+        font-size: 18px;
+        margin: 20px 0;
+        border-radius: 10px;
+        cursor: pointer;
+    }
 
-@model QualificationViewModel
-
-<form asp-action="GetQualification" asp-controller="Qualification" method="get">
-    <select name="period">
-        @*
-        @foreach (var period in Model)
-        {
-            <option value="@period">@period</option>
+        .qualification_button:active,
+        .qualification_button:hover {
+            background-color: #7D2516;
+            color: white;
         }
-        *@
-    </select>
-    <button type="submit">Change</button>
-</form>
+</style>
 
-<div id="qualificationContainer">
-    @await Html.PartialAsync("~/Views/Shared/PartialViews/_QualificationTable.cshtml", Model)
-</div>
+<main class="workspace_qualifications_main">
+    @await Component.InvokeAsync("TeamNavigation")
+
+    <div>
+        <a class="qualification_button" asp-route="SaveQualifications"
+           asp-route-teamId="@Model.TeamId">Create Qualification</a>
+    </div>
+
+    @if (Model.QualificationKeys.Count > 0)
+    {
+        <select id="periodSelect">
+            @foreach (var option in Model.QualificationKeys)
+            {
+                <option value="@option.Key">
+                    @option.Value
+                </option>
+            }
+        </select>
+        <button type="button" onclick="search()">
+            Search
+        </button>
+    }
+
+    @if (Model.Qualifications.Count == 0)
+    {
+        <p>No Qualifications Available</p>
+    }
+    else
+    {
+        <div id="qualificationContainer">
+        </div>
+    }
+
+</main>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -30,16 +66,23 @@
             }
         });
     </script>
+
     <script>
-        document.getElementById("periodSelect").addEventListener("change", async function () {
-            const period = this.value;
-            const response = await fetch(`/Workspace/GetQualification?period=${encodeURIComponent(period)}`);
-            if (!response.ok) {
-                document.getElementById("qualificationContainer").innerHTML = "<p>Error loading qualifications.</p>";
-                return;
-            }
+        async function loadProduct(id){
+
+            const response = await fetch(`/qualification/QualificationPartial?id=${id}`);
+
             const html = await response.text();
+
             document.getElementById("qualificationContainer").innerHTML = html;
-        });
+        }
+
+        function search(){
+
+            const id =
+                document.getElementById("periodSelect").value;
+
+            loadProduct(id);
+        }
     </script>
 }

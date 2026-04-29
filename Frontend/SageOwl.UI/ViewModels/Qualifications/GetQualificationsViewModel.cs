@@ -3,7 +3,6 @@
 public class GetQualificationsViewModel
 {
     public Dictionary<Guid, string> QualificationKeys { get; set; } = [];
-    public List<string> PeriodList { get; set; } = new();
     public Guid TeamId { get; set; }
     public List<QualificationViewModel> Qualifications { get; set; } = new();
 }

@@ -36,7 +36,7 @@
            asp-route-teamId="@Model.TeamId">Create Qualification</a>
     </div>
 
-    @if(Model.PeriodList.Count > 0)
+    @if(Model.QualificationKeys.Count > 0)
     {
         <select id="periodSelect">
             @foreach (var option in Model.QualificationKeys)
@@ -76,7 +76,7 @@
     <script>
         async function loadProduct(id){
 
-            const response = await fetch(`/Team/QualificationPartial?id=${id}`);
+            const response = await fetch(`/qualification/QualificationPartial?id=${id}`);
 
             const html = await response.text();
 

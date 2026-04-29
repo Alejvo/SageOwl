@@ -93,7 +93,7 @@
 </style>
 
 <main class="save_qualification_main">
-    <form asp-action="SaveQualifications" method="post" class="save_qualification_form">
+    <form asp-action="SaveQualifications" asp-controller="Qualification" method="post" class="save_qualification_form">
         <div class="save_qualification_options_list">
             <div class="save_qualification_options">
                 <label for="TotalGrades">Total Grades</label>
@@ -162,7 +162,7 @@
 
         </div>
 
-        <button type="submit" class="save_qualification_button">Guardar</button>
+        <button type="submit" class="save_qualification_button">Save</button>
     </form>
 
 </main>

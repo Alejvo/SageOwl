@@ -106,7 +106,6 @@ public class TeamController : Controller
         var qualificationList = new GetQualificationsViewModel
         {
             TeamId = _currentTeam.TeamId,
-            PeriodList = _currentQualifications.Qualifications.Select(x => x.Period).ToList(),
             Qualifications = _currentQualifications.Qualifications.Select(q => new QualificationViewModel
             {
                 QualificationId = q.Id,
@@ -130,37 +129,6 @@ public class TeamController : Controller
         }
 
         return View(qualificationList);
-    }
-
-    [HttpGet]
-    [Route("QualificationPartial")]
-    public IActionResult QualificationPartial(Guid id)
-    {
-        foreach (var item in _currentQualifications.Qualifications)
-        {
-            Console.WriteLine($"Id:{id} --- {item.Id}");
-        }
-        var qualification = _currentQualifications.Qualifications.FirstOrDefault();
-
-        var qualificationVM = new QualificationViewModel
-        {
-                QualificationId = qualification.Id,
-                Period = qualification.Period,
-                TotalGrades = qualification.TotalGrades,
-                Descriptions = qualification.UserQualifications.Select(x => x.Description).Distinct().ToList(),
-                UserQualifications = qualification.UserQualifications
-                .GroupBy(uq => new { uq.UserId, uq.Name })
-                .Select(g => new UserQualificationViewModel
-                {
-                    UserId = g.Key.UserId,
-                    Name = g.Key.Name,
-                    Grades = g.Select(x => x.Grade).ToList(),
-                }).ToList()
-        };
-        return PartialView(
-            "~/Views/Shared/PartialViews/Qualifications/_QualificationTable.cshtml", 
-            qualificationVM
-        );
     }
 
     [HttpGet("{teamId}/qualifications/save", Name = "SaveQualifications")]
@@ -261,34 +229,6 @@ public class TeamController : Controller
     }
 
     // POST Method
-    [HttpPost("qualifications/save")]
-    public async Task<IActionResult> SaveQualifications(SaveQualificationsViewModel qualification)
-    {
-        if (ModelState.IsValid)
-        {
-            var newQualification = new SaveQualification
-            {
-                MaximumGrade = qualification.MaximumGrade,
-                MinimumGrade = qualification.MinimumGrade,
-                PassingGrade = qualification.PassingGrade,
-                TotalGrades = qualification.TotalGrades,
-                Period = qualification.Period,
-                TeamId = qualification.TeamId,
-                UserQualifications = qualification.UserQualifications
-                .SelectMany(uq => uq.Grades.Select((grade, gIndex) => new SaveUserQualification
-                {
-                    UserId = uq.UserId,
-                    Grade = grade,
-                    Description = qualification.Descriptions.Count > gIndex ? qualification.Descriptions[gIndex] : string.Empty
-                })).ToList()
-            };
-
-            await _qualificationService.SaveQualifications(newQualification);
-            return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
-        }
-        return View(qualification);
-    }
-
     [HttpPost("create")]
     public async Task<IActionResult> Create(CreateTeamViewModel createTeam)
     {

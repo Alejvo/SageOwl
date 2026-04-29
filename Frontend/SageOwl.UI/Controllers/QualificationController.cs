@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SageOwl.UI.Attributes;
 using SageOwl.UI.Models;
 using SageOwl.UI.Models.Qualifications;
 using SageOwl.UI.Services.Interfaces;
@@ -6,15 +7,25 @@ using SageOwl.UI.ViewModels.Qualifications;
 
 namespace SageOwl.UI.Controllers;
 
+[Route("[controller]")]
+[AuthorizeToken]
 public class QualificationController : Controller
 {
     private readonly IQualificationService _qualificationService;
     private readonly CurrentUser _currentUser;
+    private readonly CurrentQualifications _currentQualifications;
+    private readonly CurrentTeam _currentTeam;
 
-    public QualificationController(IQualificationService qualificationService, CurrentUser currentUser) 
+    public QualificationController(
+        IQualificationService qualificationService, 
+        CurrentUser currentUser,
+        CurrentQualifications currentQualifications,
+        CurrentTeam currentTeam) 
     { 
         _qualificationService = qualificationService;
         _currentUser = currentUser;
+        _currentQualifications = currentQualifications;
+        _currentTeam = currentTeam;
     }
 
     // GET Methods
@@ -45,14 +56,59 @@ public class QualificationController : Controller
         return PartialView("~/Views/Shared/PartialViews/_QualificationTable.cshtml", qualificationVM);
     }
 
+    [HttpGet]
+    [Route("QualificationPartial")]
+    public IActionResult QualificationPartial(Guid id)
+    {
+        var qualification = _currentQualifications.Qualifications.FirstOrDefault();
+
+        var qualificationVM = new QualificationViewModel
+        {
+            QualificationId = qualification.Id,
+            Period = qualification.Period,
+            TotalGrades = qualification.TotalGrades,
+            Descriptions = qualification.UserQualifications.Select(x => x.Description).Distinct().ToList(),
+            UserQualifications = qualification.UserQualifications
+                .GroupBy(uq => new { uq.UserId, uq.Name })
+                .Select(g => new UserQualificationViewModel
+                {
+                    UserId = g.Key.UserId,
+                    Name = g.Key.Name,
+                    Grades = g.Select(x => x.Grade).ToList(),
+                }).ToList()
+        };
+        return PartialView(
+            "~/Views/Shared/PartialViews/Qualifications/_QualificationTable.cshtml",
+            qualificationVM
+        );
+    }
+
     //POST Methods
-    public async Task<IActionResult> SaveQualifications(SaveQualification qualification)
+    [HttpPost("qualifications/save")]
+    public async Task<IActionResult> SaveQualifications(SaveQualificationsViewModel qualification)
     {
         if (ModelState.IsValid)
         {
-            await _qualificationService.SaveQualifications(qualification);
-        }
+            var newQualification = new SaveQualification
+            {
+                MaximumGrade = qualification.MaximumGrade,
+                MinimumGrade = qualification.MinimumGrade,
+                PassingGrade = qualification.PassingGrade,
+                TotalGrades = qualification.TotalGrades,
+                Period = qualification.Period,
+                TeamId = qualification.TeamId,
+                UserQualifications = qualification.UserQualifications
+                .SelectMany(uq => uq.Grades.Select((grade, gIndex) => new SaveUserQualification
+                {
+                    UserId = uq.UserId,
+                    Grade = grade,
+                    Description = qualification.Descriptions.Count > gIndex ? qualification.Descriptions[gIndex] : string.Empty
+                })).ToList()
+            };
 
+            await _qualificationService.SaveQualifications(newQualification);
+            return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
+        }
         return View(qualification);
     }
 
