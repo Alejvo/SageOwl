@@ -125,15 +125,13 @@ public class WorkspaceController : Controller
             Descriptions = qualification.UserQualifications.Select(x => x.Description).ToList(),
             Period = qualification.Period,
             TotalGrades = qualification.TotalGrades,
-            PeriodList = qualifications.Select(x => x.Period).ToList(),
             UserQualifications = qualification.UserQualifications
                 .GroupBy(uq => new { uq.UserId, uq.Name })
                 .Select(g => new UserQualificationViewModel
                 {
                     UserId = g.Key.UserId,
                     Name = g.Key.Name,
-                    Grades = g.OrderBy(x => x.Position).Select(x => x.Grade).ToList(),
-                    Positions = g.OrderBy(x => x.Position).Select(x => x.Position).ToList()
+                    Grades = g.Select(x => x.Grade).ToList(),
                 }).ToList()
         };
             

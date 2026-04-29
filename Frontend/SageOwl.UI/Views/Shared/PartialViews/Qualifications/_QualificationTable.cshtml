@@ -1,12 +1,5 @@
 ﻿@model QualificationViewModel
 
-
-@if (Model?.UserQualifications == null || !Model.UserQualifications.Any())
-{
-    <p>No qualifications available</p>
-}
-else
-{
     <table class="qualification_table">
         <thead>
             <tr>
@@ -30,5 +23,3 @@ else
             }
         </tbody>
     </table>
-
-}

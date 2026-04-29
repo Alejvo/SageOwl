@@ -6,10 +6,12 @@
 
 <form asp-action="GetQualification" asp-controller="Qualification" method="get">
     <select name="period">
-        @foreach (var period in Model.PeriodList)
+        @*
+        @foreach (var period in Model)
         {
             <option value="@period">@period</option>
         }
+        *@
     </select>
     <button type="submit">Change</button>
 </form>

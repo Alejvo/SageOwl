@@ -26,14 +26,21 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(opts =>opts.UseSqlServer(configuration.GetConnectionString("Default")));
+
         services.AddSingleton<IConnectionMultiplexer>(sp =>
         {
-            var configuration = sp.GetRequiredService<IConfiguration>();
             var connectionString = configuration["Redis:ConnectionString"];
 
-            return ConnectionMultiplexer.Connect(
-                connectionString + ",abortConnect=false"
-            );
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new InvalidOperationException("Redis connection string not found.");
+
+            var redisConfiguration = ConfigurationOptions.Parse(connectionString);
+
+            redisConfiguration.ConnectTimeout = 1000;
+            redisConfiguration.SyncTimeout = 1000;
+            redisConfiguration.AbortOnConnectFail = false;
+
+            return ConnectionMultiplexer.Connect(redisConfiguration);
         });
 
         services.AddScoped<IUserRepository, UserRepository>();

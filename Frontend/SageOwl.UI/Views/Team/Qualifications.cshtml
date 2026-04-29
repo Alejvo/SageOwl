@@ -2,28 +2,65 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-@model QualificationViewModel
+@model GetQualificationsViewModel
+
+<style>
+    .qualification_button {
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:white;
+        text-decoration:none;
+        background-color: #9C3D2A;
+        width:200px;
+        height:40px;
+        font-size:18px;
+        margin:20px 0;
+        border-radius:10px;
+        cursor:pointer;
+    }
+
+    .qualification_button:active,
+    .qualification_button:hover
+    {
+        background-color: #7D2516;
+        color:white;
+    }
+</style>
 
 <main class="team_qualifications_main">
     @await Component.InvokeAsync("TeamNavigation")
 
     <div>
-        <a asp-route="SaveQualifications"
+        <a  class="qualification_button" asp-route="SaveQualifications"
            asp-route-teamId="@Model.TeamId">Create Qualification</a>
     </div>
 
-    @if(Model.UserQualifications == null)
+    @if(Model.PeriodList.Count > 0)
+    {
+        <select id="periodSelect">
+            @foreach (var option in Model.QualificationKeys)
+            {
+                <option value="@option.Key">
+                    @option.Value
+                 </option>
+            }
+        </select>
+        <button type="button" onclick="search()">
+            Search
+        </button>
+    }
+
+    @if(Model.Qualifications.Count == 0)
     {
         <p>No Qualifications Available</p>
     }
     else{
-    <div id="qualificationContainer">
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_QualificationTable.cshtml", Model)
+    <div id="qualificationContainer" >
     </div>
     }
 
 </main>
-
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -35,16 +72,23 @@
             }
         });
     </script>
+
     <script>
-        document.getElementById("periodSelect").addEventListener("change", async function () {
-            const period = this.value;
-            const response = await fetch(`/Workspace/GetQualification?period=${encodeURIComponent(period)}`);
-            if (!response.ok) {
-                document.getElementById("qualificationContainer").innerHTML = "<p>Error loading qualifications.</p>";
-                return;
-            }
+        async function loadProduct(id){
+
+            const response = await fetch(`/Team/QualificationPartial?id=${id}`);
+
             const html = await response.text();
+
             document.getElementById("qualificationContainer").innerHTML = html;
-        });
+        }
+
+        function search(){
+
+            const id =
+                document.getElementById("periodSelect").value;
+
+            loadProduct(id);
+        }
     </script>
 }

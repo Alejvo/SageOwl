@@ -20,6 +20,7 @@ public class TeamController : Controller
     private readonly IAnnouncementService _announcementService;
     private readonly IQualificationService _qualificationService;
     private readonly IFormService _formService;
+    private CurrentQualifications _currentQualifications;
 
     public TeamController(
         ITeamService teamService,
@@ -27,7 +28,8 @@ public class TeamController : Controller
         IAnnouncementService announcementService,
         CurrentUser currentUser,
         IQualificationService qualificationService,
-        IFormService formService)
+        IFormService formService,
+        CurrentQualifications currentQualifications)
     {
         _teamService = teamService;
         _currentTeam = currentTeam;
@@ -35,6 +37,7 @@ public class TeamController : Controller
         _currentUser = currentUser;
         _qualificationService = qualificationService;
         _formService = formService;
+        _currentQualifications = currentQualifications;
     }
 
     // GET Method
@@ -66,6 +69,7 @@ public class TeamController : Controller
         ViewData["HeaderUrl"] = Url.Action("Teams", "Workspace");
         return View(teamMainVM);
     }
+
     [HttpGet("{teamId}/forms")]
     public async Task<IActionResult> Forms(Guid teamId)
     {
@@ -97,41 +101,71 @@ public class TeamController : Controller
         ViewData["HeaderTitle"] = $"{_currentTeam.Name} Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
-        var qualifications = await _qualificationService.GetQualificationByTeamId(_currentTeam.TeamId);
+        _currentQualifications.Qualifications = await _qualificationService.GetQualificationByTeamId(_currentTeam.TeamId);
 
-        var qualification = qualifications.FirstOrDefault();
-
-        if (qualification == null)
-            return View(new QualificationViewModel { TeamId = _currentTeam.TeamId});
-
-        QualificationViewModel qualificationVM = new QualificationViewModel
+        var qualificationList = new GetQualificationsViewModel
         {
-            Descriptions = qualification.UserQualifications
-                            .OrderBy(x => x.Position)
-                            .Select(x => x.Description)
-                            .Distinct()
-                            .ToList(),
-            Period = qualification.Period,
-            TotalGrades = qualification.TotalGrades,
-            PeriodList = qualifications.Select(x => x.Period).ToList(),
-            UserQualifications = qualification.UserQualifications
+            TeamId = _currentTeam.TeamId,
+            PeriodList = _currentQualifications.Qualifications.Select(x => x.Period).ToList(),
+            Qualifications = _currentQualifications.Qualifications.Select(q => new QualificationViewModel
+            {
+                QualificationId = q.Id,
+                Period = q.Period,
+                TotalGrades = q.TotalGrades,
+                Descriptions = q.UserQualifications.Select(x => x.Description).Distinct().ToList(),
+                UserQualifications = q.UserQualifications
                 .GroupBy(uq => new { uq.UserId, uq.Name })
                 .Select(g => new UserQualificationViewModel
                 {
                     UserId = g.Key.UserId,
                     Name = g.Key.Name,
-                    Grades = g.OrderBy(x => x.Position).Select(x => x.Grade).ToList(),
-                    Positions = g.OrderBy(x => x.Position).Select(x => x.Position).ToList()
+                    Grades = g.Select(x => x.Grade).ToList(),
                 }).ToList()
+            }).ToList()
         };
 
-        return View(qualificationVM);
+        foreach (var item in _currentQualifications.Qualifications)
+        {
+            qualificationList.QualificationKeys.Add(item.Id,item.Period);
+        }
+
+        return View(qualificationList);
+    }
+
+    [HttpGet]
+    [Route("QualificationPartial")]
+    public IActionResult QualificationPartial(Guid id)
+    {
+        foreach (var item in _currentQualifications.Qualifications)
+        {
+            Console.WriteLine($"Id:{id} --- {item.Id}");
+        }
+        var qualification = _currentQualifications.Qualifications.FirstOrDefault();
+
+        var qualificationVM = new QualificationViewModel
+        {
+                QualificationId = qualification.Id,
+                Period = qualification.Period,
+                TotalGrades = qualification.TotalGrades,
+                Descriptions = qualification.UserQualifications.Select(x => x.Description).Distinct().ToList(),
+                UserQualifications = qualification.UserQualifications
+                .GroupBy(uq => new { uq.UserId, uq.Name })
+                .Select(g => new UserQualificationViewModel
+                {
+                    UserId = g.Key.UserId,
+                    Name = g.Key.Name,
+                    Grades = g.Select(x => x.Grade).ToList(),
+                }).ToList()
+        };
+        return PartialView(
+            "~/Views/Shared/PartialViews/Qualifications/_QualificationTable.cshtml", 
+            qualificationVM
+        );
     }
 
     [HttpGet("{teamId}/qualifications/save", Name = "SaveQualifications")]
-    public async Task<IActionResult> SaveQualifications(Guid teamId)
+    public IActionResult SaveQualifications(Guid teamId)
     {
-        await GetTeam(teamId);
         ViewData["HeaderTitle"] = $"Save Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
