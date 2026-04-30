@@ -46,4 +46,14 @@ public class AccountController : Controller
         }
         return View(register);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("AccessToken");
+        Response.Cookies.Delete("RefreshToken");
+
+        return RedirectToAction("Index", "Home");
+    }
 }

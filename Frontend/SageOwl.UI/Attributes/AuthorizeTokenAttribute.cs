@@ -12,51 +12,59 @@ public class AuthorizeTokenAttribute : ActionFilterAttribute
         var httpContext = context.HttpContext;
 
         var accessToken = httpContext.Items["AccessToken"] as string
-                          ?? httpContext.Request.Cookies["AccessToken"];
+            ?? httpContext.Request.Cookies["AccessToken"];
+
         var refreshToken = httpContext.Items["RefreshToken"] as string
-                           ?? httpContext.Request.Cookies["RefreshToken"];
+            ?? httpContext.Request.Cookies["RefreshToken"];
 
-        if (string.IsNullOrEmpty(accessToken) && string.IsNullOrEmpty(refreshToken))
+        if (string.IsNullOrEmpty(accessToken))
         {
-            RedirectToLogin(context);
-            return;
-        }
-
-        if (!string.IsNullOrEmpty(accessToken))
-        {
-            if (IsTokenValid(accessToken))
+            if (string.IsNullOrEmpty(refreshToken))
             {
-                base.OnActionExecuting(context);
+                RedirectToLogin(context);
                 return;
             }
 
-            RedirectToLogin(context);
+            base.OnActionExecuting(context);
+            return;
+        }
+
+        if (IsTokenExpired(accessToken))
+        {
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                RedirectToLogin(context);
+                return;
+            }
+
+            base.OnActionExecuting(context);
             return;
         }
 
         base.OnActionExecuting(context);
     }
 
-    private static bool IsTokenValid(string token)
+    private static bool IsTokenExpired(string token)
     {
         try
         {
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(token);
-            return jwt.ValidTo > DateTime.UtcNow;
+
+            return jwt.ValidTo <= DateTime.UtcNow;
         }
         catch
         {
-            return false;
+            return true;
         }
     }
-
     private static void RedirectToLogin(ActionExecutingContext context)
     {
-        context.Result = new RedirectToRouteResult(new RouteValueDictionary
-        {
-            { "Controller", "Account" },
-            { "Action", "Login" }
-        });
+        context.Result = new RedirectToRouteResult(
+            new RouteValueDictionary
+            {
+                { "controller", "Account" },
+                { "action", "Login" }
+            });
     }
 }
