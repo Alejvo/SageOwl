@@ -60,7 +60,7 @@ public class QualificationController : Controller
     [Route("QualificationPartial")]
     public IActionResult QualificationPartial(Guid id)
     {
-        var qualification = _currentQualifications.Qualifications.FirstOrDefault();
+        var qualification = _currentQualifications.Qualifications.FirstOrDefault(q => q.Id == id);
 
         var qualificationVM = new QualificationViewModel
         {

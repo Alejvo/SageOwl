@@ -14,6 +14,6 @@
     </div>
     <div class="sideBar_menu_bottom">
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-gear", Text = "Settings", Url = Url.Action("Index", "Workspace") })
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-right-from-bracket", Text = "Log Out", Url = Url.Action("Index", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-right-from-bracket", Text = "Log Out", Url = Url.Action("Index", "Home") })
     </div>
 </div>

@@ -1,4 +1,11 @@
-﻿<style>
+﻿@model List<QualificationViewModel>
+
+@{
+    ViewData["Title"] = "Workspace";
+    Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
+}
+
+<style>
     .qualification_button {
         display: flex;
         align-items: center;
@@ -19,32 +26,32 @@
             background-color: #7D2516;
             color: white;
         }
+
+    #periodSelect {
+       width:200px;
+    }
 </style>
 
 <main class="workspace_qualifications_main">
-    @await Component.InvokeAsync("TeamNavigation")
-
-    <div>
-        <a class="qualification_button" asp-route="SaveQualifications"
-           asp-route-teamId="@Model.TeamId">Create Qualification</a>
-    </div>
-
-    @if (Model.QualificationKeys.Count > 0)
+    @if (Model.Count > 0)
     {
-        <select id="periodSelect">
-            @foreach (var option in Model.QualificationKeys)
-            {
-                <option value="@option.Key">
-                    @option.Value
-                </option>
-            }
-        </select>
-        <button type="button" onclick="search()">
-            Search
-        </button>
+        <div class="search_container">
+            <select id="periodSelect">
+                @foreach (var q in Model)
+                {
+                    <option value="@q.QualificationId">
+                        @q.Period
+                    </option>
+                }
+            </select>
+            <button type="button" onclick="search()">
+                Search
+            </button>
+        </div>
+
     }
 
-    @if (Model.Qualifications.Count == 0)
+    @if (Model.Count == 0)
     {
         <p>No Qualifications Available</p>
     }
@@ -53,7 +60,6 @@
         <div id="qualificationContainer">
         </div>
     }
-
 </main>
 
 @section Scripts {

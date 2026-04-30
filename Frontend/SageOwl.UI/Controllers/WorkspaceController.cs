@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Attributes;
 using SageOwl.UI.Models;
+using SageOwl.UI.Models.Qualifications;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
@@ -18,14 +19,22 @@ public class WorkspaceController : Controller
     private readonly IFormService _formService;
     private readonly IQualificationService _qualificationService;
     private readonly CurrentUser _currentUser;
+    private readonly CurrentQualifications _currentQualifications;
 
-    public WorkspaceController(ITeamService teamService, IAnnouncementService announcementService,IFormService formService, IQualificationService qualificationService,CurrentUser currentUser)
+    public WorkspaceController(
+        ITeamService teamService, 
+        IAnnouncementService announcementService,
+        IFormService formService, 
+        IQualificationService qualificationService,
+        CurrentUser currentUser,
+        CurrentQualifications currentQualifications)
     {
         _teamService = teamService;
         _announcementService = announcementService;
         _formService = formService;
         _qualificationService = qualificationService;
         _currentUser = currentUser;
+        _currentQualifications = currentQualifications;
     }
 
     public async Task<IActionResult> Index()
@@ -116,26 +125,27 @@ public class WorkspaceController : Controller
         ViewData["HeaderTitle"] = "My Qualifications";
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
 
-        var qualifications = await _qualificationService.GetQualificationByUserId(_currentUser.Id);
+        var qualificationX = await _qualificationService.GetQualificationByUserId(_currentUser.Id);
 
-        var qualification = qualifications.FirstOrDefault();
+        _currentQualifications.Qualifications = qualificationX;
 
-        QualificationViewModel qualificationVM = new QualificationViewModel
+        var qualificationList = _currentQualifications.Qualifications.Select(q => new QualificationViewModel
         {
-            Descriptions = qualification.UserQualifications.Select(x => x.Description).ToList(),
-            Period = qualification.Period,
-            TotalGrades = qualification.TotalGrades,
-            UserQualifications = qualification.UserQualifications
+            QualificationId = q.Id,
+            Period = q.Period,
+            TotalGrades = q.TotalGrades,
+            Descriptions = q.UserQualifications.Select(x => x.Description).Distinct().ToList(),
+            UserQualifications = [.. q.UserQualifications
                 .GroupBy(uq => new { uq.UserId, uq.Name })
                 .Select(g => new UserQualificationViewModel
                 {
                     UserId = g.Key.UserId,
                     Name = g.Key.Name,
                     Grades = g.Select(x => x.Grade).ToList(),
-                }).ToList()
-        };
-            
-        return View(qualificationVM);
+                })]
+        }).ToList();
+
+        return View(qualificationList);
     }
 
 }

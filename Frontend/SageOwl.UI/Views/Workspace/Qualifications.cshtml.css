@@ -1,1 +1,25 @@
-﻿
+﻿.workspace_qualifications_main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 20px;
+    align-items: stretch;
+    gap:20px;
+}
+
+.search_container{
+    display:flex;
+    flex-direction:row;
+    gap:10px;
+}
+
+.search_container button{
+    background-color:peru;
+    border:none;
+    height:35px;
+    width:100px;
+    color:white;
+    font-size:18px;
+    border-radius:5px;
+    font-weight:bold;
+}

@@ -1,5 +1,10 @@
 ﻿@model QualificationViewModel
-
+@if (Model.UserQualifications.Count == 0)
+{
+    <p>No Qualifications Available</p>
+}
+else
+{
     <table class="qualification_table">
         <thead>
             <tr>
@@ -11,6 +16,7 @@
             </tr>
         </thead>
         <tbody>
+
             @for (int i = 0; i < Model.UserQualifications.Count; i++)
             {
                 <tr>
@@ -22,4 +28,7 @@
                 </tr>
             }
         </tbody>
+
     </table>
+}
+
