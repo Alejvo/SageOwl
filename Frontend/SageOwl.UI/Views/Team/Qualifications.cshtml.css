@@ -5,3 +5,31 @@
     border-radius: 20px;
     align-items: stretch;
 }
+
+.search_container {
+    margin-bottom:20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+    .search_container button {
+        background-color: peru;
+        border: none;
+        height: 35px;
+        width: 100px;
+        color: white;
+        font-size: 18px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+.qualification_button_delete {
+    border: none;
+    height: 35px;
+    background-color: #E83A15;
+    width:100px;
+    color:white;
+    border-radius:5px;
+    font-size:18px;
+}

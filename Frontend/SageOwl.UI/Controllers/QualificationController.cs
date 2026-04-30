@@ -62,6 +62,9 @@ public class QualificationController : Controller
     {
         var qualification = _currentQualifications.Qualifications.FirstOrDefault(q => q.Id == id);
 
+        if(qualification != null)
+            _currentQualifications.CurrentId = qualification.Id;
+
         var qualificationVM = new QualificationViewModel
         {
             QualificationId = qualification.Id,
@@ -112,13 +115,18 @@ public class QualificationController : Controller
         return View(qualification);
     }
 
-    public async Task<IActionResult> DeleteQualification(Guid qualificationId)
+    [HttpPost]
+    public async Task<IActionResult> DeleteQualification()
     {
-        if (ModelState.IsValid)
-        {
-            await _qualificationService.DeleteQualification(qualificationId);
-        }
+        var qualification = _currentQualifications.Qualifications
+            .FirstOrDefault(x => x.Id == _currentQualifications.CurrentId);
 
-        return View();
+        if(qualification != null)
+            _currentQualifications.Qualifications.Remove(qualification);
+
+        await _qualificationService.DeleteQualification(_currentQualifications.CurrentId);
+
+        return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
+
     }
 }

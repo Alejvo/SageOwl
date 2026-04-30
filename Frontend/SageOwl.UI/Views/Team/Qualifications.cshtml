@@ -1,4 +1,5 @@
 ﻿@{
+    ViewData["Title"] = "Qualifications";
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
@@ -26,6 +27,10 @@
         background-color: #7D2516;
         color:white;
     }
+
+    #periodSelect {
+        width: 200px;
+    }
 </style>
 
 <main class="team_qualifications_main">
@@ -38,17 +43,19 @@
 
     @if(Model.QualificationKeys.Count > 0)
     {
-        <select id="periodSelect">
-            @foreach (var option in Model.QualificationKeys)
-            {
-                <option value="@option.Key">
-                    @option.Value
-                 </option>
-            }
-        </select>
-        <button type="button" onclick="search()">
-            Search
-        </button>
+        <div class="search_container">
+            <select id="periodSelect">
+                @foreach (var option in Model.QualificationKeys)
+                {
+                    <option value="@option.Key">
+                        @option.Value
+                    </option>
+                }
+            </select>
+            <button type="button" onclick="search()">
+                Search
+            </button>
+        </div>
     }
 
     @if(Model.Qualifications.Count == 0)
@@ -56,8 +63,19 @@
         <p>No Qualifications Available</p>
     }
     else{
-    <div id="qualificationContainer" >
-    </div>
+        <div id="qualificationContainer" >
+        </div>
+        <form 
+            asp-action="DeleteQualification" 
+            asp-controller="Qualification" 
+            method="post">
+
+            @Html.AntiForgeryToken()
+            <button type="submit" class="qualification_button_delete">
+                Delete
+            </button>
+        </form>
+
     }
 
 </main>
