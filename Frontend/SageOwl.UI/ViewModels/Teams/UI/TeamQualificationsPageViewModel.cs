@@ -1,6 +1,8 @@
-﻿namespace SageOwl.UI.ViewModels.Qualifications;
+﻿using SageOwl.UI.ViewModels.Qualifications;
 
-public class GetQualificationsViewModel
+namespace SageOwl.UI.ViewModels.Teams.UI;
+
+public class TeamQualificationsPageViewModel
 {
     public Dictionary<Guid, string> QualificationKeys { get; set; } = [];
     public Guid TeamId { get; set; }

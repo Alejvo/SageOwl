@@ -1,15 +1,16 @@
-﻿@{
+﻿@using SageOwl.UI.ViewModels.Teams.UI
+@{
     ViewBag.Title = "Team Forms";
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-@model List<FormViewModel>
+@model TeamFormsPageViewModel
 
 <main class="team_forms_main">
-    @await Component.InvokeAsync("TeamNavigation")
+    @await Component.InvokeAsync("TeamNavigation", new{ teamId = Model.TeamId })
     <div class="team_forms_main_container">
 
-        @if (Model.Count == 0)
+        @if (Model.Forms.Count == 0)
         {
             <div class="team_forms_img">
                 <img src="~/images/team_work.svg" alt="Team_Work" width="400" height="400" />
@@ -18,7 +19,7 @@
         }
         else
         {
-            @foreach (var form in Model)
+            @foreach (var form in Model.Forms)
             {
                 @await Html.PartialAsync("~/Views/Shared/PartialViews/_FormCard.cshtml", form)
             }

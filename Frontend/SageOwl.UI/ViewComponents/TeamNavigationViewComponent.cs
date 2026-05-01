@@ -16,7 +16,7 @@ public class TeamNavigationViewComponent : ViewComponent
         _teamService = teamService;
     }
 
-    public async Task<IViewComponentResult> Invoke(Guid teamId)
+    public async Task<IViewComponentResult> InvokeAsync(Guid teamId)
     {
         var team = await _teamService.GetTeamById(teamId);
 

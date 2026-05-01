@@ -7,6 +7,7 @@ using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
 using SageOwl.UI.ViewModels.Qualifications;
 using SageOwl.UI.ViewModels.Teams;
+using SageOwl.UI.ViewModels.Teams.UI;
 
 namespace SageOwl.UI.Controllers;
 
@@ -53,9 +54,17 @@ public class TeamController : Controller
             SentAt = a.CreatedAt
         }).ToList();
 
-        var teamMainVM = new TeamMainViewModel
+        var teamMainVM = new MainPageViewModel
         {
-            Announcements = teamsViewModel
+            TeamId = teamId,
+            Announcements = teamsViewModel,
+            Forms = [.. forms.Select(f => new FormViewModel
+            {
+                Id = f.Id,
+                Deadline = f.Deadline,
+                TeamId = f.TeamId,
+                Title = f.Title
+            })]
         };
 
         ViewBag.TeamId = teamId;
@@ -71,21 +80,20 @@ public class TeamController : Controller
         ViewData["HeaderTitle"] = $"Forms";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
-        var forms = new List<FormViewModel>();
         var team = await _teamService.GetTeamById(teamId);
-
-        foreach (var item in team.Forms)
+        var forms = team.Forms.Select(f => new FormViewModel
         {
-            var newform = new FormViewModel
-            {
-                Id = item.Id,
-                Title = item.Title,
-                Deadline = item.Deadline,
-                TeamId = item.TeamId
-            };
-            forms.Add(newform);
-        }
-        return View(forms);
+            Id = f.Id,
+            Title = f.Title,
+            Deadline = f.Deadline,
+            TeamId = f.TeamId
+        }).ToList();
+
+        return View(new TeamFormsPageViewModel
+        {
+            Forms = forms,
+            TeamId = teamId
+        });
     }
 
     [HttpGet("{teamId}/qualifications")]
@@ -97,7 +105,7 @@ public class TeamController : Controller
         _currentQualifications.Qualifications = 
             await _qualificationService.GetQualificationByTeamId(teamId);
 
-        var qualificationList = new GetQualificationsViewModel
+        var qualificationList = new TeamQualificationsPageViewModel
         {
             TeamId = teamId,
             Qualifications = _currentQualifications.Qualifications.Select(q => new QualificationViewModel
@@ -157,7 +165,12 @@ public class TeamController : Controller
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
         var team = await _teamService.GetTeamById(teamId);
-        return View(model: team.Description);
+
+        return View(new TeamDescriptionViewModel
+        {
+            TeamId = team.TeamId,
+            Description = team.Description
+        });
     }
 
     [HttpGet("{teamId}/announcements")]
@@ -166,22 +179,21 @@ public class TeamController : Controller
         ViewBag.TeamId = teamId;
         ViewData["HeaderTitle"] = $"Announcements";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-        var announcements = new List<AnnouncementViewModel>();
-        var team = await _teamService.GetTeamById(teamId); 
 
-        foreach (var item in team.Announcements)
+        var team = await _teamService.GetTeamById(teamId);
+        var announcements = team.Announcements.Select(a => new AnnouncementViewModel
         {
-            var newAnnouncement = new AnnouncementViewModel
-            {
-                Content = item.Content,
-                PublisherName = item.Author,
-                SentAt = item.CreatedAt,
-                Title = item.Title
-            };
-            announcements.Add(newAnnouncement);
-        }
+            Content = a.Content,
+            PublisherName = a.Author,
+            SentAt = a.CreatedAt,
+            Title = a.Title
+        }).ToList();
 
-        return View(announcements);
+        return View(new TeamAnnouncementsPageViewModel
+        {
+            Announcements = announcements,
+            TeamId = teamId
+        });
     }
 
     [HttpGet("create")]

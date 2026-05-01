@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
 
-@model GetQualificationsViewModel
+@model TeamQualificationsPageViewModel
 
 <style>
     .qualification_button {
@@ -34,7 +34,7 @@
 </style>
 
 <main class="team_qualifications_main">
-    @await Component.InvokeAsync("TeamNavigation")
+    @await Component.InvokeAsync("TeamNavigation", new {teamId = Model.TeamId})
 
     <div>
         <a  class="qualification_button" asp-route="SaveQualifications"

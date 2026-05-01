@@ -2,10 +2,10 @@
     ViewBag.Title = "Team Description";
     Layout = "~/Views/Shared/Layouts/_WorkspaceLayout.cshtml";
 }
-@model string
+@model TeamDescriptionViewModel
 
         <main class="team_description_main">
-            @await Component.InvokeAsync("TeamNavigation")
+            @await Component.InvokeAsync("TeamNavigation", new { teamId = Model.TeamId})
             <p>@Model</p>
         </main>
 
