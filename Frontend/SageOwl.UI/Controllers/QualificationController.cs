@@ -14,18 +14,15 @@ public class QualificationController : Controller
     private readonly IQualificationService _qualificationService;
     private readonly CurrentUser _currentUser;
     private readonly CurrentQualifications _currentQualifications;
-    private readonly CurrentTeam _currentTeam;
 
     public QualificationController(
         IQualificationService qualificationService, 
         CurrentUser currentUser,
-        CurrentQualifications currentQualifications,
-        CurrentTeam currentTeam) 
+        CurrentQualifications currentQualifications) 
     { 
         _qualificationService = qualificationService;
         _currentUser = currentUser;
         _currentQualifications = currentQualifications;
-        _currentTeam = currentTeam;
     }
 
     // GET Methods
@@ -110,13 +107,13 @@ public class QualificationController : Controller
             };
 
             await _qualificationService.SaveQualifications(newQualification);
-            return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
+            return RedirectToAction("MainPage", "Team", new { teamId = newQualification.TeamId });
         }
         return View(qualification);
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteQualification()
+    public async Task<IActionResult> DeleteQualification(Guid teamId)
     {
         var qualification = _currentQualifications.Qualifications
             .FirstOrDefault(x => x.Id == _currentQualifications.CurrentId);
@@ -126,7 +123,7 @@ public class QualificationController : Controller
 
         await _qualificationService.DeleteQualification(_currentQualifications.CurrentId);
 
-        return RedirectToAction("MainPage", "Team", new { teamId = _currentTeam.TeamId });
+        return RedirectToAction("MainPage", "Team", new { teamId = teamId });
 
     }
 }

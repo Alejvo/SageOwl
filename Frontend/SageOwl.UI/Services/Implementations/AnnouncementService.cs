@@ -1,4 +1,4 @@
-﻿using SageOwl.UI.Models;
+﻿using SageOwl.UI.Models.Announcements;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Announcements;
 using System.Text;

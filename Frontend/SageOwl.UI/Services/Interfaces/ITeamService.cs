@@ -1,4 +1,5 @@
 ﻿using SageOwl.UI.Models;
+using SageOwl.UI.Models.Teams;
 using SageOwl.UI.ViewModels.Teams;
 using System.Net;
 

@@ -1,4 +1,4 @@
-﻿using SageOwl.UI.Models;
+﻿using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Users;
 using System.IdentityModel.Tokens.Jwt;

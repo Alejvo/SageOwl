@@ -1,31 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Models;
+using SageOwl.UI.Services.Interfaces;
+using SageOwl.UI.ViewModels.Teams;
 
 namespace SageOwl.UI.ViewComponents;
 
 public class TeamNavigationViewComponent : ViewComponent
 {
-    private readonly CurrentTeam _currentTeam;
     private readonly CurrentUser _currentUser;
+    private readonly ITeamService _teamService;
 
-    public TeamNavigationViewComponent(CurrentTeam currentTeam, CurrentUser currentUser)
+    public TeamNavigationViewComponent( CurrentUser currentUser,ITeamService teamService)
     {
-        _currentTeam = currentTeam;
         _currentUser = currentUser;
+        _teamService = teamService;
     }
 
-    public IViewComponentResult Invoke()
+    public async Task<IViewComponentResult> Invoke(Guid teamId)
     {
-        foreach (var member in _currentTeam.Members)
-        {
-            if (member.Id == _currentUser.Id)
-            {
-                if (member.Role == "Admin") _currentTeam.IsUserAdmin = true;
-                else _currentTeam.IsUserAdmin = false;
-                    break;
-            }
-        }
+        var team = await _teamService.GetTeamById(teamId);
 
-        return View(_currentTeam); 
+        var isAdmin = team.Members.Any(m =>
+            m.Id == _currentUser.Id &&
+            m.Role == "Admin");
+
+        var teamVM = new GetTeamViewModel
+        {
+            TeamId = teamId,
+            Members = team.Members,
+            Announcements = team.Announcements,
+            Description = team.Description,
+            Forms = team.Forms,
+            Name = team.Name,
+            IsAdmin = isAdmin
+        };
+
+        return View(teamVM); 
     }
 }

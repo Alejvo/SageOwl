@@ -1,4 +1,4 @@
-﻿using SageOwl.UI.Models;
+﻿using SageOwl.UI.Models.Announcements;
 using SageOwl.UI.ViewModels.Announcements;
 
 namespace SageOwl.UI.Services.Interfaces;

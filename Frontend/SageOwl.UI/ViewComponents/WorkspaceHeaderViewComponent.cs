@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Models;
+using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.UI;
 

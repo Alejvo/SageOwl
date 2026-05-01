@@ -1,4 +1,4 @@
-﻿namespace SageOwl.UI.Models;
+﻿namespace SageOwl.UI.Models.Users;
 public class User
 {
     public  Guid Id { get; set; }

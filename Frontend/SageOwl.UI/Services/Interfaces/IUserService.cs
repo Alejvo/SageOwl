@@ -1,4 +1,4 @@
-﻿using SageOwl.UI.Models;
+﻿using SageOwl.UI.Models.Users;
 using SageOwl.UI.ViewModels.Users;
 using System.Net;
 

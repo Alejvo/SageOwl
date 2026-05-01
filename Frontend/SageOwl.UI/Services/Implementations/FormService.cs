@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using SageOwl.UI.Models;
+using SageOwl.UI.Models.Forms;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Forms.Create;
 using SageOwl.UI.ViewModels.Forms.Update;

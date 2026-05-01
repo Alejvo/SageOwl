@@ -15,7 +15,6 @@ namespace SageOwl.UI.Controllers;
 public class TeamController : Controller
 {
     private readonly ITeamService _teamService;
-    private readonly CurrentTeam _currentTeam;
     private readonly CurrentUser _currentUser;
     private readonly IAnnouncementService _announcementService;
     private readonly IQualificationService _qualificationService;
@@ -24,7 +23,6 @@ public class TeamController : Controller
 
     public TeamController(
         ITeamService teamService,
-        CurrentTeam currentTeam,
         IAnnouncementService announcementService,
         CurrentUser currentUser,
         IQualificationService qualificationService,
@@ -32,7 +30,6 @@ public class TeamController : Controller
         CurrentQualifications currentQualifications)
     {
         _teamService = teamService;
-        _currentTeam = currentTeam;
         _announcementService = announcementService;
         _currentUser = currentUser;
         _qualificationService = qualificationService;
@@ -44,9 +41,6 @@ public class TeamController : Controller
     [HttpGet("{teamId}/mainpage")]
     public async Task<IActionResult> MainPage(Guid teamId)
     {
-        await GetTeam(teamId);
-
-
         var teams = await _teamService.GetTeamById(teamId);
         var forms = await _formService.GetFormsByTeamId(teamId);
         var announcements = await _announcementService.GetAnnouncementsByTeamId(teamId);
@@ -65,7 +59,7 @@ public class TeamController : Controller
         };
 
         ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
+        ViewData["HeaderTitle"] = $"{teams.Name}";
         ViewData["HeaderUrl"] = Url.Action("Teams", "Workspace");
         return View(teamMainVM);
     }
@@ -73,15 +67,14 @@ public class TeamController : Controller
     [HttpGet("{teamId}/forms")]
     public async Task<IActionResult> Forms(Guid teamId)
     {
-        await GetTeam(teamId);
-
         ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
+        ViewData["HeaderTitle"] = $"Forms";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
         var forms = new List<FormViewModel>();
+        var team = await _teamService.GetTeamById(teamId);
 
-        foreach (var item in _currentTeam.Forms)
+        foreach (var item in team.Forms)
         {
             var newform = new FormViewModel
             {
@@ -98,14 +91,15 @@ public class TeamController : Controller
     [HttpGet("{teamId}/qualifications")]
     public async Task<IActionResult> Qualifications(Guid teamId)
     {
-        ViewData["HeaderTitle"] = $"{_currentTeam.Name} Qualifications";
+        ViewData["HeaderTitle"] = $"{teamId} Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
-        _currentQualifications.Qualifications = await _qualificationService.GetQualificationByTeamId(_currentTeam.TeamId);
+        _currentQualifications.Qualifications = 
+            await _qualificationService.GetQualificationByTeamId(teamId);
 
         var qualificationList = new GetQualificationsViewModel
         {
-            TeamId = _currentTeam.TeamId,
+            TeamId = teamId,
             Qualifications = _currentQualifications.Qualifications.Select(q => new QualificationViewModel
             {
                 QualificationId = q.Id,
@@ -132,16 +126,18 @@ public class TeamController : Controller
     }
 
     [HttpGet("{teamId}/qualifications/save", Name = "SaveQualifications")]
-    public IActionResult SaveQualifications(Guid teamId)
+    public async Task<IActionResult> SaveQualifications(Guid teamId)
     {
         ViewData["HeaderTitle"] = $"Save Qualifications";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
         var qualification = new SaveQualificationsViewModel();
-        qualification.TeamId = _currentTeam.TeamId;
+        qualification.TeamId = teamId;
         qualification.Descriptions.Add("Grade 1");
 
-        foreach (var item in _currentTeam.Members.Where(m => m.Role != "Admin"))
+        var team = await _teamService.GetTeamById(teamId);
+
+        foreach (var item in team.Members.Where(m => m.Role != "Admin"))
         {
             qualification.UserQualifications.Add(new SaveUserQualificationViewModel
             {
@@ -154,25 +150,26 @@ public class TeamController : Controller
     }
 
     [HttpGet("{teamId}/description")]
-    public IActionResult Description(Guid teamId)
+    public async Task<IActionResult> Description(Guid teamId)
     {
         ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
+        ViewData["HeaderTitle"] = $"{teamId}";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-        return View(model: _currentTeam.Description);
+
+        var team = await _teamService.GetTeamById(teamId);
+        return View(model: team.Description);
     }
 
     [HttpGet("{teamId}/announcements")]
     public async Task<IActionResult> Announcements(Guid teamId)
     {
-        await GetTeam(teamId);
-
         ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = $"{_currentTeam.Name}";
+        ViewData["HeaderTitle"] = $"Announcements";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
         var announcements = new List<AnnouncementViewModel>();
+        var team = await _teamService.GetTeamById(teamId); 
 
-        foreach (var item in _currentTeam.Announcements)
+        foreach (var item in team.Announcements)
         {
             var newAnnouncement = new AnnouncementViewModel
             {
@@ -198,7 +195,7 @@ public class TeamController : Controller
     [HttpGet("{teamId}/update")]
     public async Task<IActionResult> UpdateTeam(Guid teamId)
     {
-        ViewData["HeaderTitle"] = $"Update: {_currentTeam.Name}";
+        ViewData["HeaderTitle"] = $"Update Team";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
         var team = await _teamService.GetTeamById(teamId);
 
@@ -263,6 +260,8 @@ public class TeamController : Controller
     {
         if (ModelState.IsValid)
         {
+            var team = await _teamService.GetTeamById(updateTeam.TeamId);
+
             var updatedTeam = new UpdateTeamDto
             {
                 TeamId = updateTeam.TeamId,
@@ -274,26 +273,10 @@ public class TeamController : Controller
 
             await _teamService.UpdateTeam(updatedTeam);
 
-            _currentTeam.Name = updatedTeam.Name;
-            _currentTeam.Description = updatedTeam.Description;
-
             return RedirectToAction("MainPage", "Team", new { teamId = updatedTeam.TeamId });
 
         }
         return View(updateTeam);
     }
 
-    private async Task GetTeam(Guid teamId)
-    {
-        if (_currentTeam.TeamId != teamId)
-        {
-            var team = await _teamService.GetTeamById(teamId);
-            _currentTeam.Name = team.Name;
-            _currentTeam.TeamId = team.TeamId;
-            _currentTeam.Description = team.Description;
-            _currentTeam.Announcements = team.Announcements;
-            _currentTeam.Forms = team.Forms;
-            _currentTeam.Members = team.Members;
-        }
-    }
 }

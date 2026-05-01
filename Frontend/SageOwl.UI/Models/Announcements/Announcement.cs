@@ -1,4 +1,4 @@
-﻿namespace SageOwl.UI.Models;
+﻿namespace SageOwl.UI.Models.Announcements;
 
 public class Announcement
 {
