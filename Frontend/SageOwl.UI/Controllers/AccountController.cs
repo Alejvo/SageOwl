@@ -8,12 +8,12 @@ namespace SageOwl.UI.Controllers;
 public class AccountController : Controller
 {
     private readonly IUserService _userService;
-    private readonly IAccountService _accountService;
+    private readonly IAuthService _authService;
 
-    public AccountController(IUserService userService, IAccountService accountService)
+    public AccountController(IUserService userService, IAuthService authService)
     {
         _userService = userService;
-        _accountService = accountService;
+        _authService = authService;
     }
 
     public IActionResult Login()
@@ -25,7 +25,7 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _accountService.Login(login);
+            await _authService.Login(login);
 
             return RedirectToAction("Index", "Workspace");
         }

@@ -13,24 +13,19 @@ public class TeamService : ITeamService
 {
     private readonly HttpClient _httpClient;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IAccountService _accountService;
+    private readonly IAuthService _authService;
 
-    public TeamService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IAccountService accountService)
+    public TeamService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IAuthService authService)
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
-        _accountService = accountService;
+        _authService = authService;
     }
 
     public async Task<HttpStatusCode> CreateTeam(CreateTeamViewModel newTeam)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
         var json = JsonSerializer.Serialize(newTeam);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.PostAsync("team", content);
 
@@ -39,11 +34,6 @@ public class TeamService : ITeamService
 
     public async Task<HttpStatusCode> DeleteTeam(Guid teamId)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
         var response = await _httpClient.DeleteAsync($"team/{teamId}");
 
         return response.StatusCode;
@@ -51,16 +41,7 @@ public class TeamService : ITeamService
 
     public async Task<Team> GetTeamById(Guid teamId)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
-        if (string.IsNullOrEmpty(token))
-            throw new Exception("Token was not found");
-
-        var handler = new JwtSecurityTokenHandler();
-        var jwt = handler.ReadJwtToken(token);
-
         var request = new HttpRequestMessage(HttpMethod.Get, $"team/id/{teamId}");
-        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.SendAsync(request);
 
@@ -83,7 +64,7 @@ public class TeamService : ITeamService
     public async Task<List<Team>> GetTeamsByUser()
     {
 
-        var token = await _accountService.GetValidAccessTokenAsync();
+        var token = await _authService.GetAccessTokenAsync();
 
         var handler = new JwtSecurityTokenHandler();
         var jwtToken = handler.ReadJwtToken(token);
@@ -116,14 +97,8 @@ public class TeamService : ITeamService
 
     public async Task<HttpStatusCode> UpdateTeam(UpdateTeamDto updateTeam)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
-
         var json = JsonSerializer.Serialize(updateTeam);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.PutAsync("team", content);
 

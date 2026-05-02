@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SageOwl.UI.Attributes;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Forms.Create;
 using SageOwl.UI.ViewModels.Forms.Update;
 
 namespace SageOwl.UI.Controllers;
 
+[Route("[controller]")]
+[AuthorizeToken]
 public class FormController : Controller
 {
     private readonly IFormService _formService;
@@ -15,7 +18,8 @@ public class FormController : Controller
     }
 
     // GET Methods
-    [Route("form/{formId}")]
+    [Route("id/{formId}")]
+    [HttpGet]
     public async Task<IActionResult> Index(Guid formId)
     {
         ViewBag.FormId = formId;
@@ -26,7 +30,22 @@ public class FormController : Controller
         return View(form);
     }
 
+    [HttpGet]
+    [Route("create")]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    [Route("update")]
+    public IActionResult Update()
+    {
+        return View();
+    }
+
     // POST Methods
+
     [HttpPost]
     public async Task<IActionResult> Create(CreateFormViewModel createForm)
     {

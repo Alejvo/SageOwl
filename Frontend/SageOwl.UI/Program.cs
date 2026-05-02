@@ -1,3 +1,4 @@
+using SageOwl.UI.Delegates;
 using SageOwl.UI.Models;
 using SageOwl.UI.Models.Qualifications;
 using SageOwl.UI.Services.Implementations;
@@ -9,19 +10,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IUserService,UserService>();
-builder.Services.AddScoped<IAccountService,AccountService>();
 builder.Services.AddScoped<ITeamService,TeamService>();
 builder.Services.AddScoped<IAnnouncementService,AnnouncementService>();
 builder.Services.AddScoped<IFormService,FormService>();
 builder.Services.AddScoped<IQualificationService,QualificationService>();
-builder.Services.AddScoped<ITokenProvider,TokenProvider>();
+builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IFormSubmissionService,FormSubmissionService>();
 
 builder.Services.AddSingleton<CurrentUser>();
 builder.Services.AddSingleton<CurrentQualifications>();
 
+builder.Services.AddTransient<AuthHttpMessageHandler>();
+
 builder.Services.AddHttpClient("Backend", client =>
-    client.BaseAddress = new Uri("https://localhost:7027/api/"));
+    client.BaseAddress = new Uri("https://localhost:7027/api/"))
+    .AddHttpMessageHandler<AuthHttpMessageHandler>();
+
+builder.Services.AddHttpClient("Auth", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7027/api/");
+});
 
 builder.Services.AddHttpContextAccessor();
 

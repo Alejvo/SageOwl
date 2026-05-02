@@ -11,18 +11,18 @@ namespace SageOwl.UI.Services.Implementations;
 public class UserService : IUserService
 {
     private readonly HttpClient _httpClient;
-    private readonly IAccountService _accountService;
+    private readonly IAuthService _authService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
 
     public UserService(
         IHttpClientFactory httpClientFactory, 
         IHttpContextAccessor httpContextAccessor,
-        IAccountService accountService)
+        IAuthService authService)
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
-        _accountService = accountService;
+        _authService = authService;
     }
 
     public async Task<HttpStatusCode> Create(RegisterViewModel data)
@@ -35,11 +35,6 @@ public class UserService : IUserService
 
     public async Task<HttpStatusCode> DeleteUser(Guid userId)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
         var response = await _httpClient.DeleteAsync($"users/{userId}");
 
         return response.StatusCode;
@@ -111,7 +106,7 @@ public class UserService : IUserService
 
     public async Task<HttpStatusCode> Update(UpdateUserViewModel user)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
+        var token = await _authService.GetAccessTokenAsync();
 
         var json = JsonSerializer.Serialize(user);
         var content = new StringContent(json, Encoding.UTF8, "application/json");

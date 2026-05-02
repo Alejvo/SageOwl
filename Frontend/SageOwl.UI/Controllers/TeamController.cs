@@ -76,10 +76,6 @@ public class TeamController : Controller
     [HttpGet("{teamId}/forms")]
     public async Task<IActionResult> Forms(Guid teamId)
     {
-        ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = $"Forms";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-
         var team = await _teamService.GetTeamById(teamId);
         var forms = team.Forms.Select(f => new FormViewModel
         {
@@ -88,6 +84,9 @@ public class TeamController : Controller
             Deadline = f.Deadline,
             TeamId = f.TeamId
         }).ToList();
+
+        ViewData["HeaderTitle"] = $"{team.Name}";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
         return View(new TeamFormsPageViewModel
         {
@@ -99,9 +98,6 @@ public class TeamController : Controller
     [HttpGet("{teamId}/qualifications")]
     public async Task<IActionResult> Qualifications(Guid teamId)
     {
-        ViewData["HeaderTitle"] = $"{teamId} Qualifications";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-
         _currentQualifications.Qualifications = 
             await _qualificationService.GetQualificationByTeamId(teamId);
 
@@ -129,6 +125,9 @@ public class TeamController : Controller
         {
             qualificationList.QualificationKeys.Add(item.Id,item.Period);
         }
+
+        ViewData["HeaderTitle"] = $"Qualifications";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
         return View(qualificationList);
     }
@@ -160,11 +159,10 @@ public class TeamController : Controller
     [HttpGet("{teamId}/description")]
     public async Task<IActionResult> Description(Guid teamId)
     {
-        ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = $"{teamId}";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-
         var team = await _teamService.GetTeamById(teamId);
+
+        ViewData["HeaderTitle"] = $"{team.Name}";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
         return View(new TeamDescriptionViewModel
         {
@@ -176,10 +174,6 @@ public class TeamController : Controller
     [HttpGet("{teamId}/announcements")]
     public async Task<IActionResult> Announcements(Guid teamId)
     {
-        ViewBag.TeamId = teamId;
-        ViewData["HeaderTitle"] = $"Announcements";
-        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
-
         var team = await _teamService.GetTeamById(teamId);
         var announcements = team.Announcements.Select(a => new AnnouncementViewModel
         {
@@ -188,6 +182,9 @@ public class TeamController : Controller
             SentAt = a.CreatedAt,
             Title = a.Title
         }).ToList();
+
+        ViewData["HeaderTitle"] = $"{team.Name}";
+        ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
         return View(new TeamAnnouncementsPageViewModel
         {

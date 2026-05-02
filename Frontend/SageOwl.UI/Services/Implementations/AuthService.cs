@@ -1,30 +1,29 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using SageOwl.UI.Models;
+﻿using SageOwl.UI.Models.Tokens;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.UI;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
 namespace SageOwl.UI.Services.Implementations;
 
-public class AccountService : IAccountService
+public class AuthService : IAuthService
 {
-    private readonly HttpClient _httpClient;
     private readonly IHttpContextAccessor _contextAccessor;
+    private readonly HttpClient _httpClient;
 
-    public AccountService(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor)
+    public AuthService(
+        IHttpContextAccessor contextAccessor,
+        IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClientFactory.CreateClient("Backend");
         _contextAccessor = contextAccessor;
+        _httpClient = httpClientFactory.CreateClient("Auth");
     }
 
-
-    public async Task<string?> GetValidAccessTokenAsync()
+    public async Task<string?> GetAccessTokenAsync()
     {
         var context = _contextAccessor.HttpContext
-                      ?? throw new InvalidOperationException("No se pudo acceder al contexto HTTP.");
+                      ?? throw new InvalidOperationException("The HTTP Context couldn't be accessed");
 
         var accessToken = context.Request.Cookies["AccessToken"];
         var refreshToken = context.Request.Cookies["RefreshToken"];
@@ -34,8 +33,8 @@ public class AccountService : IAccountService
             if (string.IsNullOrEmpty(refreshToken))
                 return null;
 
-            var newToken = await TryRefreshTokenAsync(context, refreshToken);
-            return newToken;
+            var newToken = await RefreshToken(refreshToken);
+            return newToken.AccessToken;
         }
 
         var handler = new JwtSecurityTokenHandler();
@@ -54,13 +53,14 @@ public class AccountService : IAccountService
             if (string.IsNullOrEmpty(refreshToken))
                 return null;
 
-            var newToken = await TryRefreshTokenAsync(context, refreshToken);
-            return newToken;
+            var newToken = await RefreshToken(refreshToken);
+            return newToken.AccessToken;
         }
 
         return accessToken;
     }
-    private async Task<string?> TryRefreshTokenAsync(HttpContext context, string refreshToken)
+
+    public async Task<Token> RefreshToken(string refreshToken)
     {
         var body = JsonSerializer.Serialize(new { RefreshToken = refreshToken });
         var content = new StringContent(body, Encoding.UTF8, "application/json");
@@ -70,7 +70,7 @@ public class AccountService : IAccountService
             return null;
 
         var responseString = await response.Content.ReadAsStringAsync();
-        var tokens = JsonSerializer.Deserialize<TokenResponse>(responseString, new JsonSerializerOptions
+        var tokens = JsonSerializer.Deserialize<Token>(responseString, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
@@ -78,7 +78,7 @@ public class AccountService : IAccountService
         if (tokens == null || string.IsNullOrEmpty(tokens.AccessToken))
             return null;
 
-        context.Response.Cookies.Append("AccessToken", tokens.AccessToken, new CookieOptions
+       _contextAccessor.HttpContext.Response.Cookies.Append("AccessToken", tokens.AccessToken, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
@@ -86,7 +86,7 @@ public class AccountService : IAccountService
             Expires = DateTimeOffset.UtcNow.AddMinutes(15)
         });
 
-        context.Response.Cookies.Append("RefreshToken", tokens.RefreshToken, new CookieOptions
+        _contextAccessor.HttpContext.Response.Cookies.Append("RefreshToken", tokens.RefreshToken, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
@@ -94,23 +94,31 @@ public class AccountService : IAccountService
             Expires = DateTimeOffset.UtcNow.AddDays(7)
         });
 
-        return tokens.AccessToken;
+        return tokens;
     }
 
-    private class TokenResponse
+    public bool IsTokenExpired(string? token)
     {
-        public string AccessToken { get; set; } = string.Empty;
-        public string RefreshToken { get; set; } = string.Empty;
+        if (string.IsNullOrEmpty(token)) return true;
+        try
+        {
+            var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            return jwt.ValidTo <= DateTime.UtcNow;
+        }
+        catch
+        {
+            return true;
+        }
     }
 
-    public async Task<LoginResponse?> Login(LoginViewModel viewModel)
+    public async Task<Token> Login(LoginViewModel viewModel)
     {
         var response = await _httpClient.PostAsJsonAsync("auth/login", viewModel);
 
         if (!response.IsSuccessStatusCode)
             return null;
 
-        var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
+        var loginResponse = await response.Content.ReadFromJsonAsync<Token>();
 
         if (loginResponse?.AccessToken is not null)
         {
@@ -140,7 +148,4 @@ public class AccountService : IAccountService
 
         return loginResponse;
     }
-
-
-
 }

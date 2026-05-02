@@ -15,24 +15,23 @@ public class FormService : IFormService
 {
     private readonly HttpClient _httpClient;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IAccountService _accountService;
+    private readonly IAuthService _authService;
 
-    public FormService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IAccountService accountService)
+
+    public FormService(
+        IHttpClientFactory httpClientFactory, 
+        IHttpContextAccessor httpContextAccessor,
+        IAuthService authService)
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
         _httpContextAccessor = httpContextAccessor;
-        _accountService = accountService;
+        _authService = authService;
     }
 
     public async Task<HttpStatusCode> CreateForm(CreateFormViewModel createForm)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
         var json = JsonSerializer.Serialize(createForm);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.PostAsync("form", content);
 
@@ -41,11 +40,6 @@ public class FormService : IFormService
 
     public async Task<HttpStatusCode> DeleteForm(Guid formId)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", token);
-
         var response = await _httpClient.DeleteAsync($"form/{formId}");
 
         return response.StatusCode;
@@ -53,10 +47,7 @@ public class FormService : IFormService
 
     public async Task<Form> GetFormById(Guid formId)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
         var request = new HttpRequestMessage(HttpMethod.Get, $"form/{formId}");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.SendAsync(request);
 
@@ -76,10 +67,7 @@ public class FormService : IFormService
 
     public async Task<List<Form>> GetFormsByTeamId(Guid teamId)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
         var request = new HttpRequestMessage(HttpMethod.Get, $"form/teamId/{teamId}");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.SendAsync(request);
 
@@ -99,7 +87,7 @@ public class FormService : IFormService
 
     public async Task<List<Form>> GetFormsByUserId()
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
+        var token = await _authService.GetAccessTokenAsync();
 
         if (string.IsNullOrEmpty(token))
             throw new Exception("Token was not found");
@@ -126,13 +114,8 @@ public class FormService : IFormService
 
     public async Task<HttpStatusCode> UpdateForm(UpdateFormViewModel updateForm)
     {
-        var token = await _accountService.GetValidAccessTokenAsync();
-
         var json = JsonSerializer.Serialize(updateForm);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.PutAsync("form", content);
 

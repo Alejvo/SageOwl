@@ -10,17 +10,17 @@ public class WorkspaceHeaderViewComponent : ViewComponent
 {
     private readonly IUserService _userService;
     private readonly CurrentUser _currentUser;
-    private readonly IAccountService _accountService;
-    public WorkspaceHeaderViewComponent(IUserService userService, CurrentUser currentUser, IAccountService accountService)
+    private readonly IAuthService _authService;
+    public WorkspaceHeaderViewComponent(IUserService userService, CurrentUser currentUser, IAuthService authService)
     {
         _userService = userService;
         _currentUser = currentUser;
-        _accountService = accountService;
+        _authService = authService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync(string title,string url)
     {
-        var accessToken = await _accountService.GetValidAccessTokenAsync();
+        var accessToken = await _authService.GetAccessTokenAsync();
 
         User? user = null;
         if (!string.IsNullOrEmpty(accessToken))
