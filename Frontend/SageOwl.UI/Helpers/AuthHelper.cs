@@ -6,8 +6,11 @@ public static class AuthHelper
 {
     public static bool IsUserAuthenticated(HttpRequest request)
     {
-        var token = request.Cookies["AccessToken"];
-        if (string.IsNullOrEmpty(token))
+        var context = request.HttpContext;
+
+        var token = context.Items["AccessToken"]?.ToString();
+
+        if (string.IsNullOrWhiteSpace(token))
             return false;
 
         try
@@ -20,6 +23,7 @@ public static class AuthHelper
                 return false;
 
             var expiry = DateTimeOffset.FromUnixTimeSeconds((long)expClaim).UtcDateTime;
+
             return expiry > DateTime.UtcNow;
         }
         catch
