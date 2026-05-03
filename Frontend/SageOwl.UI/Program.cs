@@ -57,6 +57,8 @@ app.UseMiddleware<TokenRefreshMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
 app.MapControllers();
 
 app.MapControllerRoute(
