@@ -11,6 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <button class="menuToggle" id="external_button">
+        <i class="menuIcon fa-solid fa-bars"></i>
+    </button>
+
     <div class="workspace">
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideMenu.cshtml")
         <div class="workspace_body">
@@ -36,19 +41,23 @@
 
 </html>
 <script>
-    $('#menuToggle').on('click', function () {
-        let $icon = $('#menuIcon');
-        let $btn = $('#menuToggle');
-        let $menu = $('#sidebar')
+    $('.menuToggle').on('click', function () {
+        let $icon = $('.menuIcon');
+        let $btn = $('.menuToggle');
+        let $menu = $('#sidebar');
+        let $ebtn = $('#external_button');
 
     if ($icon.hasClass('fa-bars')) {
         $icon.removeClass('fa-bars').addClass('fa-xmark');
         $btn.removeClass('menuShadow');
         $menu.addClass('barFlex').css('display', 'flex');
+        $ebtn.css('display','none');
     } else {
         $icon.removeClass('fa-xmark').addClass('fa-bars');
         $btn.addClass('menuShadow');
         $menu.removeClass('barFlex').css('display', 'none');
+        $ebtn.css('display','block');
+
     }
     });
 </script>

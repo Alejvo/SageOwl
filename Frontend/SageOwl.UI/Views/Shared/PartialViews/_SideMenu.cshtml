@@ -1,10 +1,12 @@
 ﻿@using SageOwl.UI.ViewModels.UI
 
-<button id="menuToggle">
-    <i id="menuIcon" class="fa-solid fa-bars"></i>
-</button>
 <div class="sideBar" id="sidebar">
-    <p class="sideBar_logo">SageOwl</p>
+    <div class="sideBar_menu_top">
+        <p class="sideBar_logo">SageOwl</p>
+        <button class="menuToggle">
+            <i class=" menuIcon fa-solid fa-bars"></i>
+        </button>
+    </div>
     <div class="sideBar_menu">
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-house", Text = "Home", Url = Url.Action("Index", "Workspace") })
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-file-lines", Text = "Forms", Url = Url.Action("Forms", "Workspace") })
@@ -25,7 +27,5 @@
                 <p class="sideBar_item_text">Log Out</p>
             </button>
         </form>
-        @*
-        *@
     </div>
 </div>
