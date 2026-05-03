@@ -1,6 +1,7 @@
 using SageOwl.UI.Delegates;
-using SageOwl.UI.Models;
+using SageOwl.UI.Middleware;
 using SageOwl.UI.Models.Qualifications;
+using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Implementations;
 using SageOwl.UI.Services.Interfaces;
 
@@ -17,7 +18,7 @@ builder.Services.AddScoped<IQualificationService,QualificationService>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IFormSubmissionService,FormSubmissionService>();
 
-builder.Services.AddSingleton<CurrentUser>();
+builder.Services.AddScoped<CurrentUser>();
 builder.Services.AddSingleton<CurrentQualifications>();
 
 builder.Services.AddTransient<AuthHttpMessageHandler>();
@@ -33,6 +34,8 @@ builder.Services.AddHttpClient("Auth", client =>
 
 builder.Services.AddHttpContextAccessor();
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,13 +46,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseMiddleware<TokenRefreshMiddleware>();
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseMiddleware<TokenRefreshMiddleware>();
+
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

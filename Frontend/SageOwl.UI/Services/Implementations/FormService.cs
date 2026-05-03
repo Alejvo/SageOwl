@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using SageOwl.UI.Models.Forms;
+﻿using SageOwl.UI.Models.Forms;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Forms.Create;
 using SageOwl.UI.ViewModels.Forms.Update;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -14,18 +11,12 @@ namespace SageOwl.UI.Services.Implementations;
 public class FormService : IFormService
 {
     private readonly HttpClient _httpClient;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IAuthService _authService;
 
 
     public FormService(
-        IHttpClientFactory httpClientFactory, 
-        IHttpContextAccessor httpContextAccessor,
-        IAuthService authService)
+        IHttpClientFactory httpClientFactory)
     {
         _httpClient = httpClientFactory.CreateClient("Backend");
-        _httpContextAccessor = httpContextAccessor;
-        _authService = authService;
     }
 
     public async Task<HttpStatusCode> CreateForm(CreateFormViewModel createForm)
@@ -85,21 +76,9 @@ public class FormService : IFormService
         return forms;
     }
 
-    public async Task<List<Form>> GetFormsByUserId()
+    public async Task<List<Form>> GetFormsByUserId(Guid userId)
     {
-        var token = await _authService.GetAccessTokenAsync();
-
-        if (string.IsNullOrEmpty(token))
-            throw new Exception("Token was not found");
-
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-
-        var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub");
-        var userId = userIdClaim?.Value;
-
         var request = new HttpRequestMessage(HttpMethod.Get, $"form/userId/{userId}");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.SendAsync(request);
 
@@ -107,9 +86,11 @@ public class FormService : IFormService
         {
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<List<Form>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<List<Form>>(
+                content, 
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
-        return new List<Form>();
+        return [];
     }
 
     public async Task<HttpStatusCode> UpdateForm(UpdateFormViewModel updateForm)

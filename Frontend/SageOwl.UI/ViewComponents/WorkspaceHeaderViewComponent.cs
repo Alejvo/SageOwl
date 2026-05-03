@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SageOwl.UI.Models;
-using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.UI;
 
@@ -9,30 +7,18 @@ namespace SageOwl.UI.ViewComponents;
 public class WorkspaceHeaderViewComponent : ViewComponent
 {
     private readonly IUserService _userService;
-    private readonly CurrentUser _currentUser;
     private readonly IAuthService _authService;
-    public WorkspaceHeaderViewComponent(IUserService userService, CurrentUser currentUser, IAuthService authService)
+    public WorkspaceHeaderViewComponent(IUserService userService, IAuthService authService)
     {
         _userService = userService;
-        _currentUser = currentUser;
         _authService = authService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync(string title,string url)
     {
-        var accessToken = await _authService.GetAccessTokenAsync();
+        var accessToken = _authService.GetAccessToken();
 
-        User? user = null;
-        if (!string.IsNullOrEmpty(accessToken))
-        {
-            user = await _userService.GetUserFromToken(accessToken);
-            _currentUser.Id = user.Id;
-            _currentUser.Name = user.Name;
-            _currentUser.Email = user.Email;
-            _currentUser.Surname = user.Surname;
-            _currentUser.CreatedAt = user.CreatedAt;
-            _currentUser.Username = user.Username;
-        }
+        var user = await _userService.GetUserFromToken(accessToken);
 
         var model = new WorkspaceHeaderViewModel
         {
@@ -41,10 +27,9 @@ public class WorkspaceHeaderViewComponent : ViewComponent
             Tooltip = "Ir al workspace",
             ProfileInfo = new ProfileInfoViewModel
             {
-                Name = $"{_currentUser.Name} {_currentUser.Surname}",
-                Username = _currentUser.Username,
+                Name = $"{user.Name} {user.Surname}",
+                Username = user.Username,
             }
-
         };
 
         return View(model);

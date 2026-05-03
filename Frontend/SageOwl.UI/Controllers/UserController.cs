@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SageOwl.UI.Models;
+using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Users;
 
@@ -38,7 +38,7 @@ public class UserController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _userService.DeleteUser(_currentUser.Id);
+            await _userService.DeleteUser(_currentUser.Id!.Value);
             return RedirectToAction("Index", "Home");
         }
         return View();

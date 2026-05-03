@@ -2,6 +2,7 @@
 using SageOwl.UI.Attributes;
 using SageOwl.UI.Models;
 using SageOwl.UI.Models.Qualifications;
+using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
@@ -229,7 +230,7 @@ public class TeamController : Controller
         var newAnnouncement = new CreateAnnouncementViewModel
         {
             TeamId = teamId,
-            AuthorId = _currentUser.Id
+            AuthorId = _currentUser.Id!.Value
         };
         return View(newAnnouncement);
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Models;
+using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Teams;
 
@@ -21,7 +22,7 @@ public class TeamNavigationViewComponent : ViewComponent
         var team = await _teamService.GetTeamById(teamId);
 
         var isAdmin = team.Members.Any(m =>
-            m.Id == _currentUser.Id &&
+            m.Id == _currentUser.Id!.Value &&
             m.Role == "Admin");
 
         var teamVM = new GetTeamViewModel

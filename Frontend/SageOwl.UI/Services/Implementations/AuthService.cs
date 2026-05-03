@@ -20,54 +20,57 @@ public class AuthService : IAuthService
         _httpClient = httpClientFactory.CreateClient("Auth");
     }
 
-    public async Task<string?> GetAccessTokenAsync()
+    public string? GetAccessToken()
     {
-        var context = _contextAccessor.HttpContext
-                      ?? throw new InvalidOperationException("The HTTP Context couldn't be accessed");
+        var context = _contextAccessor.HttpContext;
 
-        var accessToken = context.Request.Cookies["AccessToken"];
-        var refreshToken = context.Request.Cookies["RefreshToken"];
+        if (context == null)
+            return null;
 
-        if (string.IsNullOrEmpty(accessToken))
+        if(context.Items.TryGetValue("AccessToken", out var cachedToken))
         {
-            if (string.IsNullOrEmpty(refreshToken))
-                return null;
-
-            var newToken = await RefreshToken(refreshToken);
-            return newToken.AccessToken;
+            return cachedToken?.ToString();
         }
+        return context.Request.Cookies["AccessToken"];
 
-        var handler = new JwtSecurityTokenHandler();
-        JwtSecurityToken jwt;
+    }
+
+    public async Task<Token?> RefreshToken(string refreshToken)
+    {
+        var context = _contextAccessor.HttpContext;
+
+        if (context == null)
+            return null;
+
+        if(string.IsNullOrEmpty(refreshToken))
+            return null;
+
+
+        var body = JsonSerializer.Serialize( new 
+        { 
+            RefreshToken = refreshToken 
+        });
+
+        var content = new StringContent(
+            body, 
+            Encoding.UTF8, 
+            "application/json");
+
+        HttpResponseMessage response;
         try
         {
-            jwt = handler.ReadJwtToken(accessToken);
+            response = await _httpClient.PostAsync($"auth/refresh", content);
         }
         catch
         {
             return null;
         }
 
-        if (jwt.ValidTo <= DateTime.UtcNow)
-        {
-            if (string.IsNullOrEmpty(refreshToken))
-                return null;
-
-            var newToken = await RefreshToken(refreshToken);
-            return newToken.AccessToken;
-        }
-
-        return accessToken;
-    }
-
-    public async Task<Token> RefreshToken(string refreshToken)
-    {
-        var body = JsonSerializer.Serialize(new { RefreshToken = refreshToken });
-        var content = new StringContent(body, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync($"auth/refresh", content);
         if (!response.IsSuccessStatusCode)
+        {
+            DeleteCookies();
             return null;
+        }
 
         var responseString = await response.Content.ReadAsStringAsync();
         var tokens = JsonSerializer.Deserialize<Token>(responseString, new JsonSerializerOptions
@@ -75,24 +78,15 @@ public class AuthService : IAuthService
             PropertyNameCaseInsensitive = true
         });
 
-        if (tokens == null || string.IsNullOrEmpty(tokens.AccessToken))
+        if (tokens == null || 
+            string.IsNullOrEmpty(tokens.AccessToken) ||
+            string.IsNullOrEmpty(tokens.RefreshToken))
+        {
+            DeleteCookies();
             return null;
+        }
 
-       _contextAccessor.HttpContext.Response.Cookies.Append("AccessToken", tokens.AccessToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTimeOffset.UtcNow.AddMinutes(15)
-        });
-
-        _contextAccessor.HttpContext.Response.Cookies.Append("RefreshToken", tokens.RefreshToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTimeOffset.UtcNow.AddDays(7)
-        });
+        AppendCookies(tokens);
 
         return tokens;
     }
@@ -111,7 +105,7 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<Token> Login(LoginViewModel viewModel)
+    public async Task<Token?> Login(LoginViewModel viewModel)
     {
         var response = await _httpClient.PostAsJsonAsync("auth/login", viewModel);
 
@@ -120,32 +114,68 @@ public class AuthService : IAuthService
 
         var loginResponse = await response.Content.ReadFromJsonAsync<Token>();
 
-        if (loginResponse?.AccessToken is not null)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTimeOffset.UtcNow.AddMinutes(15)
-            };
+        if (loginResponse == null)
+            return null;
 
-            _contextAccessor.HttpContext?.Response.Cookies.Append("AccessToken", loginResponse.AccessToken, cookieOptions);
-        }
-
-        if (loginResponse?.RefreshToken is not null)
-        {
-            var refreshTokenOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTimeOffset.UtcNow.AddDays(7)
-            };
-
-            _contextAccessor.HttpContext?.Response.Cookies.Append("RefreshToken", loginResponse.RefreshToken, refreshTokenOptions);
-        }
-
+        AppendCookies(loginResponse);
         return loginResponse;
+    }
+
+    public void Logout()
+    {
+        DeleteCookies();
+    }
+    private void AppendCookies(Token tokens)
+    {
+        var context = _contextAccessor.HttpContext;
+
+        if (context == null)
+            return;
+
+        context.Response.Cookies.Append(
+            "AccessToken",
+            tokens.AccessToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(15),
+                Path = "/"
+            });
+
+        context.Response.Cookies.Append(
+            "RefreshToken",
+            tokens.RefreshToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTimeOffset.UtcNow.AddDays(7),
+                Path = "/"
+            });
+    }
+
+    private void DeleteCookies()
+    {
+        var context = _contextAccessor.HttpContext;
+
+        if (context == null)
+            return;
+
+        context.Response.Cookies.Delete(
+            "AccessToken",
+            new CookieOptions
+            {
+                Path = "/"
+            });
+
+        context.Response.Cookies.Delete(
+            "RefreshToken",
+            new CookieOptions
+            {
+                Path = "/"
+            });
     }
 }

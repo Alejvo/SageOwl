@@ -7,7 +7,7 @@ namespace SageOwl.UI.Services.Interfaces;
 
 public interface IFormService
 {
-    Task<List<Form>> GetFormsByUserId();
+    Task<List<Form>> GetFormsByUserId(Guid userId);
     Task<List<Form>> GetFormsByTeamId(Guid teamId);
     Task<Form> GetFormById(Guid formId);
     Task<HttpStatusCode> UpdateForm(UpdateFormViewModel updateForm);

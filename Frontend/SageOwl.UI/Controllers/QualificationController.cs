@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Attributes;
-using SageOwl.UI.Models;
 using SageOwl.UI.Models.Qualifications;
+using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Qualifications;
 
@@ -28,7 +28,7 @@ public class QualificationController : Controller
     // GET Methods
     public async Task<IActionResult> GetQualification(string period)
     {
-        var qualifications = await _qualificationService.GetQualificationByUserId(_currentUser.Id);
+        var qualifications = await _qualificationService.GetQualificationByUserId(_currentUser.Id!.Value);
         var qualification = qualifications.FirstOrDefault(x => x.Period == period);
 
         if (qualification is null)

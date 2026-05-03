@@ -2,6 +2,7 @@
 using SageOwl.UI.Attributes;
 using SageOwl.UI.Models;
 using SageOwl.UI.Models.Qualifications;
+using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Announcements;
 using SageOwl.UI.ViewModels.Forms;
@@ -43,26 +44,24 @@ public class WorkspaceController : Controller
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
 
         var announcements = await _announcementService.GetAnnouncements();
-        var forms = await _formService.GetFormsByUserId();
-
-
+        var forms = await _formService.GetFormsByUserId(_currentUser.Id!.Value);
 
         var homeWorkspaceVM = new HomeWorkspaceViewModel
         {
-            Announcements = announcements.Select(a => new AnnouncementViewModel
+            Announcements = announcements?.Select(a => new AnnouncementViewModel
             {
                 Content = a.Content,
                 PublisherName = a.Author,
                 Title = a.Title,
                 SentAt = a.CreatedAt
-            }).ToList(),
-            Forms = forms.Select(f => new FormViewModel
+            }).ToList() ?? [],
+            Forms = forms?.Select(f => new FormViewModel
             {
                 Title = f.Title,
                 Deadline = f.Deadline,
                 Id = f.Id,
                 TeamId = f.TeamId
-            }).ToList()
+            }).ToList() ?? []
         };
         return View(homeWorkspaceVM);
     }
@@ -72,7 +71,7 @@ public class WorkspaceController : Controller
         ViewData["HeaderTitle"] = "Forms";
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
 
-        var forms = await _formService.GetFormsByUserId();
+        var forms = await _formService.GetFormsByUserId(_currentUser.Id!.Value);
 
         var formsViewModel = forms.Select(f => new FormViewModel
         {
@@ -108,7 +107,7 @@ public class WorkspaceController : Controller
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
         var token = HttpContext.Request.Cookies["AccessToken"];
 
-        var teams = await _teamService.GetTeamsByUser();
+        var teams = await _teamService.GetTeamsByUser(_currentUser.Id!.Value);
 
         var teamsViewModel = teams.Select(t => new TeamCardViewModel
         {
@@ -125,7 +124,7 @@ public class WorkspaceController : Controller
         ViewData["HeaderTitle"] = "My Qualifications";
         ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
 
-        var qualificationX = await _qualificationService.GetQualificationByUserId(_currentUser.Id);
+        var qualificationX = await _qualificationService.GetQualificationByUserId(_currentUser.Id!.Value);
 
         _currentQualifications.Qualifications = qualificationX;
 

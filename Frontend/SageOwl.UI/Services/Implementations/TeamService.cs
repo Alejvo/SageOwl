@@ -2,25 +2,15 @@
 using SageOwl.UI.Models.Teams;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Teams;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Text;
 using System.Text.Json;
 
 namespace SageOwl.UI.Services.Implementations;
 
-public class TeamService : ITeamService
+public class TeamService(IHttpClientFactory httpClientFactory) : ITeamService
 {
-    private readonly HttpClient _httpClient;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IAuthService _authService;
-
-    public TeamService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IAuthService authService)
-    {
-        _httpClient = httpClientFactory.CreateClient("Backend");
-        _httpContextAccessor = httpContextAccessor;
-        _authService = authService;
-    }
+    private readonly HttpClient _httpClient = httpClientFactory.CreateClient("Backend");
 
     public async Task<HttpStatusCode> CreateTeam(CreateTeamViewModel newTeam)
     {
@@ -61,27 +51,14 @@ public class TeamService : ITeamService
 
     }
 
-    public async Task<List<Team>> GetTeamsByUser()
+    public async Task<List<Team>> GetTeamsByUser(Guid userId)
     {
-
-        var token = await _authService.GetAccessTokenAsync();
-
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-
-        var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub");
-        var userId = userIdClaim?.Value;
-
-        if (string.IsNullOrEmpty(userId))
-            return null;
-
-        var request = new HttpRequestMessage(HttpMethod.Get, $"team/userid/{userId}");
-        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        var request = new HttpRequestMessage(HttpMethod.Get, $"team/userId/{userId}");
 
         var response = await _httpClient.SendAsync(request);
 
         if (!response.IsSuccessStatusCode)
-            return null;
+            return [];
 
         var content = await response.Content.ReadAsStringAsync();
 
