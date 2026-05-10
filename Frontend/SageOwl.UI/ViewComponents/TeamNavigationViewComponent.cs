@@ -17,7 +17,7 @@ public class TeamNavigationViewComponent : ViewComponent
         _teamService = teamService;
     }
 
-    public async Task<IViewComponentResult> InvokeAsync(Guid teamId)
+    public async Task<IViewComponentResult> InvokeAsync(Guid teamId, string url)
     {
         var team = await _teamService.GetTeamById(teamId);
 
@@ -28,12 +28,9 @@ public class TeamNavigationViewComponent : ViewComponent
         var teamVM = new GetTeamViewModel
         {
             TeamId = teamId,
-            Members = team.Members,
-            Announcements = team.Announcements,
-            Description = team.Description,
-            Forms = team.Forms,
             Name = team.Name,
-            IsAdmin = isAdmin
+            IsAdmin = isAdmin,
+            Url = url
         };
 
         return View(teamVM); 

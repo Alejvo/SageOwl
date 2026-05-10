@@ -22,9 +22,6 @@ public class WorkspaceHeaderViewComponent : ViewComponent
 
         var model = new WorkspaceHeaderViewModel
         {
-            Title = title,
-            Url = url,
-            Tooltip = "Ir al workspace",
             ProfileInfo = new ProfileInfoViewModel
             {
                 Name = $"{user.Name} {user.Surname}",

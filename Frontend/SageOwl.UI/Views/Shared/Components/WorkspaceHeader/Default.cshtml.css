@@ -13,23 +13,6 @@
     align-items: center;
 }
 
-.workspace_header_container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-}
-
-.workspace_header_title {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.nav-icon {
-    font-size: 24px;
-}
-
 @media only screen and (max-width:1024px) {
     .profile_container {
         display: none;

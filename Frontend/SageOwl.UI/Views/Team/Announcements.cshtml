@@ -5,8 +5,42 @@
 
 @model TeamAnnouncementsPageViewModel
 
+<style>
+    .team_button {
+        display: flex;
+        gap: 20px;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        background-color: #22C55E;
+        width: 200px;
+        height: 50px;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+
+        .team_button:hover,
+        .team_button:active {
+            background-color: #1FA350;
+            color: white;
+            transform: scale(1.05);
+        }
+</style>
+
 <main class="team_announcements_main">
-    @await Component.InvokeAsync("TeamNavigation", new {teamId = Model.TeamId})
+    @await Component.InvokeAsync("TeamNavigation", 
+    new {
+        teamId = Model.TeamId,
+        url = Url.Action("mainPage", "Team", new{ teamId = Model.TeamId})
+    })
+    <a class="team_button" asp-controller="Team" asp-action="Create">
+        <i class="fa-solid fa-plus"></i>
+        <p>CreateTeam</p>
+    </a>
     <div class="team_announcements_main_container">
         @if (Model.Announcements.Count == 0)
         {

@@ -6,6 +6,7 @@
 @model List<AnnouncementViewModel>
 
 <main class="workspace_announcements_main">
+
     @foreach (var announcement in Model)
     {
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_Announcement.cshtml", announcement)
