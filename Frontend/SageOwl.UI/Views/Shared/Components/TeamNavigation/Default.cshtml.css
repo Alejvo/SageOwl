@@ -28,6 +28,7 @@
     top:0;
     right:70px;
     padding:12px 16px;
+    display:none;
 }
 
 .team_navigation_item {
@@ -56,4 +57,11 @@
 
 .nav-icon {
     font-size: 24px;
+}
+
+@media (max-width:1024px){
+    .team_navigation_menu {
+        top: 46px;
+        right: 20px;
+    }
 }

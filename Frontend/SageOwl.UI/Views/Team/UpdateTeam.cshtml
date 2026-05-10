@@ -126,7 +126,13 @@
     }
 </style>
 
+    @await Component.InvokeAsync("TeamNavigation", 
+    new {
+        teamId = Model.TeamId,
+        url = Url.Action("mainPage", "Team", new{ teamId = Model.TeamId})
+    })
 <main class="team_update_main">
+
     <form asp-action="UpdateTeam" asp-controller="Team" method="post" id="teamForm" class="update_team">
         <div class="team_update_input">
             <label asp-for="Name"></label>

@@ -14,9 +14,6 @@
 }
 
 @media only screen and (max-width:1024px) {
-    .profile_container {
-        display: none;
-    }
     .workspace_header{
         margin-top:10px;
     }
