@@ -2,11 +2,14 @@
 @model WorkspaceHeaderViewModel
 
 <div class="workspace_header">
+    <div class="workspace_search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input placeholder="search"/>
+    </div>
+
     <div class="profile_container">
-        
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_ProfileInfo.cshtml", new ProfileInfoViewModel
         { Name = $"{@Model.ProfileInfo.Name}", Username = $"{@Model.ProfileInfo.Username}"})
-        
     </div>
 
 </div>
