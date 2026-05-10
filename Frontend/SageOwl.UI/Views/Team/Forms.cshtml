@@ -6,8 +6,45 @@
 
 @model TeamFormsPageViewModel
 
+<style>
+    .form_button {
+        display: flex;
+        gap: 20px;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        background-color: #22C55E;
+        width: 260px;
+        height: 50px;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+
+        .form_button:hover,
+        .form_button:active {
+            background-color: #1FA350;
+            color: white;
+            transform: scale(0.95);
+        }
+</style>
+
+
 <main class="team_forms_main">
-    @await Component.InvokeAsync("TeamNavigation", new{ teamId = Model.TeamId })
+    @await Component.InvokeAsync("TeamNavigation", 
+    new{ 
+        teamId = Model.TeamId,
+        url = Url.Action("mainPage", "Team", new{ teamId = Model.TeamId})
+    })
+
+    <a class="form_button" asp-controller="Form" asp-action="Create">
+        <i class="fa-solid fa-plus"></i>
+        <p>Create Form</p>
+    </a>
+
     <div class="team_forms_main_container">
 
         @if (Model.Forms.Count == 0)

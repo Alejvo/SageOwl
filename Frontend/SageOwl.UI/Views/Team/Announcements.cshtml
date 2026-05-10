@@ -6,14 +6,14 @@
 @model TeamAnnouncementsPageViewModel
 
 <style>
-    .team_button {
+    .ann_button {
         display: flex;
         gap: 20px;
         color: white;
         cursor: pointer;
         text-decoration: none;
         background-color: #22C55E;
-        width: 200px;
+        width: 260px;
         height: 50px;
         font-size: 18px;
         display: flex;
@@ -23,11 +23,11 @@
         font-weight: bold;
     }
 
-        .team_button:hover,
-        .team_button:active {
+        .ann_button:hover,
+        .ann_button:active {
             background-color: #1FA350;
             color: white;
-            transform: scale(1.05);
+            transform: scale(0.95);
         }
 </style>
 
@@ -37,9 +37,9 @@
         teamId = Model.TeamId,
         url = Url.Action("mainPage", "Team", new{ teamId = Model.TeamId})
     })
-    <a class="team_button" asp-controller="Team" asp-action="Create">
+    <a class="ann_button" asp-controller="Team" asp-action="CreateAnnouncement">
         <i class="fa-solid fa-plus"></i>
-        <p>CreateTeam</p>
+        <p>Create Announcement</p>
     </a>
     <div class="team_announcements_main_container">
         @if (Model.Announcements.Count == 0)

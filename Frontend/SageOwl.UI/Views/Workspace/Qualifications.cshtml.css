@@ -15,7 +15,7 @@
 }
 
 .search_container button{
-    background-color:peru;
+    background-color: #444;
     border:none;
     height:35px;
     width:100px;
@@ -23,4 +23,11 @@
     font-size:18px;
     border-radius:5px;
     font-weight:bold;
+    border-radius:12px;
+}
+
+.search_container button:active,
+.search_container button:hover{
+    transform:scale(0.95);
+    background-color: #5E5E5E;
 }

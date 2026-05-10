@@ -14,15 +14,19 @@
 }
 
 .workspace_search {
-    border: 2px #727272 solid;
+    border: 2px #A6A6A6 solid;
     border-radius: 24px;
     height: 40px;
-    width: 450px;
+    width: 350px;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    background-color: #727272;
-    padding:0;
+    background-color: #A6A6A6;
+    padding: 0;
+}
+
+.workspace_search:focus-within {
+     width: 500px;
 }
 
 .workspace_search i {
@@ -39,7 +43,8 @@
 
 .workspace_search i:hover,
 .workspace_search i:active{
-    background-color: #4A4747;
+    background-color: #808080;
+    transform:scale(0.9);
 }
 
 .workspace_search input{
