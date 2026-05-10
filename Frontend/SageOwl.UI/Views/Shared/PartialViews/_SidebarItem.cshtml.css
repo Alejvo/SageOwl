@@ -6,29 +6,31 @@
 .sideBar_item {
     display: flex;
     flex-direction: row;
-    height: 60px;
+    height: 50px;
     width: 100%;
-    padding-left:16px;
+    padding-left:12px;
     align-items:center;
     text-decoration:none;
-}
+    gap:12px;
+}   
 
 .sideBar_item_text{
     color:white;
-    font-size:22px;
+    font-size:20px;
 }
 
 .sideBar_item i {
-    width:50px;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 20px;
     color: white;
 }
 
-.sideBar_item:hover {
-    background-color: #BF5F58;
-    cursor:pointer;
+.sideBar_item:hover,
+.sideBar_item:active {
+    background-color: #FF9174;
+    cursor: pointer;
+    border-radius:8px;
 }
 
 @media only screen and (max-width:600px) {

@@ -4,10 +4,11 @@
 
 <div class="team_card" onclick='location.href="@Url.Action("MainPage", "Team", new { teamId = Model.TeamId })"'>
     <div class="team_card_header">
-        <div class="team_card_image">
-            @Model.Initials
-        </div>
         <p class="team_card_name">@Model.Name</p>
+        <p class="team_card_description">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
+        </p>
     </div>
     <div class="team_card_icons">
         <i class="fas fa-bullhorn" onclick="event.stopPropagation(); location.href='@Url.Action("Announcements", "Team", new { teamId = Model.TeamId })'"></i>

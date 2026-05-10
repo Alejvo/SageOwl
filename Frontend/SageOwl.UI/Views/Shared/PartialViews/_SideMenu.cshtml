@@ -9,23 +9,11 @@
     </div>
     <div class="sideBar_menu">
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-house", Text = "Home", Url = Url.Action("Index", "Workspace") })
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-file-lines", Text = "Forms", Url = Url.Action("Forms", "Workspace") })
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-users", Text = "Teams", Url = Url.Action("Teams", "Workspace") })
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-chart-line", Text = "Dashboard", Url = Url.Action("Index", "Workspace") })
-        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-money-bill-wave", Text = "Premium Plans", Url = Url.Action("Index", "Workspace") })
-    </div>
-    <div class="sideBar_menu_bottom">
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-file-lines", Text = "Forms", Url = Url.Action("Forms", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-chart-line", Text = "Qualifications", Url = Url.Action("Index", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-message", Text = "Messages", Url = Url.Action("Index", "Workspace") })
+        @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-money-bill-wave", Text = "Plans", Url = Url.Action("Index", "Workspace") })
         @await Html.PartialAsync("~/Views/Shared/PartialViews/_SideBarItem.cshtml", new SideBardItemViewModel { IconCode = "fa-solid fa-gear", Text = "Settings", Url = Url.Action("Index", "Workspace") })
-        <form style="display:flex;align-items:center;" asp-controller="Account"
-              asp-action="Logout"
-              method="post">
-
-            @Html.AntiForgeryToken()
-
-            <button type="submit" class="sideBar_item">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <p class="sideBar_item_text">Log Out</p>
-            </button>
-        </form>
     </div>
 </div>
