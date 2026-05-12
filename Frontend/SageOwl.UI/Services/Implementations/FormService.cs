@@ -19,7 +19,7 @@ public class FormService : IFormService
         _httpClient = httpClientFactory.CreateClient("Backend");
     }
 
-    public async Task<HttpStatusCode> CreateForm(CreateFormViewModel createForm)
+    public async Task<HttpStatusCode> CreateForm(CreateFormRequest createForm)
     {
         var json = JsonSerializer.Serialize(createForm);
         var content = new StringContent(json, Encoding.UTF8, "application/json");

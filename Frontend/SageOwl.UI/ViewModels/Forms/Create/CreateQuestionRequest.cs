@@ -1,7 +1,7 @@
 ﻿namespace SageOwl.UI.ViewModels.Forms.Create;
 
-public record CreateQuestionViewModel(
+public record CreateQuestionRequest(
     string Text,
     string QuestionType,
-    List<CreateOptionViewModel>? Options = null
+    List<CreateOptionRequest>? Options = null
     );

@@ -1,6 +1,6 @@
 ﻿namespace SageOwl.UI.ViewModels.Forms.Create;
 
-public record CreateOptionViewModel(
+public record CreateOptionRequest(
         string Value,
     bool IsCorrect
     );

@@ -29,6 +29,27 @@ public class TeamService(IHttpClientFactory httpClientFactory) : ITeamService
         return response.StatusCode;
     }
 
+    public async Task<List<string>> GetNamesByAdminId(Guid userId)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"team/admin/{userId}");
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        var teams = JsonSerializer.Deserialize<List<string>>(content, options);
+
+        return teams;
+    }
+
     public async Task<Team> GetTeamById(Guid teamId)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, $"team/id/{teamId}");

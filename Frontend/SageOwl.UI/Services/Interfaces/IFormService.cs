@@ -11,6 +11,6 @@ public interface IFormService
     Task<List<Form>> GetFormsByTeamId(Guid teamId);
     Task<Form> GetFormById(Guid formId);
     Task<HttpStatusCode> UpdateForm(UpdateFormViewModel updateForm);
-    Task<HttpStatusCode> CreateForm(CreateFormViewModel createForm);
+    Task<HttpStatusCode> CreateForm(CreateFormRequest createForm);
     Task<HttpStatusCode> DeleteForm(Guid formId);
 }

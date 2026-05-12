@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SageOwl.UI.Attributes;
+using SageOwl.UI.Models.Users;
 using SageOwl.UI.Services.Interfaces;
 using SageOwl.UI.ViewModels.Forms.Create;
 using SageOwl.UI.ViewModels.Forms.Update;
@@ -11,10 +12,14 @@ namespace SageOwl.UI.Controllers;
 public class FormController : Controller
 {
     private readonly IFormService _formService;
+    private readonly ITeamService _teamService;
+    private readonly CurrentUser _currentUser;
 
-    public FormController(IFormService formService)
+    public FormController(IFormService formService, ITeamService teamService, CurrentUser currentUser)
     {
         _formService = formService;
+        _teamService = teamService;
+        _currentUser = currentUser;
     }
 
     // GET Methods
@@ -32,9 +37,16 @@ public class FormController : Controller
 
     [HttpGet]
     [Route("create")]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        var teamNames = await _teamService.GetNamesByAdminId(_currentUser.Id!.Value);
+
+        var teamVM = new CreateFormViewModel
+        {
+            TeamNames = teamNames
+        };
+
+        return View(teamVM);
     }
 
     [HttpGet]
@@ -47,7 +59,7 @@ public class FormController : Controller
     // POST Methods
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateFormViewModel createForm)
+    public async Task<IActionResult> Create(CreateFormRequest createForm)
     {
         if (!ModelState.IsValid)
         {
