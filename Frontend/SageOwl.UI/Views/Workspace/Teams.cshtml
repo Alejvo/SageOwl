@@ -49,15 +49,3 @@
     </div>
 
 </main>
-
-@section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).on("click", ".nav-icon", function () {
-            const targetUrl = $(this).data("url");
-            if (targetUrl) {
-                window.location.href = targetUrl;
-            }
-        });
-    </script>
-}

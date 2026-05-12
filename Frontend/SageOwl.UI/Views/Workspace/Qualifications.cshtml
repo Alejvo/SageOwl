@@ -64,32 +64,5 @@
 </main>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).on("click", ".nav-icon", function () {
-            const targetUrl = $(this).data("url");
-            if (targetUrl) {
-                window.location.href = targetUrl;
-            }
-        });
-    </script>
-
-    <script>
-        async function loadProduct(id){
-
-            const response = await fetch(`/qualification/QualificationPartial?id=${id}`);
-
-            const html = await response.text();
-
-            document.getElementById("qualificationContainer").innerHTML = html;
-        }
-
-        function search(){
-
-            const id =
-                document.getElementById("periodSelect").value;
-
-            loadProduct(id);
-        }
-    </script>
+    <script src="~/js/get-qualifications.js"></script>
 }
