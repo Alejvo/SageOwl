@@ -29,6 +29,16 @@ public class TeamRepository : ITeamRepository
             .FirstOrDefaultAsync(team => team.Id == id);
     }
 
+    public async Task<List<string>> GetTeamNamesByAdmin(Guid userId)
+    {
+        return await _dbContext.Teams
+            .Where(t => t.Members.Any(m =>
+                m.UserId == userId &&
+                m.Role == TeamRole.Admin))
+            .Select(t => t.Name)
+            .ToListAsync();
+    }
+
     public async Task<List<Team>> GetTeamsByUserId(Guid userId)
     {
         return await _dbContext.Teams

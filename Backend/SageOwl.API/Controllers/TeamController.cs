@@ -1,6 +1,7 @@
 ﻿using Application.Teams.Commands.Create;
 using Application.Teams.Commands.Delete;
 using Application.Teams.Commands.Update;
+using Application.Teams.Queries.GetByAdmin;
 using Application.Teams.Queries.GetById;
 using Application.Teams.Queries.GetByUserId;
 using MediatR;
@@ -33,6 +34,13 @@ public class TeamController : ApiController
     {
         var res = await _sender.Send(new GetTeamByIdQuery(id));
         return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
+    }
+
+    [HttpGet("admin/{userId}")]
+    public async Task<IActionResult> GetTeamsByAdmin([FromRoute] Guid userId)
+    {
+        var res = await _sender.Send(new GetNamesByAdminQuery(userId));
+        return res.IsSuccess? Ok(res.Value) : Problem(res.Errors);
     }
 
     [HttpPost]
