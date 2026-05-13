@@ -2,7 +2,7 @@
 
 public record CreateFormRequest(
     string Title,
-    Guid TeamId,
+    string TeamId,
     DateTime Deadline,
     List<CreateQuestionRequest> Questions
     );

@@ -15,15 +15,20 @@ $(document).on("click", ".add_option", function (e) {
                     <div class="form_option"
                         style="display:flex;flex-direction:row;align-items:center;gap:10px;">
 
-                        <label style="font-weight:bold;font-size:16px;">
+                        <label style="font-weight:bold;font-size:16px;" name="NewForm.Questions[0].Options[0].Value">
                             ${optionLabel}.
                         </label>
                         
                         <input type="text"
                            style="border:none;height:40px;padding-left:10px;outline:none;flex:1;"
-                           name="Questions[${questionIndex}].Options[${optionIndex}].Description"
+                           name="NewForm.Questions[0].Options[0].Value"
                            placeholder="Option Description" />
 
+
+                        <input type="radio"
+                           name="NewForm.Questions[0].Options[0].IsCorrect"
+                           value="true"
+                        />
                         <button class="remove_option" type="button">
                             Remove
                         </button>
@@ -51,6 +56,7 @@ $("#add_question").on("click", function (e) {
             let newName = nameAttr.replace(
                 /\[\d+\]/,
                 `[${questionIndex}]`);
+
             $(this).attr("name", newName);
         }
     });
@@ -83,7 +89,7 @@ $(document).on("click", ".remove_option", function (e) {
     reindexOptions($card);
 });
 
-$(document).on("change", "input[name='type']", function () {
+$(document).on("change", ".question_type", function () {
 
     const selectedType = $(this).val();
 
@@ -93,7 +99,7 @@ $(document).on("change", "input[name='type']", function () {
 
     const $addOptionButton = $card.find(".add_option");
 
-    if (selectedType === "opened_ended") {
+    if (selectedType === "OPENED") {
 
         $optionsContainer.empty();
 

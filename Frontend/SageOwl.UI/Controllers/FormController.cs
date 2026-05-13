@@ -29,14 +29,12 @@ public class FormController : Controller
     {
         ViewBag.FormId = formId;
         ViewData["HeaderTitle"] = "Form";
-        ViewData["HeaderUrl"] = Url.Action("Index", "Workspace");
 
         var form = await _formService.GetFormById(formId);
         return View(form);
     }
 
-    [HttpGet]
-    [Route("create")]
+    [HttpGet("create")]
     public async Task<IActionResult> Create()
     {
         var teamNames = await _teamService.GetNamesByAdminId(_currentUser.Id!.Value);
@@ -58,19 +56,18 @@ public class FormController : Controller
 
     // POST Methods
 
-    [HttpPost]
-    public async Task<IActionResult> Create(CreateFormRequest createForm)
+    [HttpPost("create")]
+    public async Task<IActionResult> Create(CreateFormViewModel createForm)
     {
         if (!ModelState.IsValid)
-        {
             return View(createForm);
-        }
 
-        await _formService.CreateForm(createForm);
-        return View();
+        //await _formService.CreateForm(createForm);
+
+        return RedirectToAction("Teams", "Workspace");
     }
 
-    [HttpPost]
+    [HttpPost("update")]
     public async Task<IActionResult> Update(UpdateFormViewModel updateForm)
     {
         if (!ModelState.IsValid)
@@ -82,7 +79,7 @@ public class FormController : Controller
         return View();
     }
 
-    [HttpPost]
+    [HttpPost("delete")]
     public async Task<IActionResult> Delete(Guid formId)
     {
         if (formId == Guid.Empty)
