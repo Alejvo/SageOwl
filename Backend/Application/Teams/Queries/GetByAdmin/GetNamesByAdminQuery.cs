@@ -4,4 +4,4 @@ namespace Application.Teams.Queries.GetByAdmin;
 
 public record GetNamesByAdminQuery(
     Guid UserId
-    ):IQuery<List<string>>;
+    ):IQuery<Dictionary<Guid, string>>;

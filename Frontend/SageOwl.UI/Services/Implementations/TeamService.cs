@@ -29,7 +29,7 @@ public class TeamService(IHttpClientFactory httpClientFactory) : ITeamService
         return response.StatusCode;
     }
 
-    public async Task<List<string>> GetNamesByAdminId(Guid userId)
+    public async Task<Dictionary<Guid, string>> GetNamesByAdminId(Guid userId)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, $"team/admin/{userId}");
 
@@ -45,7 +45,7 @@ public class TeamService(IHttpClientFactory httpClientFactory) : ITeamService
             PropertyNameCaseInsensitive = true
         };
 
-        var teams = JsonSerializer.Deserialize<List<string>>(content, options);
+        var teams = JsonSerializer.Deserialize<Dictionary<Guid, string>>(content, options);
 
         return teams;
     }

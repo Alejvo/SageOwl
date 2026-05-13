@@ -62,7 +62,7 @@ public class FormController : Controller
         if (!ModelState.IsValid)
             return View(createForm);
 
-        //await _formService.CreateForm(createForm);
+        await _formService.CreateForm(createForm.NewForm);
 
         return RedirectToAction("Teams", "Workspace");
     }

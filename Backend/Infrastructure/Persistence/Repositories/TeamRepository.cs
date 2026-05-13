@@ -29,14 +29,14 @@ public class TeamRepository : ITeamRepository
             .FirstOrDefaultAsync(team => team.Id == id);
     }
 
-    public async Task<List<string>> GetTeamNamesByAdmin(Guid userId)
+    public async Task<Dictionary<Guid,string>> GetTeamNamesByAdmin(Guid userId)
     {
         return await _dbContext.Teams
             .Where(t => t.Members.Any(m =>
                 m.UserId == userId &&
                 m.Role == TeamRole.Admin))
-            .Select(t => t.Name)
-            .ToListAsync();
+            .Select(t => new { t.Id, t.Name})
+            .ToDictionaryAsync(x => x.Id, x => x.Name);
     }
 
     public async Task<List<Team>> GetTeamsByUserId(Guid userId)

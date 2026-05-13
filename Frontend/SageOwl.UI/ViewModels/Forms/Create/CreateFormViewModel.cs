@@ -2,6 +2,6 @@
 
 public class CreateFormViewModel
 {
-    public List<string> TeamNames { get; set; } = [];
+    public Dictionary<Guid, string> TeamNames { get; set; } = [];
     public CreateFormRequest NewForm { get; set; } = null!;
 }

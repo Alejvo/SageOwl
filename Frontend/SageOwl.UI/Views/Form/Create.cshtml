@@ -47,9 +47,9 @@
             <div class="create_form_input">
                 <label asp-for="NewForm.TeamId">Team:</label>
                 <select asp-for="NewForm.TeamId">
-                    @foreach (var name in Model.TeamNames)
+                    @foreach (var team in Model.TeamNames)
                     {
-                        <option value="name">@name</option>
+                        <option value="@team.Key">@team.Value</option>
                     }
                 </select>
             </div>
@@ -71,11 +71,11 @@
             <div class="form_create_card">
                 <div class="form_create_choice">
                     <div class="form_create_choice_Body">
-                        <input class="question_type" asp-for="NewForm.Questions[0].QuestionType" type="radio" value="CLOSED" />
+                        <input class="question_type" asp-for="NewForm.Questions[0].QuestionType" type="radio" value="closed" checked/>
                         <label asp-for="NewForm.Questions[0].QuestionType">Closed Question</label>
                     </div>
                     <div class="form_create_choice_Body">
-                        <input class="question_type" asp-for="NewForm.Questions[0].QuestionType" type="radio" value="OPENED" checked/>
+                        <input class="question_type" asp-for="NewForm.Questions[0].QuestionType" type="radio" value="opened" />
                         <label asp-for="NewForm.Questions[0].QuestionType">Opened Question</label>
                     </div>
                 </div>

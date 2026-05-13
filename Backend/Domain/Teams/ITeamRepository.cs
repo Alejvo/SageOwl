@@ -7,7 +7,7 @@ public interface ITeamRepository
     Task CreateTeam(Team team);
     Task UpdateTeam(Team team);
     Task DeleteTeam(Team team);
-    Task<List<string>> GetTeamNamesByAdmin(Guid userId);
+    Task<Dictionary<Guid,string>> GetTeamNamesByAdmin(Guid userId);
     Task<string?> GetUserRoleInTeam(Guid userId, Guid teamId);
 
 }

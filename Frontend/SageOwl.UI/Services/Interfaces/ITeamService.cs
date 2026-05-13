@@ -12,5 +12,5 @@ public interface ITeamService
     Task<HttpStatusCode> CreateTeam(CreateTeamViewModel newTeam);
     Task<HttpStatusCode> UpdateTeam(UpdateTeamDto updateTeam);
     Task<HttpStatusCode> DeleteTeam(Guid teamId);
-    Task<List<string>> GetNamesByAdminId(Guid userId);
+    Task<Dictionary<Guid, string>> GetNamesByAdminId(Guid userId);
 }
