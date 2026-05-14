@@ -1,18 +1,47 @@
 ﻿@model SageOwl.UI.ViewModels.Forms.FormViewModel
 
+<style>
+    .form_card_button {
+        color: #F79C33;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border-radius: 12px;
+        border: none;
+        height: 40px;
+        font-size: 18px;
+        font-weight: bold;
+        width: 100px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .form_card_button:hover,
+    .form_card_button:active {
+        transform: scale(0.92);
+        background-color: #D9D9D9;
+        transition: 0.5s transform ease;
+    }
+</style>
+
 <div class="form_card">
     <p class="form_card_title">@Model.Title</p>
-    <p class="form_card_deadline">Deadline: @Model.Deadline</p>
+    <p class="form_card_deadline" style="color:white;">Deadline: @Model.Deadline</p>
 
     <div class="form_card_button_container">
         @if (Model.IsAdmin)
         {
-            <button class="form_card_button">Edit</button>
-            <button class="form_card_button">Results</button>
+            <a class="form_card_button" asp-action="update" asp-controller="Form">Edit</a>
+            <a class="form_card_button" asp-action="results" asp-controller="Form">Results</a>
         }
         else
         {
-            <button class="form_card_button">Start</button>
+            <a class="form_card_button"
+               href="/Form/@Model.Id">
+                Start
+            </a>
         }
     </div>
 </div>

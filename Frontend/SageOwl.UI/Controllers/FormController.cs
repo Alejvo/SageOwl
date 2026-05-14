@@ -23,7 +23,7 @@ public class FormController : Controller
     }
 
     // GET Methods
-    [Route("id/{formId}")]
+    [Route("{formId}")]
     [HttpGet]
     public async Task<IActionResult> Index(Guid formId)
     {
@@ -50,6 +50,13 @@ public class FormController : Controller
     [HttpGet]
     [Route("update")]
     public IActionResult Update()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    [Route("results")]
+    public IActionResult Results()
     {
         return View();
     }
