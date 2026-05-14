@@ -46,14 +46,14 @@ public class TeamRepository : ITeamRepository
             .ToListAsync();
     }
 
-    public async Task<string?> GetUserRoleInTeam(Guid userId, Guid teamId)
+    public async Task<bool> IsUserAdmin(Guid userId, Guid teamId)
     {
-        var role = await _dbContext.TeamMembership
+        var isAdmin = await _dbContext.TeamMembership
             .Where(tm => tm.UserId == userId && tm.TeamId == teamId)
-            .Select(tm => tm.Role)
+            .Select(tm => tm.Role == TeamRole.Admin)
             .FirstOrDefaultAsync();
 
-        return role?.ToString();
+        return isAdmin;
     }
 
     public async Task UpdateTeam(Team team)

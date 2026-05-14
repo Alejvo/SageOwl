@@ -13,4 +13,5 @@ public interface ITeamService
     Task<HttpStatusCode> UpdateTeam(UpdateTeamDto updateTeam);
     Task<HttpStatusCode> DeleteTeam(Guid teamId);
     Task<Dictionary<Guid, string>> GetNamesByAdminId(Guid userId);
+    Task<bool> IsUserAdmin(Guid userId, Guid teamId);
 }

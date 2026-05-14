@@ -4,6 +4,7 @@ using Application.Teams.Commands.Update;
 using Application.Teams.Queries.GetByAdmin;
 using Application.Teams.Queries.GetById;
 using Application.Teams.Queries.GetByUserId;
+using Application.Teams.Queries.IsAdmin;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,13 @@ public class TeamController : ApiController
     {
         var res = await _sender.Send(new GetNamesByAdminQuery(userId));
         return res.IsSuccess? Ok(res.Value) : Problem(res.Errors);
+    }
+
+    [HttpGet("is-admin")]
+    public async Task<IActionResult> IsUserAdmin([FromQuery] IsUserAdminQuery query)
+    {
+        var res = await _sender.Send(query);
+        return res.IsSuccess ? Ok(res.Value) : Problem(res.Errors);
     }
 
     [HttpPost]

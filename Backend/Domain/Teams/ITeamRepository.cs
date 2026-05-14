@@ -8,6 +8,6 @@ public interface ITeamRepository
     Task UpdateTeam(Team team);
     Task DeleteTeam(Team team);
     Task<Dictionary<Guid,string>> GetTeamNamesByAdmin(Guid userId);
-    Task<string?> GetUserRoleInTeam(Guid userId, Guid teamId);
+    Task<bool> IsUserAdmin(Guid userId, Guid teamId);
 
 }

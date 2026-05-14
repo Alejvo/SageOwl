@@ -3,5 +3,16 @@
 <div class="form_card">
     <p class="form_card_title">@Model.Title</p>
     <p class="form_card_deadline">Deadline: @Model.Deadline</p>
-    <button class="form_card_button">Start</button>
+
+    <div class="form_card_button_container">
+        @if (Model.IsAdmin)
+        {
+            <button class="form_card_button">Edit</button>
+            <button class="form_card_button">Results</button>
+        }
+        else
+        {
+            <button class="form_card_button">Start</button>
+        }
+    </div>
 </div>

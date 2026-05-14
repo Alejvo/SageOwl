@@ -78,20 +78,24 @@ public class TeamController : Controller
     public async Task<IActionResult> Forms(Guid teamId)
     {
         var team = await _teamService.GetTeamById(teamId);
-        var forms = team.Forms.Select(f => new FormViewModel
+        var forms = await Task.WhenAll(
+        team.Forms.Select(async (f) => new FormViewModel
         {
             Id = f.Id,
             Title = f.Title,
             Deadline = f.Deadline,
-            TeamId = f.TeamId
-        }).ToList();
+            TeamId = f.TeamId,
+            IsAdmin = await _teamService.IsUserAdmin(
+                _currentUser.Id!.Value,
+                team.TeamId)
+        }));
 
         ViewData["HeaderTitle"] = $"{team.Name}";
         ViewData["HeaderUrl"] = Url.Action("MainPage", "Team", new { teamId });
 
         return View(new TeamFormsPageViewModel
         {
-            Forms = forms,
+            Forms = [.. forms],
             TeamId = teamId
         });
     }

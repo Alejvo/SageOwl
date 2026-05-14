@@ -93,6 +93,18 @@ public class TeamService(IHttpClientFactory httpClientFactory) : ITeamService
         return teams;
     }
 
+    public async Task<bool> IsUserAdmin(Guid userId, Guid teamId)
+    {
+        var response = await _httpClient.GetAsync($"team/is-admin?userId={userId}&teamId={teamId}");
+
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content.ReadFromJsonAsync<bool>();
+
+        return result!;
+    }
+    }
+
     public async Task<HttpStatusCode> UpdateTeam(UpdateTeamDto updateTeam)
     {
         var json = JsonSerializer.Serialize(updateTeam);
