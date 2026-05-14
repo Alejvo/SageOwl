@@ -5,37 +5,7 @@
 
 @model CreateFormViewModel
 
-<style>
-    .create_form {
-        display: flex;
-        flex-direction: column;
-        padding: 16px;
-        background-color: white;
-        border-radius: 24px;
-        gap: 8px;
-    }
-
-    .remove_option {
-        border: none;
-        outline:none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        color: #fff;
-        background-color: #E64D2E;
-        border-radius: 12px;
-        height: 40px;
-        width: 100px;
-    }
-
-    .remove_option:hover,
-    .remove_option:active {
-        transform: scale(0.9);
-        transition: 0.2s transform ease;
-        background-color: #B33C24;
-    }
-</style>
+<link rel="stylesheet" href="~/css/create-form.css" asp-append-version="true" />
 
 <main class="form_create_main">
     <h3>Create Form</h3>
@@ -45,7 +15,7 @@
         <hr />
         <div class="create_form_settings">
             <div class="create_form_input">
-                <label asp-for="NewForm.TeamId">Team:</label>
+                <label asp-for="NewForm.TeamId">Team</label>
                 <select asp-for="NewForm.TeamId">
                     @foreach (var team in Model.TeamNames)
                     {
@@ -55,12 +25,12 @@
             </div>
 
             <div class="create_form_input">
-                <label asp-for="NewForm.Title">Form Title: </label>
+                <label asp-for="NewForm.Title">Form Title </label>
                 <input asp-for="NewForm.Title" placeholder="Type the form title" />
             </div>
 
             <div class="create_form_input">
-                <label asp-for="NewForm.Deadline">Deadline: </label>
+                <label asp-for="NewForm.Deadline">Deadline </label>
                 <input asp-for="NewForm.Deadline" type="date" />
             </div>
         </div>
@@ -79,7 +49,7 @@
                         <label asp-for="NewForm.Questions[0].QuestionType">Opened Question</label>
                     </div>
                 </div>
-                <textarea placeholder="Question Text" asp-for="NewForm.Questions[0].Text"></textarea>
+                <textarea class="autoResize" placeholder="Question Text" asp-for="NewForm.Questions[0].Text"></textarea>
                 <div class="form_create_option_list optionsContainer">
 
                 </div>

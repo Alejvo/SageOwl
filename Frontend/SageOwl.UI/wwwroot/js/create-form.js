@@ -14,26 +14,28 @@ $(document).on("click", ".add_option", function (e) {
     const optionLabel = String.fromCharCode(65 + optionIndex);
 
     const newOption = `
-                    <div class="form_option"
-                        style="display:flex;flex-direction:row;align-items:center;gap:10px;">
-
-                        <label style="font-weight:bold;font-size:16px;"
-                               name="NewForm.Questions[${currentQuestionIndex}].Options[${optionIndex}].Value">
-                            ${optionLabel}.
-                        </label>
+                    <div class="form_option">
+                        <div class="form_option_top">
+                            <label name="NewForm.Questions[${currentQuestionIndex}].Options[${optionIndex}].Value">
+                                ${optionLabel}.
+                            </label>
                         
-                        <input type="text"
-                           style="border:none;height:40px;padding-left:10px;outline:none;flex:1;"
-                           name="NewForm.Questions[${currentQuestionIndex}].Options[${optionIndex}].Value"
-                           placeholder="Option Description" />
+                            <input type="text"
+                                name="NewForm.Questions[${currentQuestionIndex}].Options[${optionIndex}].Value"
+                                placeholder="Option Value" />
+                        </div>
 
-                        <input type="radio"
-                           name="NewForm.Questions[${currentQuestionIndex}].Options[${optionIndex}].IsCorrect"
-                           value="true"
-                        />
-                        <button class="remove_option" type="button">
-                            Remove
-                        </button>
+                        <div class="form_option_bottom">
+                            <input type="radio"
+                                name="NewForm.Questions[${currentQuestionIndex}].Options[${optionIndex}].IsCorrect"
+                                value="true" />
+                            <label>
+                                Is Correct
+                            </label>
+                            <button class="remove_option" type="button">
+                                Remove Option
+                            </button>
+                        </div>
                     </div>`;
 
     $optionsContainer.append(newOption);
@@ -135,6 +137,12 @@ $(document).on("change", ".question_type", function () {
                 cursor: "pointer"
             });
     }
+});
+
+$(document).on("input", ".autoResize", function () {
+
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
 });
 
 function reindexQuestions() {
