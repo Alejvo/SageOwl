@@ -103,7 +103,6 @@ public class TeamService(IHttpClientFactory httpClientFactory) : ITeamService
 
         return result!;
     }
-    }
 
     public async Task<HttpStatusCode> UpdateTeam(UpdateTeamDto updateTeam)
     {

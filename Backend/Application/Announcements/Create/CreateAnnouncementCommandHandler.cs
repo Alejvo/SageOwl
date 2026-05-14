@@ -37,11 +37,6 @@ internal sealed class CreateAnnouncementCommandHandler : ICommandHandler<CreateA
         if (!Guid.TryParse(userIdClaim, out var userId))
             return Result.Failure(Error.Unauthorized);
 
-        var role = await _teamRepository.GetUserRoleInTeam(userId, request.TeamId);
-
-        if (role != "Admin")
-            return Result.Failure(Error.Forbidden);
-
         var newAnnouncement = Announcement.Create(
             request.Title,
             request.Content,
@@ -56,4 +51,3 @@ internal sealed class CreateAnnouncementCommandHandler : ICommandHandler<CreateA
             : Result.Failure(Error.DBFailure);
     }
 }
-
